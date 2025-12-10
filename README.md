@@ -60,7 +60,7 @@ The library is currently under active development (v0.1-pre).
 
 Once v0.1 is released, you will be able to install it using:
 
-```pip install DataLab```
+```pip install datalab```
 
 For now, if you want early access, please clone the repo:
 
