@@ -7,13 +7,13 @@ build-backend = "setuptools.build_meta"
 
 name = "datalab"             
 version = "0.1.0"
-description = "DataLab: Unified End-to-End Data Library for Tabular and Graph data."
+description = "DataLab: Unified & Beginner Friendly End-to-End Data Library for Tabular and Graph data."
 
 authors = [
     {name = "Kshitij Sharma"}
 ]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">= 3.8"
 
 dependencies = [
 
@@ -30,7 +30,7 @@ dependencies = [
 
 license = {text = "MIT"}
 
-keywords = ["data", "machine-learning", "data-cleaning", "tabular", "graph"]
+keywords = ["data", "machine-learning", "data-science", "data-cleaning", "tabular", "graph"]
 
 classifiers = [
     "Programming Language :: Python :: 3",
