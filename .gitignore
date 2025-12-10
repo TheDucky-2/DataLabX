@@ -1,0 +1,46 @@
+# --------------------------
+# PYTHON CACHE
+# --------------------------
+__pycache__/
+*.pyc
+
+# --------------------------
+# ENVIRONMENTS
+# --------------------------
+venv/
+env/
+
+# --------------------------
+# JUPYTER CHECKPOINTS
+# --------------------------
+.ipynb_checkpoints/
+
+# --------------------------
+# DATA FILES
+# (We don't want to upload raw datasets)
+# --------------------------
+*.csv
+*.xlsx
+*.parquet
+
+# --------------------------
+# NOTEBOOKS (IGNORING ALL NOTEBOOKS EXCEPT GUIDES)
+# We want to ignore *all* notebooks except certain folders
+# --------------------------
+*.ipynb
+
+# Unignoring the notebooks we DO want:
+!/DataLab Usage Guides/**/*.ipynb
+
+# --------------------------
+# BUILD ARTIFACTS
+# --------------------------
+DataLab.egg-info/
+build/
+dist/
+
+# --------------------------
+# MISC
+# --------------------------
+.DS_Store
+Thumbs.db
