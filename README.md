@@ -276,5 +276,5 @@ Suggestions, ideas, feedbacks and contributions are absolutely welcome!
 
 ## Contact:
 
-[![Contact](https://img.shields.io/badge/Contact-datalab.project@protonmail.com-blue)](mailto:datalab.project@protonmail.com)
+[![Email](https://img.shields.io/badge/Contact-datalab.project@protonmail.com-blue)](mailto:datalab.project@protonmail.com)
 
