@@ -273,3 +273,8 @@ If you’re new to data… OR switching careers… OR want to understand data de
 DataLab is in early development stage.
 
 Suggestions, ideas, feedbacks and contributions are absolutely welcome!
+
+## Contact:
+
+[![Contact](https://img.shields.io/badge/Contact-datalab.project@protonmail.com-blue)](mailto:datalab.project@protonmail.com)
+
