@@ -274,7 +274,7 @@ DataLab is in early development stage.
 
 Suggestions, ideas, feedbacks and contributions are absolutely welcome!
 
-## Contact & Support
+## ✉️ Contact & Support
 
 For questions, suggestions, feedback or issues related to **DataLab**, you can reach us at:
 
