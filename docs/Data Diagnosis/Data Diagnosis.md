@@ -185,7 +185,7 @@ Imagine you have a list of your favorite colors in one column:
 
 Example:
 
-'Colors'
+**Colors**
 
 Red
 
