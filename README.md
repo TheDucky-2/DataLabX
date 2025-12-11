@@ -280,9 +280,7 @@ For questions, suggestions, feedback or issues related to **DataLab**, you can r
 
 **Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
 
-⚠️ Note: This is an early pre-release. 
-
-Responses may take 72 hours, but feedback is always appreciated!
+⚠️ Note: This is an early pre-release. However, we aim to respond within 72 hours.
 
 
 
