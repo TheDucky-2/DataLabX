@@ -276,8 +276,6 @@ Suggestions, ideas, feedbacks and contributions are absolutely welcome!
 
 ## Contact & Support
 
-## Contact & Support
-
 For questions, suggestions, feedback or issues related to **DataLab**, you can reach us at:
 
 **Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
