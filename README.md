@@ -44,7 +44,7 @@ This is an early development release focusing on the Tabular Data Package, inclu
 
 - Preprocessing
 
-- Computation helpers
+- Computation
 
 - **Matplotlib**-based visualization (including Missingness viz)
 
@@ -66,7 +66,7 @@ For now, if you want early access, please clone the repo:
 
 ```git clone https://github.com/yourusername/DataLab.git```
 
-```cd DataLab```
+```cd datalab```
 
 ## Project Structure:
 
@@ -149,7 +149,7 @@ Uses **missingno** internally to visualize:
 
 - Missingness distributions
 
-✔️ 4. Cleaning & Preprocessing
+**✔️ 4. Cleaning & Preprocessing**
 
 DataLab offers Cleaning and Preprocessing for:
 
@@ -159,13 +159,13 @@ DataLab offers Cleaning and Preprocessing for:
 
 - Datetime Data (in v0.2)
 
-- Missing value handling
+- Missing Data
 
 - Text (basic)
 
 - Pandas <-> Polars conversion utilities
 
-**✔️ 5. Computation Helpers**
+**✔️ 5. Computation**
 
 Includes:
 
@@ -174,6 +174,8 @@ Includes:
 - Distributions
 
 - Outlier detection
+
+- Correlation
 
 - Performance-optimized helpers
 
@@ -187,7 +189,7 @@ Simple, beginner-friendly plots using Matplotlib:
 
 - Boxplots
 
-- KDE Plot
+- Kernel Density Estimation Plot
 
 - Missingness viz (via missingno)
 
@@ -215,13 +217,14 @@ DataLab includes:
 - Preprocessing
 - Computation
 - Viz + Docs
-- Usage notebooks
+- Usage Notebooks
+- Workflow Notebooks
   
 **v0.2**
 
 - Text workflows
 - More computation tools
-- Include analysis
+- Included analysis
 - Improved tabular viz
 - More diagnosis tools
 - Improved cleaning & preprocessing
@@ -243,7 +246,7 @@ DataLab includes:
 
 - Deep Learning (PyTorch + JAX optimizations)
 - GNNs / GATs (Graph Neural Networks using PyG)
-- Complete tabular + graph ecosystem
+- Complete Tabular + Graph Ecosystem
 - Backend auto-selection (Polars/Pandas)
   
 ## Why would I even use DataLab?
@@ -276,11 +279,15 @@ Suggestions, ideas, feedbacks and contributions are absolutely welcome!
 
 ## ✉️ Contact & Support
 
-For questions, suggestions, feedback or issues related to **DataLab**, you can reach us at:
+For questions, suggestions, feedbacks or issues related to **DataLab**, you can reach us at:
 
 **Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
 
-⚠️ Note: This is an early pre-release. However, we aim to respond within 72 hours.
+⚠️ Note:
+
+This is an early pre-release.
+
+However, we aim to respond within 72 hours.
 
 
 
