@@ -22,6 +22,7 @@ env/
 *.csv
 *.xlsx
 *.parquet
+*.json
 
 # --------------------------
 # NOTEBOOKS (IGNORING ALL NOTEBOOKS EXCEPT GUIDES)
