@@ -74,7 +74,7 @@ For now, if you want early access, please clone the repo:
 datalab/
 │
 ├── datalab/                    # Main Python package
-│   ├── Tabular/
+│   ├── tabular/
 │   │   ├── data_loader/
 │   │   ├── data_diagnosis/
 │   │   ├── data_cleaning/
@@ -85,11 +85,11 @@ datalab/
 │   │   ├── machine_learning/   # (To be added in v0.4)
 │   │   └── utils/
 │   │
-│   └── Graph/                  # (To be added in v0.3)
+│   └── graph/                  # (To be added in v0.3)
 │
 ├── docs/                       # Beginner-friendly documentation (includes Interpretation Guides)
 │
-├── guides/               # Workflow notebooks for each step
+├── guides/               # API Usage & Workflow Guide notebooks for each step
 │
 ├── pyproject.toml
 ├── requirements.txt
