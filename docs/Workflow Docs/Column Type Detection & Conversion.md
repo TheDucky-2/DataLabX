@@ -147,7 +147,7 @@ In our Dataset, all the columns are Categories, as they are unique identificatio
 
 Let us detect what are the types of these columns in the sample dataset:
 
-    Diagnosis(sample_df).detect_column_types()
+    Diagnosis(df).detect_column_types()
 
 Output:
     
@@ -163,7 +163,7 @@ We can see all of these categorical columns have been incorrectly identified as 
 
 Let us convert them to categorical columns by using the ``to_categorical()`` method:
 
-    # passing a list of numerical columns that were incorrectly identified
+    # passing a list of categorical columns that were incorrectly identified
 
     df = ColumnConverter(df, columns=['customer_id','zip_code','store_id','product_code','status_code']).to_categorical()
 
