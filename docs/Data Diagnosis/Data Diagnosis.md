@@ -51,6 +51,7 @@ Diagnosis helps you to see:
 - What Duplicate values exist
 - Unique values 
 - Cardinality (How many unique values are present in a column of your DataFrame).
+- Separation of Column Types
 
 ### **DataLab Usage**:
 
@@ -166,7 +167,7 @@ You can check the memory usage by using the ``memory_usage()`` method from the D
 
 Example:
 
-    Diagnosis(df).show_memory_usage()
+    diagnosis.show_memory_usage()
 
 This function does not return anything, but shows memory usage in MB.
 
@@ -229,7 +230,7 @@ You can check the cardinality by using the ``show_cardinality()`` method from th
 
 Example:
 
-    Diagnosis(df).show_cardinality()
+    diagnosis.show_cardinality()
 
 This function returns a dictionary of column names and number of unique values in that column.
 
@@ -242,6 +243,68 @@ This function returns a dictionary of column names and number of unique values i
     'num_of_dependents': 7,
     'years_at_job': 42,
     'risk_score': 517721}
+
+## Separation of Column Types
+
+Sepration of column types refers to separating specific type of columns - Numerical, Categorical or Datetime from rest of the DataFrame.
+
+This leads to easy exploration and understanding of your data, one type at a time.
+
+You can read more about why it is important in **Column Type Detection & Conversion** docs under **Workflow Docs** section of DataLab.
+
+Let us now explore how we can do that using datalab:
+
+### **DataLab Usage:**
+
+#### Numerical Column Types (Numbers):
+
+You can separate Numerical columns from rest of the DataFrame by using ``get_numerical_columns()`` from Diagnosis class.
+
+Example:
+    
+    diagnosis.get_numerical_columns()
+
+This function returns a pandas DataFrame of only numeric columns.
+
+    | age        | income      | expenses       | debt           | score        | savings_ratio |
+    |------------|-------------|----------------|----------------|--------------|---------------|
+    | 45.960570  | NaN         | 21337.207586   | 2,077,881.000  | 49.015508    | 0.431159      |
+    | 38.340828  | 17182.443452| 3621.209282    | 3,752.960      | 60.759049    | 0.789249      |
+    | NaN        | 23497.048535| 16516.059771   | NaN            | NaN          | 0.297101      |
+
+
+#### Categorical Column Types (Categories or Text)
+
+You can separate Categorical columns from rest of the DataFrame by using ``get_categorical_columns()`` from Diagnosis class.
+
+Example:
+
+    diagnosis.get_categorical_columns()
+
+This function returns a pandas DataFrame of only categorical columns.
+
+    | gender | region | membership_type | subscription_status |
+    | ------ | ------ | --------------- | ------------------- |
+    | M      | East   | vip             | inactive            |
+    | M      | East   | basic           | active              |
+    | M      | East   | basic           | active              |
+
+#### Datetime Column Types (Dates and Timestamps)
+
+You can separate Datetime columns from rest of the DataFrame by using ``get_datetime_columns()`` from Diagnosis class.
+
+Example:
+
+    diagnosis.get_datetime_columns()
+
+This function returns a pandas DataFrame of only datetime columns.
+
+    | signup_date | last_active |
+    | ----------- | ----------- |
+    | 2019-10-23  | 2019-11-05  |
+    | 2019-10-14  | 2021-04-11  |
+    | 2015-05-07  | 2017-02-09  |
+
 
 
 
