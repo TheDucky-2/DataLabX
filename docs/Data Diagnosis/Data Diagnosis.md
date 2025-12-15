@@ -305,7 +305,15 @@ This function returns a pandas DataFrame of only datetime columns.
     | 2019-10-14  | 2021-04-11  |
     | 2015-05-07  | 2017-02-09  |
 
+## Summary:
 
+- Data diagnosis is a health check up for your dataset -> it helps you understand structure, types, missing values, duplicates, and suspicious patterns before doing any analysis.
+
+- Incorrect data types lead to incorrect results -> numbers, categories, and dates must be identified and handled differently.
+
+- Diagnosis helps you catch problems early -> messy values, high cardinality, memory issues, and wrong formats can silently break your workflows.
+
+- A clean diagnosis leads to reliable insights -> once your data is understood and verified, cleaning, visualization, and analysis become safer and more meaningful.
 
 
 
