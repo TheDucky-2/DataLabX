@@ -17,7 +17,7 @@ class MissingnessVisualizer(DataVisualizer):
         else:
             self.columns = columns
 
-    def plot_missing(self, viz_type: str|None = None) -> matplotlib.axes.Axes:  # viz : alias for 'visualization'
+    def plot_missing(self, viz_type: str|None = 'bar') -> matplotlib.axes.Axes:  # viz : alias for 'visualization'
         '''
         Visualize missing values in each column of the DataFrame
 
