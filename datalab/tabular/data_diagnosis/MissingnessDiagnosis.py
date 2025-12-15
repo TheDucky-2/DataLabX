@@ -92,7 +92,7 @@ class MissingnessDiagnosis:
 
 
         # a list of default common placeholders used in categorical columns
-        DEFAULT_PLACEHOLDERS= ['NA', np.nan, 'NAN', 'na', 'NaN', 'nan', 'ERROR', 'MISSING', 'Error', 'Missing', 'Not Available', None, 'not available', 'UNKNOWN', 'Unknown', pd.NA]
+        DEFAULT_PLACEHOLDERS= ['NA', np.nan, 'NAN', 'na', 'NaN', 'nan', 'ERROR', 'MISSING', 'Error', 'Missing', 'Not Available', None, 'not available', 'UNKNOWN', 'Unknown']
         
         # an empty dictionary to store key, value pairs of column names as keys, and list of missing values as values
         missing_per_column = {}   
@@ -136,36 +136,6 @@ class MissingnessDiagnosis:
         Usage Recommendation:
         ---------------------
             Use this function when you want to see the sum or percentage of missing values before deciding whether to drop or fill missing values
-
-        Example: 
-        
-        >>>> 
-            dl.Diagnosis(df).show_missing_stats('sum') 
-
-            age                  107069
-            income                55229
-            expenses              64471
-            savings               79482
-            loan_amount           79393
-            credit_score          57451
-            num_of_dependents    119290
-            years_at_job          96629
-            risk_score           146630
-            dtype: int64
-        
-        >>>>>
-            dl.Diagnosis(df).show_missing_stats('percent')
-
-            age                  10.7069
-            income                5.5229
-            expenses              6.4471
-            savings               7.9482
-            loan_amount           7.9393
-            credit_score          5.7451
-            num_of_dependents    11.9290
-            years_at_job          9.6629
-            risk_score           14.6630
-            dtype: float64
         
         '''
         self.how = how
@@ -182,17 +152,40 @@ class MissingnessDiagnosis:
             raise ValueError(f"how must either be 'sum' or 'percent', got {self.how}")
 
     def any_missing_rows(self) -> pd.DataFrame:
-
         '''
-        Detects and shows all rows where any value may be missing in each column of the DataFrame
+        Detects and shows all the rows where any row is missing data in a DataFrame
+
+        Parameters:
+        -----------
+            self: pd.DataFrame
+        
+        Return:
+        -------
+            pd.DataFrame
+            A pandas DataFrame of all rows where any column is missing value.
+
         '''
 
         return self.df[self.df.isna().any(axis=1)]
 
-    def all_missing_rows(self) -> pd.DataFrame:
+    def all_rows_missing(self) -> pd.DataFrame:
 
         '''
-        Detects and shows rows where the whole row is missing values.
+        Detects and shows all the rows that are missing data together in a DataFrame
+
+        Parameters:
+        -----------
+            self: pd.DataFrame
+        
+        Return:
+        -------
+            pd.DataFrame
+            A pandas dataframe of all rows where data is missing together. 
+
+        Example:
+        --------
+
+            
         '''
         return self.df[self.df.isna().all(axis=1)]
         
