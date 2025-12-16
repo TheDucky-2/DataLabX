@@ -138,27 +138,45 @@ class Diagnosis:
 
     def show_unique_values(self) -> dict[list[str]]:
         '''
-        Return a dictionary of unique values in each column. 
-            {'column_name': df[column].unique()}
-        
+        Shows a list of unique values present in each column of the DataFrame
+         
+        Parameters:
+        -----------
+
+            self: pd.DataFrame
+            
         Returns:
+        --------
             dict
-            A dictionary of key, value pairs of column and unique values present in that column
+                A dictionary of key, value pairs of column and unique values present in that column
 
         Usage Recommendation:
-            Use this function when you want to see what unique values are present in the column.
+        ----------------------
+            Use this function when you want to see what unique values are present in a column.
 
         Example: 
-            show_unique_values()['Item'] -> {'Item': ['Coffee', 'Cake', 'Cookie', 'Salad', 'Smoothie', 'UNKNOWN','Sandwich', nan, 'ERROR', 'Juice', 'Tea']}
         
+        >>>>    Diagnosis(df).show_unique_values()
+
+            Output: 
+
+                {
+                'gender': ['Female', 'Male', nan, 'unknown', 'Other'],
+                 'country': ['US', nan, 'DE', 'UK', 'IN', 'FR', 'UNK'],
+                 'device_type': ['desktop', 'mobile', 'tablet', nan, 'unknown'],
+                 'email': ['user@example.com', nan],
+                 'notes': ['?', nan, 'OK', "{'free_text': 'call later'}", "['list']"],
+                'phone_number': ['123-456-7890', '-999', nan],
+                'is_active': [False, True, nan]
+                }
         '''
-        self.unique_values = {}
+        unique_values = {}
 
-        for col in self.df.columns:
-            self.unique_values[f'{col}'] = col
-            self.unique_values[col] = self.df[col].unique()
+        for column in self.df.columns:
 
-        return self.unique_values  
+            unique_values[f'{column}'] = self.df[column].unique().astype('object').tolist()
+
+        return unique_values  
 
     def show_cardinality(self)-> dict:
         '''
