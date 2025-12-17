@@ -349,17 +349,27 @@ class MissingnessDiagnosis:
         if extra_placeholders is None:
             extra_placeholders = []
         
-        # creating a true false mask of pandas missing types if missing returns true otherwise false
-        pandas_mask = self.df.isna()
+        missing_numerical_data = {}
+        
+        if self.columns is None:
+            numerical_columns = self.df.select_dtypes(include = ['number']).columns
+        else:
+            numerical_columns = self.columns
 
-        # creating a true false mask of placeholder missing types if missing returns true otherwise false
-        placeholders_mask = self.df.isin(extra_placeholders)
+        for column in numerical_columns:
 
-        # if pandas or placeholder missing values exist, show both data (using OR)
-        missing_mask = pandas_mask | placeholders_mask
+            # creating a true false mask of pandas missing types if missing returns true otherwise false
+            pandas_mask = self.df[column].isna()
 
-        # Only including a column in the output if it actually has missing values.
-        missing_numerical_data = {column: self.df.loc[missing_mask[column]] for column in self.df[self.columns] if missing_mask[column].any()}
+            # creating a true false mask of placeholder missing types if missing returns true otherwise false
+            placeholders_mask = self.df[column].isin(extra_placeholders)
+
+            # if pandas or placeholder missing values exist, show both data (using OR)
+            missing_mask = pandas_mask | placeholders_mask
+
+            # Only including a column in the output if it actually has missing values.
+            if missing_mask.any():
+                missing_numerical_data[column] = self.df.loc[missing_mask]
 
         return missing_numerical_data
 
@@ -389,23 +399,31 @@ class MissingnessDiagnosis:
             
         '''
         # selecting only the datetime data 
-        self.df = self.df.select_dtypes(include = ['datetime'])
-
         if extra_placeholders is None:
             extra_placeholders = []
         
-        # creating a true false mask of pandas missing types if missing returns true otherwise false
-        pandas_mask = self.df.isna()
+        missing_datetime_data = {}
+        
+        if self.columns is None:
+            datetime_columns = self.df.select_dtypes(include = ['datetime']).columns
+        else:
+            datetime_columns = self.columns
 
-        # creating a true false mask of placeholder missing types if missing returns true otherwise false
-        placeholders_mask = self.df.isin(extra_placeholders)
+        for column in datetime_columns:
 
-        # if pandas or placeholder missing values exist, show both data (using OR)
-        missing_mask = pandas_mask | placeholders_mask
+            # creating a true false mask of pandas missing types if missing returns true otherwise false
+            pandas_mask = self.df[column].isna()
 
-        # Only including a column in the output if it actually has missing values.
-        missing_datetime_data = {column: self.df.loc[missing_mask[column]] for column in self.df[self.columns] if missing_mask[column].any()}
+            # creating a true false mask of placeholder missing types if missing returns true otherwise false
+            placeholders_mask = self.df[column].isin(extra_placeholders)
 
+            # if pandas or placeholder missing values exist, show both data (using OR)
+            missing_mask = pandas_mask | placeholders_mask
+
+            # Only including a column in the output if it actually has missing values.
+            if missing_mask.any():
+                missing_datetime_data[column] = self.df.loc[missing_mask]
+                
         return missing_datetime_data
 
     def show_missing_stats(self, how: str = 'percent') -> pd.Series:
