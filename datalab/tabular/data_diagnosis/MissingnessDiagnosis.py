@@ -265,7 +265,52 @@ class MissingnessDiagnosis:
 
         return datetime_missing_values
 
-    def  show_missing_stats(self, how: str = 'percent') -> pd.Series:
+    def show_missing_categorical_data(self, extra_placeholders: list|None= None)-> dict[str, pd.DataFrame]:
+        '''
+        Shows the rows where data is missing in Categorical columns of the DataFrame
+
+        Parameters:
+        -----------
+            self: pd.DataFrame
+                A pandas DataFrame
+
+            Optional:
+
+                extra_placeholders : list or type None (default is None)
+
+                    A list of extra placeholders you identify as missing values depending on your domain
+                
+        Return:
+        -------
+            dict
+                A dictionary of columns with rows containing missing values (pandas or placeholder).
+        
+        Usage Recommendation:
+        ---------------------     
+            Use this function to see missing values in categorical columns before deciding how to clean or handle them.
+            
+        '''
+        # selecting only the categorical or text data 
+        self.df = self.df.select_dtypes(include = ['object', 'string', 'category'])
+
+        if extra_placeholders is None:
+            extra_placeholders = []
+        
+        # creating a true false mask of pandas missing types if missing returns true otherwise false
+        pandas_mask = self.df.isna()
+
+        # creating a true false mask of placeholder missing types if missing returns true otherwise false
+        placeholders_mask = self.df.isin(extra_placeholders)
+
+        # if pandas or placeholder missing values exist, show either of the data
+        missing_mask = pandas_mask | placeholders_mask
+
+        # Only including a column in the output if it actually has missing values.
+        missing_categorical_data = {column: self.df.loc[missing_mask[column]] for column in self.df[self.columns] if missing_mask[column].any()}
+
+        return missing_categorical_data
+
+    def show_missing_stats(self, how: str = 'percent') -> pd.Series:
 
         '''
         Shows total missing values (NA or null values) present in each column, irrespective of column type (Categorical, Numerical or Datetime)
