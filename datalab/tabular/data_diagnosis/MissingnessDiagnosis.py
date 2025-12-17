@@ -117,6 +117,77 @@ class MissingnessDiagnosis:
                 }
 
         return missing_values
+
+    def detect_categorical_missing_types(self, extra_placeholders: list|None = None):
+
+        '''
+        Detects the types of missing values in Categorical (text or categories) columns of the DataFrame.
+
+        Parameters:
+        -----------
+
+            self: pd.DataFrame
+                A pandas DataFrame of Categorical columns
+
+            Optional:
+
+                extra_placeholders: list or type None (default is None)
+
+                    A list of extra placeholders you wish to pass as missing values depending on your domain
+            
+        Returns:
+        --------
+            dict
+                A dictionary of categorical columns and the types of missing values in a Categorical DataFrame.
+            
+        Usage Recommendation:
+        ---------------------
+                Use this function when you want to detect what kind of missing data exists in your text.
+
+        Considerations:
+        ---------------
+
+            1. This function returns two categories of numerical missing data types: 
+
+                a. Pandas Missing Types (NAN) -> Pandas converts anything that is not a number to NAN (Not a Number).
+                b. Domain Dependent Missing Types-> These are the types your domain considers as missing data (Example: -1, 0 (in age where info is missing for a person))
+
+        Example: 
+        --------
+                    MissingnessDiagnosis(df).detect_categorical_missing_types()
+
+                Output:
+            
+                    {'gender': {'pandas_missing': [nan], 'placeholder_missing': []},
+                    'country': {'pandas_missing': [nan], 'placeholder_missing': []},
+                    'device_type': {'pandas_missing': [nan], 'placeholder_missing': []},
+                    'email': {'pandas_missing': [nan], 'placeholder_missing': []},
+                    'notes': {'pandas_missing': [nan], 'placeholder_missing': ['?', "['list']"]},
+                    'phone_number': {'pandas_missing': [nan], 'placeholder_missing': ['-999']},
+                    'is_active': {'pandas_missing': [nan], 'placeholder_missing': []}}
+                
+        '''
+        categorical_missing_types = {}
+
+        self.df = self.df.select_dtypes(include = ['object', 'string', 'category'])
+
+        if extra_placeholders is None:
+            extra_placeholders = []
+
+        pandas_mask = self.df.isna()
+        placeholders_mask = self.df.isin(extra_placeholders)
+
+        for column in self.df[self.columns]:
+            pandas_missing = self.df.loc[pandas_mask[column], column].astype('object').unique().tolist()
+            placeholders_missing = self.df.loc[placeholders_mask[column], column].astype('object').unique().tolist()
+
+            if pandas_missing or placeholders_missing:
+                categorical_missing_types[f'{column}'] = {
+                    'pandas_missing': pandas_missing,
+                    'placeholder_missing': placeholders_missing
+                }
+                
+        return categorical_missing_types
         
     def  show_missing_stats(self, how: str = 'percent') -> pd.Series:
 
