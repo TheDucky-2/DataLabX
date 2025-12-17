@@ -94,7 +94,7 @@ As we can see that these placeholders were present in the 'age' column of the Nu
 
 Categorical or text columns columns usually have missing data represented by values like *NaN*, *None* or *pd.NA*. 
 
-These values are considered by Pandas to be truly missing values.
+These values are considered by Pandas to be truly missing values for categorical types.
 
 Sometimes missing categories or text are also intentionally represented by placeholders, like 'MISSING', 'UNKNOWN', '-', '?' etc.
 
@@ -111,8 +111,6 @@ This method returns a dictionary of categorical columns and the types of missing
        MissingnessDiagnosis(df).detect_categorical_missing_types()
 
 Output: 
-
-       MissingnessDiagnosis(cat_df).detect_categorical_missing_types()
 
        {'gender': {'pandas_missing': [nan], 'placeholder_missing': []},
         'country': {'pandas_missing': [nan], 'placeholder_missing': []},
@@ -148,6 +146,53 @@ Output:
 
 As we can see that placeholders "?" and "-999" were present in the 'Notes' and 'Phone Number' columns of the Categorical DataFrame respectively.
 
+### Date-time Missingness Diagnosis
+
+Dates or time based data columns usually have missing data represented by values like *NaT* (Not a Time).
+
+These values are considered by Pandas to be truly missing values for date-time types.
+
+Sometimes missing dates or timestamps are also intentionally represented by placeholders, like '00-00-0000' or '??-??-????' or '01-01-1000'.
+
+However, Pandas treats these as normal dates.
+
+In DataLab, you can add your own datetime placeholders, so they’re included in the missingness diagnosis alongside the built-in missing values.
+
+### **DataLab Usage**:
+
+You can see what values are missing in the date-time columns of your DataFrame by using ``detect_datetime_missing_types()`` method from ``MissingnessDiagnosis`` class.
+
+This method returns a dictionary of date-time columns and the types of missing values present in a Date-Time DataFrame.
+
+       MissingnessDiagnosis(datetime_df).detect_datetime_missing_types()
+
+Output: 
+
+       {'signup_date': {'pandas_missing': [NaT], 'placeholder_missing': []},
+       'last_login': {'pandas_missing': [NaT], 'placeholder_missing': []},
+       'event_timestamp': {'pandas_missing': [NaT], 'placeholder_missing': []}}
+
+This function also returns two categories of categorical missing data types: 
+
+1. **Pandas Missing Types (NAN)** -> Pandas converts anything that is not a date or time to NAT (Not a Time).
+
+2. **Placeholder Missing Types**-> These are the types your domain considers as missing data in a date-time dataset. (Example: Missing phone numbers represented by '0000000000')
+
+#### **NOTE:**
+
+You can also pass a list of extra placeholders you would like to check if these missing types are present in your data and in which column, by using **extra_placeholders** as the parameter.
+
+Example:
+
+       MissingnessDiagnosis(datetime_df).detect_datetime_missing_types(extra_placeholders = ['00-00-0000'])
+
+Output:
+
+       {'signup_date': {'pandas_missing': [NaT], 'placeholder_missing': []},
+       'last_login': {'pandas_missing': [NaT], 'placeholder_missing': []},
+       'event_timestamp': {'pandas_missing': [NaT], 'placeholder_missing': []}}
+
+As we can see that placeholder '00-00-0000' is not present in any columns of the Date-time DataFrame.
 
 
 
