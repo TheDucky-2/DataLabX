@@ -283,7 +283,7 @@ class MissingnessDiagnosis:
         Return:
         -------
             dict
-                A dictionary of columns with rows containing missing values (pandas or placeholder).
+                A dictionary of Categorical columns with rows containing missing values (pandas or placeholder).
         
         Usage Recommendation:
         ---------------------     
