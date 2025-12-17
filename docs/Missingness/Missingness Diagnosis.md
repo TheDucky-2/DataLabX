@@ -26,7 +26,7 @@ You can initialize Missingness Diagnosis by importing ``MissingnessDiagnosis`` c
 
 ## Detecting Missing Types
 
-Before checking what missing values exist in the data, DataLab first checks what kinds of missing data exists in the dataset.
+Before checking how many missing values exist in the data, DataLab first checks what kinds of missing data exists in the dataset.
 
 DataLab detects missing data separately within Numerical, Categorical, and Datetime columns.
 
@@ -73,6 +73,82 @@ Notice! This function returns two categories of numerical missing data types:
 1. **Pandas Missing Types (NAN)** -> Pandas converts anything that is not a number to NAN (Not a Number).
 
 2. **Placeholder Missing Types**-> These are the types your domain considers as missing data in a numerical dataset (Example: -1 or 0 as age where info is missing for a person).
+
+#### **NOTE:**
+
+You can also pass a list of extra placeholders you would like to check if these types are present in your data and in which column, by using **extra_placeholders** as the parameter.
+
+Example:
+
+       MissingnessDiagnosis(df).detect_numerical_missing_types(extra_placeholders = [-999, -1])
+
+Output:
+
+       {'age': {'pandas_missing': [nan], 'placeholder_missing': [-999.0, -1.0]},
+        'income': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'account_balance': {'pandas_missing': [nan], 'placeholder_missing': []}}
+
+As we can see that these placeholders were present in the 'age' column of the Numerical DataFrame.
+
+### Categorical Missingness Diagnosis
+
+Categorical or text columns columns usually have missing data represented by values like *NaN*, *None* or *pd.NA*. 
+
+These values are considered by Pandas to be truly missing values.
+
+Sometimes missing categories or text are also intentionally represented by placeholders, like 'MISSING', 'UNKNOWN', '-', '?' etc.
+
+However, Pandas treats these as normal data.
+
+In DataLab, you can add your own categorical placeholders, so they’re included in the missingness diagnosis alongside the built-in missing values.
+
+### **DataLab Usage**:
+
+You can see what values are missing in the Categorical columns of your DataFrame by using ``detect_categorical_missing_types()`` method from ``MissingnessDiagnosis`` class.
+
+This method returns a dictionary of categorical columns and the types of missing values present in a Categorical DataFrame.
+
+       MissingnessDiagnosis(df).detect_categorical_missing_types()
+
+Output: 
+
+       MissingnessDiagnosis(cat_df).detect_categorical_missing_types()
+
+       {'gender': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'country': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'device_type': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'email': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'notes': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'phone_number': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'is_active': {'pandas_missing': [nan], 'placeholder_missing': []}}
+
+This function also returns two categories of categorical missing data types: 
+
+1. **Pandas Missing Types (NAN)** -> Pandas converts anything that is not a number to NAN (Not a Number).
+
+2. **Placeholder Missing Types**-> These are the types your domain considers as missing data in a categorical dataset (Example: Missing phone numbers represented by '0000000000')
+
+#### **NOTE:**
+
+You can also pass a list of extra placeholders you would like to check if these missing types are present in your data and in which column, by using **extra_placeholders** as the parameter.
+
+Example:
+
+       MissingnessDiagnosis(cat_df).detect_categorical_missing_types(extra_placeholders = ['-999', '?'])
+
+Output:
+
+       {'gender': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'country': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'device_type': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'email': {'pandas_missing': [nan], 'placeholder_missing': []},
+        'notes': {'pandas_missing': [nan], 'placeholder_missing': ['?']},
+        'phone_number': {'pandas_missing': [nan], 'placeholder_missing': ['-999']},
+        'is_active': {'pandas_missing': [nan], 'placeholder_missing': []}}
+
+As we can see that placeholders "?" and "-999" were present in the 'Notes' and 'Phone Number' columns of the Categorical DataFrame respectively.
+
+
 
 
 
