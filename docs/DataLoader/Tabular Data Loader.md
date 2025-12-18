@@ -11,7 +11,7 @@ Examples:
 - Pandas DataFrame
 - csv files
 
-DataLab works mainly with pandas DataFrames, so almost all functions in this library will return a pandas DataFrame.
+DataLab works mainly with pandas DataFrames, so almost all functions in datalab will return a pandas DataFrame.
 
 ### Tabular Data File Types Supported:
 
@@ -26,7 +26,7 @@ You don’t need to specify the file type — DataLab figures it out for you.
 
 ### DataLab Usage:
 
-You can load tabular data using the load_tabular() function from the data loader package of this library.
+You can load tabular data using the load_tabular() function from the data loader package of datalab.
 
 ### **Examples:**
 
