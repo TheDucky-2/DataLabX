@@ -65,26 +65,7 @@ class MissingnessDiagnosis:
         Usage Recommendation:
         ---------------------
                 Use this function when you want to detect what kind of missing data exists in your numbers.
-
-        Considerations:
-        ---------------
-
-            1. This function returns two categories of numerical missing data types: 
-
-                a. Pandas Missing Types (NAN) -> Pandas converts anything that is not a number to NAN (Not a Number).
-                b. Domain Dependent Missing Types-> These are the types your domain considers as missing data (Example: -1, 0 (in age where info is missing for a person))
-
-        Example: 
-        --------
-                    MissingnessDiagnosis(df).detect_numerical_missing_types()
-
-                Output:
-                
-                    {'age': {'pandas_missing': [nan], 'placeholder_missing': [-999.0, -1.0]},
-                    'income': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'account_balance': {'pandas_missing': [nan], 'placeholder_missing': []}}
-                
-                
+                      
         '''
         self.df = self.df.select_dtypes(include = ['number']) # ensuring that we only work on numerical dataframe
 
@@ -143,29 +124,6 @@ class MissingnessDiagnosis:
         Usage Recommendation:
         ---------------------
                 Use this function when you want to detect what kind of missing data exists in your text.
-
-        Considerations:
-        ---------------
-
-            1. This function returns two categories of numerical missing data types: 
-
-                a. Pandas Missing Types (NAN) -> Pandas converts anything that is not a number to NAN (Not a Number).
-                b. Domain Dependent Missing Types-> These are the types your domain considers as missing data (Example: -1, 0 (in age where info is missing for a person))
-
-        Example: 
-        --------
-                    MissingnessDiagnosis(df).detect_categorical_missing_types()
-
-                Output:
-            
-                    {'gender': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'country': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'device_type': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'email': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'notes': {'pandas_missing': [nan], 'placeholder_missing': ['?', "['list']"]},
-                    'phone_number': {'pandas_missing': [nan], 'placeholder_missing': ['-999']},
-                    'is_active': {'pandas_missing': [nan], 'placeholder_missing': []}}
-                
         '''
         categorical_missing_types = {}
 
@@ -212,26 +170,7 @@ class MissingnessDiagnosis:
         Usage Recommendation:
         ---------------------
                 Use this function when you want to detect what kind of missing data exists in your dates or time data.
-
-        Considerations:
-        ---------------
-
-            1. This function returns two categories of date-time missing data types: 
-
-                a. Pandas Missing Types (NAN) -> Pandas converts anything that is not a number to NAT (Not a Time).
-                b. Domain Dependent Missing Types-> These are the types your domain considers as missing data (Example: 00-00-0000 for missing date or time)
-
-        Example: 
-        --------
-                    MissingnessDiagnosis(df).detect_datetime_missing_types()
-
-                Output:
-                
-                    {'age': {'pandas_missing': [nan], 'placeholder_missing': [-999.0, -1.0]},
-                    'income': {'pandas_missing': [nan], 'placeholder_missing': []},
-                    'account_balance': {'pandas_missing': [nan], 'placeholder_missing': []}}
-                
-                
+                  
         '''
         self.df = self.df.select_dtypes(include = ['datetime']) # ensuring that we only work on datetime dataframe
 
@@ -398,7 +337,7 @@ class MissingnessDiagnosis:
             Use this function to see missing values in date or time columns before deciding how to clean or handle them.
             
         '''
-        # selecting only the datetime data 
+        # Creating an empty placeholder list to iterate from
         if extra_placeholders is None:
             extra_placeholders = []
         
@@ -426,42 +365,75 @@ class MissingnessDiagnosis:
                 
         return missing_datetime_data
 
-    def show_missing_stats(self, how: str = 'percent') -> pd.Series:
-
+    def missing_data_summary(self, method='sum', extra_placeholders :list | None = None):
         '''
-        Shows total missing values (NA or null values) present in each column, irrespective of column type (Categorical, Numerical or Datetime)
+        Shows the number of rows with missing values present in each column, irrespective of column type (Categorical, Numerical or Datetime)
 
         Parameters:
         -----------
-        how : str (default is 'percent')
+        method : str (default is 'sum')
 
             How you would like to show the total of missing values.
-                - 'sum'    : Shows the sum of missing values per column
-                - 'percent': Shows the percentage of missing values per column
+
+                - 'sum'    : Shows a count of rows with missing values per column
+                - 'percent': Shows the percentage of rows with missing values per column
+
+            Optional:
+
+                extra_placeholders : list or type None (default is None)
+
+                    A list of extra placeholders you identify as missing values depending on your domain
         
         Return:
         -------
-        pd.Series
-            A pandas Series of total missing values per column
+        dict
+            A dictionary of counts or percentages of missing values per column
         
         Usage Recommendation:
         ---------------------
-            Use this function when you want to see the sum or percentage of missing values before deciding whether to drop or fill missing values
-        
+            Use this function when you want to see the sum or percentage of missing values before deciding whether to drop or fill missing values.
+            
         '''
-        self.how = how
+        # creating a list of extra placeholdes to iterate from
+        if extra_placeholders is None:
+            extra_placeholders = []
 
-        if self.how == 'sum':
-            print(f'\nSum of missing data in each column')
-            return self.df.isnull().sum()
+        # a mask of pandas missing values to get pandas missing types
+        pandas_mask = self.df.isna()
+        
+        # a mask of placeholder missing types 
+        placeholders_mask = self.df.isin(extra_placeholders)
 
-        elif self.how == 'percent':
-            print(f'\nPercentage of missing data in each column')
-            return (self.df.isnull().sum()/len(self.df))*100
+        # an empty to dictionary of missing_data_summary
+        missing_data_summary = {}
+        
+        # to ensure pandas or placeholder types are both picked
+        mask = pandas_mask | placeholders_mask
 
-        elif self.how not in ['sum', 'percent']:
-            raise ValueError(f"how must either be 'sum' or 'percent', got {self.how}")
+        for col in self.df[self.columns]:
 
+            # if missing values are present in any column 
+            if mask[col].any():
+
+                # to ensure user can get a count of rows where values are missing
+                if method == 'sum':
+
+                    missing_data_summary[col] = len(self.df.loc[mask[col]])
+
+                # if user wants to see percentage
+                elif method == 'percent':
+
+                    missing_data_summary[col] = (len(self.df.loc[mask[col]])/ len(self.df)) * 100
+
+                # only sum and percent are acceptable types
+                else:
+                    raise ValueError(f"method must be 'sum' or 'percent', got {method}")
+
+        # rounding off values to 2 decimal places
+        missing_data_summary = {col: round(value, 2) for col, value in missing_data_summary.items()}
+
+        return missing_data_summary
+        
     def any_missing_rows(self) -> pd.DataFrame:
         '''
         Detects and shows all the rows where any row is missing data in a DataFrame
