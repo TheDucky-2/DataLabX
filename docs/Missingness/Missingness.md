@@ -68,16 +68,19 @@ That’s why DataLab follows a simple principle:
 
 ## How DataLab Handles Missingness
 
-DataLab does not treat missingness as a single one-size-fits-all problem.
+DataLab does not treat all missing values as the same.
 
-Instead, missingness is handled in a **data type–aware workflow**:
+Instead, it looks at missing values step by step, based on the type of data:
 
-- Missing values are first detected separately within **Numerical**, **Categorical**, and **Datetime** columns.
-- Built-in missing values (like NaN and NaT) and user-defined placeholders (like MISSING, UNKNOWN) are identified together.
-- Missingness is grouped and handled based on column type, not across the whole dataset at once.
-- The user is given full control over *how* missing values should be handled — whether that means inspecting, keeping, transforming, or removing them.
+- Numbers, text, and dates are checked separately.
 
-This approach keeps missing data handling transparent, flexible, and aligned with real-world data behavior.
+- Missing values that already exist (like NaN or NaT) and values chosen by the user (like MISSING or UNKNOWN) are detected together.
+
+- Missing values are handled by column type, not all at once for the whole dataset.
+
+- The user can decide what are missing values and what to do with them. For example - they can look at them, keep them, change them, or remove them.
+
+This makes missing data easier to understand, more flexible to work with, and closer to how real data actually behaves.
 
 ## What Comes Next? Handling Missing Data
 
