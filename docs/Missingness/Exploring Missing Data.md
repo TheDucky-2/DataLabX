@@ -152,7 +152,7 @@ This helps us see:
 
 - Whether they follow a pattern
 
-- Whether missingness looks random or structured
+- Whether missingness looks random or has a structure
 
 #### Missing data in Numerical columns:
 
@@ -184,7 +184,7 @@ Output:
         "event_timestamp": "<<-- rows with missing event timestamp -->>"
         }
 
-We can then check these rows by selecting the column you wish to see explore data in.
+We can then check these rows by selecting the column we wish to explore data in.
 
 Example:
 
@@ -255,7 +255,7 @@ Output:
         "event_timestamp": "<<-- rows with missing event timestamp -->>"
         }
 
-You can then check these rows by selecting the column you wish to see explore data in.
+We can then check these rows by selecting the column we wish to see missing data in.
 
 Example:
 
@@ -337,7 +337,7 @@ Output:
         "event_timestamp": "<<-- rows with missing event timestamp -->>"
         }
 
-We can then check these rows by selecting the column we wish to see explore data in.
+We can then check these rows by selecting the column we wish to explore data in.
 
 Example:
 
