@@ -130,7 +130,7 @@ Output:
                      }
        }
 
-This output tells us:
+We can see:
 
 - Which numerical columns have missing values
 - Whether they are real missing values or placeholders
@@ -200,6 +200,10 @@ Output:
        }
        }
 
+We can see:
+
+- Placeholder values got detected in the columns they exist. 
+- What kind of missing values exist where.
 
 ## Date and Time Data
 
@@ -251,6 +255,11 @@ Output:
               'placeholder_missing' : []
        }}
 
+We can see:
+
+- Only Pandas missing types got detected.
+- The placeholder is not detected because it does not exist in any column.
+- We can pass in any kind of placeholder.
 
 ## Why this step?
 
