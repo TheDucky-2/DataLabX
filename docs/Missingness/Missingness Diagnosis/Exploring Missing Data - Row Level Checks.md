@@ -48,7 +48,7 @@ DataLab supports two main types of row-level checks:
 1. Rows with all columns having missing data
 2. Rows with only specific columns having missing data
 
-Let us now move to exploring this data:
+Let us now move to exploring these checks:
 
 ## **DataLab Usage**
 
