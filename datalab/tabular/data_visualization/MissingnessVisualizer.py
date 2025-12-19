@@ -2,6 +2,8 @@ from .DataVisualizer import DataVisualizer
 
 import pandas as pd
 import matplotlib
+import numpy as np
+
 
 class MissingnessVisualizer(DataVisualizer):
 
@@ -17,7 +19,7 @@ class MissingnessVisualizer(DataVisualizer):
         else:
             self.columns = columns
 
-    def plot_missing(df: pd.DataFrame, viz_type = 'bar', extra_placeholders=None):
+    def plot_missing(self, viz_type = 'bar', extra_placeholders=None):
         '''
         Visualize missing values in each column of the DataFrame
 
@@ -52,30 +54,35 @@ class MissingnessVisualizer(DataVisualizer):
             2. For assistance with handling missing values, use missing_data_guide() along with this function for better decision making.
 
             '''
+        import missingno as msno
+        import numpy as np
+
+        visualization_df = self.df.copy()
+        
         if extra_placeholders is None:
             extra_placeholders = []
 
         # getting pandas truly missing values
-        pandas_mask = df.isna()
+        pandas_mask = visualization_df.isna()
 
         # getting placeholder missing values
-        placeholder_mask = df.isin(extra_placeholders)
+        placeholder_mask = visualization_df.isin(extra_placeholders)
 
         # getting both the missing types
         mask = pandas_mask | placeholder_mask
 
         # since missingno does not have separate support for placeholder values, converting all missing types to np.nan
-        df[mask] = np.nan
+        visualization_df[mask] = np.nan
 
         if viz_type == 'heatmap':
-            return msno.heatmap(df)
+            return msno.heatmap(visualization_df)
         
         elif viz_type == 'bar':
-            return msno.bar(df)
+            return msno.bar(visualization_df)
         
         elif viz_type == 'matrix':
-            return msno.matrix(df)
+            return msno.matrix(visualization_df)
         
         elif viz_type == 'dendrogram':
-            return msno.dendrogram(df)
+            return msno.dendrogram(visualization_df)
         
