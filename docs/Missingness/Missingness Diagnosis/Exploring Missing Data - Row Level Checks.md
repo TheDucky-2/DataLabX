@@ -64,8 +64,6 @@ Let us use an example dataset of all missing values to understand that.
 | missing_data   | NaN       | NaN    | NaN            | NaN    | NaN     | NaN         | NaN   | NaN   | NaN          | NaN       | NaN         | NaN        | NaN            |
 | missing_data   | NaN       | NaN    | NaN            | NaN    | NaN     | NaN         | NaN   | NaN   | NaN          | NaN       | NaN         | NaN        | NaN            |
 
-<br>
-
 We can see:
 
 - Column *'customer_id'* has placeholder '**missing_data**'.
@@ -86,8 +84,7 @@ Output:
 
 | customer_id | age | income | account_balance | gender | country | device_type | email | notes | phone_number | is_active | signup_date | last_login | event_timestamp |
 |-------------|-----|--------|----------------|--------|---------|-------------|-------|-------|--------------|-----------|-------------|------------|----------------|
-<br>
-<br>
+
 We can see:
 
 - We got an empty DataFrame
@@ -162,8 +159,6 @@ Output:
 
 | age | income | customer_id |
 |-----|--------|-------------|
-<br>
-<br>
 
 We can see:
 
