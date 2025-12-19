@@ -41,7 +41,6 @@ class MissingnessDiagnosis:
         self.df = df
         self.columns = [column for column in columns if column in self.df.columns]
 
-
     def detect_numerical_missing_types(self, extra_placeholders: list | None = None)-> dict[str, dict[str, list]]:
         '''
         Detects the types of missing values in Numerical (numbers) columns of the DataFrame.
@@ -434,71 +433,89 @@ class MissingnessDiagnosis:
 
         return missing_data_summary
         
-    def any_missing_rows(self) -> pd.DataFrame:
+    def rows_with_all_columns_missing(self, extra_placeholders: list | None =None):
         '''
-        Detects and shows all the rows where any row is missing data in a DataFrame
+        Detects and shows all the rows where all the columns are missing valeues together in a DataFrame
 
         Parameters:
         -----------
             self: pd.DataFrame
+
+            Optional:
+
+                extra_placeholders: list or type None
+                    A list of extra placeholders you identify as missing values depending on your domain
         
-        Return:
+        Returns:
         -------
             pd.DataFrame
-            A pandas DataFrame of all rows where any column is missing value.
+                A pandas dataframe of all rows where data is missing together in all the columns. 
 
-        '''
-
-        return self.df[self.df.isna().any(axis=1)]
-
-    def all_rows_missing(self) -> pd.DataFrame:
-
-        '''
-        Detects and shows all the rows that are missing data together in a DataFrame
-
-        Parameters:
-        -----------
-            self: pd.DataFrame
-        
-        Return:
-        -------
-            pd.DataFrame
-            A pandas dataframe of all rows where data is missing together. 
-
-        Example:
-        --------
-
+        Usage Recommendation:
+        ---------------------
+            Use this function when you want to see data where all columns have values missing.
             
         '''
-        return self.df[self.df.isna().all(axis=1)]
+        if extra_placeholders is None:
+            extra_placeholders = []
+
+        # creating a mask of pandas missing values
+        pandas_mask = self.df.isna()
+
+        # creating a mask of placeholder missing values
+        placeholder_mask = self.df.isin(extra_placeholders)
+
+        # accepting both values
+        missing_mask = pandas_mask | placeholder_mask
+
+        # this is the main part where we check rows where all columns are missing values 
+        missing_data = missing_mask.all(axis=1)
+
+        # getting only the data of rows where all columns are missing values
+        all_columns_missing_data = self.df.loc[missing_data]
+
+        return all_columns_missing_data
+
+    def rows_with_specific_columns_missing(self, extra_placeholders=None):
+        '''
+        Detects and shows all the rows where only specific columns are missing valeues together in a DataFrame
+
+        Parameters:
+        -----------
+            self: pd.DataFrame
+
+            Optional:
+
+                extra_placeholders: list or type None
+                    A list of extra placeholders you identify as missing values depending on your domain
         
+        Returns:
+        -------
+            pd.DataFrame
+                A pandas dataframe of all rows where data is missing together in only the columns decided by user. 
 
-    def rows_missing_specific_columns(self) -> dict :
-
+        Usage Recommendation:
+        ---------------------
+            Use this function when you want to see data where only your decided columns have values missing.
+            
         '''
-        Detects and shows all rows where values are missing in a specific column of the DataFrame
-        '''
-        rows_with_columns_missing_values = {col: self.df[self.df[col].isna()] for col in self.df.columns}
 
-        return rows_with_columns_missing_values
-
-    def any_missing_index(self):
-        '''
-        Provides the index of rows where any value may be missing in a column of the DataFrame.
+        if extra_placeholders is None:
+            extra_placeholders = []
+            
+        # creating a mask of pandas missing values
+        pandas_mask = self.df[self.columns].isna()
         
-        '''
-        missing_index = self.df[self.df.isna().any(axis=1)].index.to_list()
-        
-        return missing_index
+        # creating a mask of placeholder missing values
+        placeholder_mask = self.df[self.columns].isin(extra_placeholders)
 
-    def column_missing_index(self) -> dict :
-    
-        rows_missing_specific_columns = MissingnessDiagnosis(self.df).rows_missing_specific_columns()
+        # accepting both values
+        missing_mask = pandas_mask | placeholder_mask
 
-        missing_index = {}
+        # this is the main part where we check rows where only specific columns are missing values
+        missing_data = missing_mask.all(axis=1)
 
-        for column, missing_rows in rows_missing_specific_columns.items():
+        # getting only the data of rows where specific columns are missing values
+        missing_data_in_specific_columns = self.df[self.columns].loc[missing_data]
 
-            missing_index[column] = missing_rows.index.to_list()
-
-        return missing_index
+        return missing_data_in_specific_columns
