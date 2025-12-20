@@ -1,8 +1,9 @@
 from .DataVisualizer import DataVisualizer
 
 import pandas as pd
-import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
+import missingno as msno
 
 
 class MissingnessVisualizer(DataVisualizer):
@@ -19,27 +20,67 @@ class MissingnessVisualizer(DataVisualizer):
         else:
             self.columns = columns
 
-    def plot_missing(self, viz_type = 'bar', extra_placeholders=None):
+    def plot_missing(self,
+                viz_type: str = 'bar',
+                extra_placeholders: list | None =None,
+                title: str = None,
+                xlabel: str = None,
+                ylabel: str = None,
+                title_fontsize: int = 24,
+                title_padding: int = 20,
+                xlabel_fontsize: int = 15,
+                xlabel_padding: int = 15,
+                ylabel_fontsize: int = 15,
+                ylabel_padding: int = 15):
         '''
         Visualize missing values in each column of the DataFrame
 
         Parameters:
         -----------
-            df : pd.DataFrame
+            self : pd.DataFrame
                 A pandas DataFrame
 
-            viz_type : str or type(None) (default is None)
+            viz_type : str or type(None) (default is 'bar')
 
                 How you want to visualize missing values:
+
                     - 'bar'        : Displays a bar chart of missing vs non-missing values for each column
                     - 'heatmap'    : Creates a correlation heatmap showing how missing values present in one column relate with missing values in another.
                     - 'matrix'     : Displays a matrix plot where each row is a record in the DataFrame, and the column represents a column of the DataFrame
                     - 'dendrogram' : Displays a hierarchical clustering plot that groups columns in the DataFrame based on similar patterns of missing values
 
+            title : str 
+                Title of the plot. 
+            
+            title_fontsize: int (default is 24)
+                Font size of Title of the plot.
+
+            title_padding : int (default is 20)
+                This means how much space must be allowed around the title.
+
+            xlabel : str or type None
+                Label for x-axis.
+            
+            xlabel_fontsize: int (default is 15)
+                Font size of x-axis label.
+            
+            xlabel_padding : int (default is 15)
+                This means how much space must be free around x-axis label.
+
+            ylabel : str or type None
+                Label for y-axis.
+            
+            ylabel_fontsize: int (default is 15)
+                Font size of y-axis label.
+            
+            ylabel_padding : int (default is 15)
+                This means how much space must be free around y-axis label.
+
         Returns:
         --------
-            matplotlib.axes.Axes
-                A matplotlib axes object of the generated plot
+            None
+                This function does not return anything.
+                It is meant for visualization only.
 
         Usage Recommendations:
         ----------------------
@@ -74,15 +115,34 @@ class MissingnessVisualizer(DataVisualizer):
         # since missingno does not have separate support for placeholder values, converting all missing types to np.nan
         visualization_df[mask] = np.nan
 
+        # missingo functions return a matplotlib axes object, so we can modify it like normal matplotlib plots.
+
         if viz_type == 'heatmap':
-            return msno.heatmap(visualization_df)
+            ax =  msno.heatmap(visualization_df)
         
         elif viz_type == 'bar':
-            return msno.bar(visualization_df)
-        
+            ax = msno.bar(visualization_df)
+    
         elif viz_type == 'matrix':
-            return msno.matrix(visualization_df)
+            ax = msno.matrix(visualization_df)
         
         elif viz_type == 'dendrogram':
-            return msno.dendrogram(visualization_df)
+            ax = msno.dendrogram(visualization_df)
+
+        # if user passes a title, it would be user selected title.abs
+        # However, if user does not pass a title, it would default back to viz_type of plot as the title
+
+        if title:
+            ax.set_title(title, fontsize = title_fontsize, pad=title_padding)
+        else:
+            ax.set_title(f'{viz_type} plot of missing data', fontsize = title_fontsize, pad=title_padding)
+
+        if xlabel:
+            ax.set_xlabel(xlabel, fontsize = xlabel_fontsize, labelpad = xlabel_padding)
+        
+        if ylabel:
+            ax.set_ylabel(ylabel, fontsize = ylabel_fontsize, labelpad = ylabel_padding)
+
+        # this function does not return anything anymore.
+        plt.show()
         
