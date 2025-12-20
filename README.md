@@ -82,33 +82,27 @@ You can now Install DataLab pre-release using **pip**:
 
 ``pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0a1``
 
-#### Why this long command? 
+### Why this long command? 
 
 That is because DataLab itself is downloaded from TestPyPI, while required dependencies (such as pandas) are downloaded from PyPI.
 
-#### Important Naming Clarification
+### Importing DataLab
 
-- Install name will show as **datalab-pre-release==0.1.0a1**
+You can simply import datalab after installing it like this:
 
-- However, you will always import the library simply as:
+        import datalab
 
-        import datalab 
+### Installation Video:
 
-### Very Important:
+You can watch a 4-minute installation & getting-started video here:
 
-This is an early pre-release, which is why APIs and internal code may change.
+👉 https://youtu.be/RC4SzXxRSHk 
 
-That is why DataLab is still not yet recommended for production use.
+**⚠️ Note:**
 
-Moreover, You can **uninstall** DataLab safely with:
+The library is not yet ready for production use.
 
-``pip uninstall datalab-pre-release``
-
-If you want to explore the source code, you can still clone the repo:
-
-```git clone https://github.com/yourusername/DataLab.git```
-
-```cd datalab```
+Editable development installation instructions will be added once the API stabilizes.
 
 ## Project Structure:
 
@@ -138,12 +132,6 @@ datalab/
 ├── LICENSE
 └── README.md
 ```
-
-**⚠️ Note:**
-
-The library is not yet ready for production use.
-
-Editable development installation instructions will be added once the API stabilizes.
 
 ## Features in v0.1:
 
@@ -315,7 +303,7 @@ If you’re new to data… OR switching careers… OR want to understand data de
 
 ## 🤝 Contributions
 
-DataLab is in early development stage.
+DataLab is currently in early development stage.
 
 Suggestions, ideas, feedbacks and contributions are absolutely welcome!
 
@@ -325,11 +313,7 @@ For questions, suggestions, feedbacks or issues related to **DataLab**, you can 
 
 **Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
 
-⚠️ Note:
-
-This is an early pre-release.
-
-However, we aim to respond within 72 hours.
+⚠️ Even though it is a pre-release, we still aim to respond within 72 hours.
 
 
 
