@@ -94,7 +94,7 @@ You can simply import datalab after installing it like this:
 
 ### Installation Video:
 
-You can watch a 4-minute installation & getting-started video here:
+You can also watch the 4-minute **Installation & Getting-Started with DataLab** video on Youtube, using the link below:
 
 👉 https://youtu.be/RC4SzXxRSHk 
 
