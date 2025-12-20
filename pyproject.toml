@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 
 [project] 
 
-name = "datalab-pre"             
-version = "0.1.0.dev3"
+name = "datalab_pre_release"             
+version = "0.1.0a1"
 description = "DataLab: Unified & Beginner Friendly End-to-End Data Library for Tabular and Graph data."
 
 authors = [
@@ -30,7 +30,7 @@ dependencies = [
 
 license = {text = "MIT"}
 
-keywords = ["data", "machine-learning", "data-science", "data-cleaning", "tabular", "graph"]
+keywords = ["data", "machine-learning", "missing-data", "data-science", "data-cleaning", "tabular", "graph"]
 
 classifiers = [
     "Programming Language :: Python :: 3",
