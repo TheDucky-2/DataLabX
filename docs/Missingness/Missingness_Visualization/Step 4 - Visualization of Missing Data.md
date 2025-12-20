@@ -205,13 +205,13 @@ Example:
 
     MissingnessVisualizer(df).plot_missing(title = 'Bar Plot of Missing Data') -> Sets title as 'Bar Plot of Missing Data'
 
-- **title_fontsize** -> We can make the Title of our plot bigger or smaller with this. ``(default is 26)``
+- **title_fontsize** -> We can make the Title of our plot bigger or smaller with this. **(default is 26)**
 
 Example:
 
     MissingnessVisualizer(df).plot_missing(title = 'Bar Plot of Missing Data', title_fontsize = 26) -> Title size set to 26.
 
-- **title_padding** -> his means how much space must be allowed around the title. **(default is 20)**
+- **title_padding** -> This means how much space must be allowed around the title. **(default is 20)**
 
 Example:
 
@@ -223,13 +223,13 @@ Example:
 
                                                                 <PADDING>
 
-- **xlabel** Label for x-axis. (**when you are walking on the road, you're moving on x-axis**)
+- **xlabel** - Label for x-axis. (**when you are walking on the road, you're moving on x-axis**)
 
 Example:
 
     MissingnessVisualizer(df).plot_missing(xlabel = 'Columns') -> x-axis named as 'Columns' (like in examples above!)
 
-- **xlabel_fontsize**: Represents how big or small should be my x-axis label. **(default is 15)**
+- **xlabel_fontsize** - Represents how big or small should be my x-axis label. **(default is 15)**
 
 Example:
 
@@ -241,13 +241,13 @@ Example:
 
     MissingnessVisualizer(df).plot_missing(xlabel = 'Columns', xlabel_fontsize = 15, xlabel_padding = 15) -> (like in examples above!)
 
-- **ylabel**: Label for y-axis. (**when a lift is taking you up or down, you're moving in y-axis**)
+- **ylabel** - Label for y-axis. (**when a lift is taking you up or down, you're moving in y-axis**)
 
 Example:
 
     MissingnessVisualizer(df).plot_missing(ylabel = 'Total values in a column') -> Y-axis label set to 'Total values in a column'
 
-- **ylabel_fontsize**: Represents how big or small should be my y-axis label. **(default is 15)**
+- **ylabel_fontsize** - Represents how big or small should be my y-axis label. **(default is 15)**
    
 Example:
 
