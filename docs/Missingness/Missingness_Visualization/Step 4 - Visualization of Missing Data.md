@@ -108,6 +108,8 @@ We can begin visualizing our missing data by importing ``MissingnessVisualizer``
 
 We can create a bar plot of missing data using ``plot_missing()`` method from **MissingnessVisualizer** class.
 
+This method does not return anything and is meant for **visualization only**.
+
 **Example:**
 
     MissingnessVisualizer(df).plot_missing()
@@ -125,6 +127,140 @@ We can see:
 - Columns *'email'*, *'notes'* and *'phone_number'* have a lot of missing data. 
 - Column *'phone_number'* is the shortest bar of chocolate as it is missing most of the data.
 
+> Whatever missing data we saw in the image above, is for pandas built-in missing values.
+
+However, we can also pass in our own placeholders and let us see if we can notice any change in missing data. 
+
 ## Bar Plot - With Placeholders:
 
---TO BE UPDATED--
+We can create a bar plot of missing data with placeholders using ``plot_missing()`` method and passing extra placeholders like this:
+
+**Example:**
+
+    MissingnessVisualizer(df).plot_missing(extra_placeholders = [-999, -1, '-999', '?'])
+
+**Output:**
+
+> Below is an annotated image of **bar plot with placeholders** used for better understanding of the plot:
+
+![Bar Plot of Missing Data with Placeholders](example_images/Bar_Plot_of_Missing_Data_with_Placeholders.png)
+
+We can see:
+
+- Bar for column *'age'* got shorter as placeholder values -999, -1 are now considered missing data.
+
+- For columns *'notes'* and *'phone_number'*, missing data increased drastically just by addition of a few placeholders.
+
+- Looks like someone ate most of the chocolate bar for column *'phone_number'*.
+
+**Great!**
+
+We now know:
+
+1. How we can see **bar** plot or **chocolate bars** of missing data.
+
+2. What missing data vs non-missing data looks like in a bar plot (**did someone eat my chocolate? if yes, how much?**)
+
+Before we move onto another type of "Easy to Understand" plot, let us explore a few useful things that can use in our plots:
+
+## Useful Stuff (For Making Good Looking Visualizations)!
+ 
+Before we know why we even need this useful stuff, let us explore what we miss without it:
+
+> Here is a plot of missing data without good stuff:
+
+<br>
+
+![Blank Bar Plot](example_images\Blank_Bar_plot.png)
+
+<br>
+
+We can see:
+
+- Only chocolate bars and numbers on top, left and right with column names at the bottom, but...
+
+- This still looks empty because we don't what this is about and what do these numbers mean.
+
+- This cannot be shared with others yet because it does not communicate the whole story of this figure.
+
+Which is why DataLab allows us to use some optional, however, very **helpful parameters** (just some extra information we can give a method):
+
+### HELPFUL PARAMETERS:
+
+- **viz_type** -> Represents the type of visualization we want to see.
+
+We can pass this in the ``plot_missing()`` method to create these visualization types:
+
+        1. bar (default) 
+        2. heatmap    
+        3. matrix    
+        4. dendrogram
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(viz_type = 'matrix') -> Creates a Matrix Plot 
+
+- **title** -> Represents Title of the plot. 
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(title = 'Bar Plot of Missing Data') -> Sets title as 'Bar Plot of Missing Data'
+
+- **title_fontsize** -> We can make the Title of our plot bigger or smaller with this. ``(default is 26)``
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(title = 'Bar Plot of Missing Data', title_fontsize = 26) -> Title size set to 26.
+
+- **title_padding** -> his means how much space must be allowed around the title. **(default is 20)**
+
+Example:
+
+    # this is what padding looks like:
+
+                                                                <PADDING>
+
+    <PADDING>    MissingnessVisualizer(df).plot_missing(title = 'Bar Plot of Missing Data', title_fontsize = 26, title_padding = 20)   <PADDING>
+
+                                                                <PADDING>
+
+- **xlabel** Label for x-axis. (**when you are walking on the road, you're moving on x-axis**)
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(xlabel = 'Columns') -> x-axis named as 'Columns' (like in examples above!)
+
+- **xlabel_fontsize**: Represents how big or small should be my x-axis label. **(default is 15)**
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(xlabel = 'Columns', xlabel_fontsize = 15) -> (like in examples above!)
+
+- **xlabel_padding** - This means how much space must be free around the label of x-axis. **(default is 15)**
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(xlabel = 'Columns', xlabel_fontsize = 15, xlabel_padding = 15) -> (like in examples above!)
+
+- **ylabel**: Label for y-axis. (**when a lift is taking you up or down, you're moving in y-axis**)
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(ylabel = 'Total values in a column') -> Y-axis label set to 'Total values in a column'
+
+- **ylabel_fontsize**: Represents how big or small should be my y-axis label. **(default is 15)**
+   
+Example:
+
+    MissingnessVisualizer(df).plot_missing(ylabel = 'Total values in a column', ylabel_fontsize = 15) -> Y-axis label size set to 15.
+
+- **ylabel_padding** - This means how much space must be free around the label of y-axis. **(default is 15)**
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(ylabel = 'Total values in a column', ylabel_fontsize = 15, ylabel_padding = 15) -> (like in examples above!)
+
+**Phewwww...**
+
+**That was a lot.**
+
