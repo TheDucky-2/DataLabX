@@ -1,5 +1,4 @@
-## Basic tests to check whether datalab modules are importing.abs
-
+## Basic tests to check whether datalab modules are importing.
 def testing_datalab_imports():
 
     modules = ['datalab',
@@ -17,7 +16,7 @@ def testing_datalab_imports():
             __import__(module)
 
         except ModuleNotFoundError as error:
-            print(f'Module not found {mod}: {error}')
+            print(f'Module not found {module}: {error}')
             raise error
 
     print("Imported datalab modules successfully!")
