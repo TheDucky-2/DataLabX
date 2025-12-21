@@ -32,7 +32,7 @@ DataLab converts your placeholder values like **MISSING, ERROR, UNKNOWN** or any
 
 This is done because DataLab uses ``missingno`` library under the hood for creating intuitive and widely-used missing data visualizations.
 
-However, ``missingo`` only supports pandas built-in missing values, and does not consider placeholder values as missing data.
+However, **missingo** only supports pandas built-in missing values, and does not consider placeholder values as missing data.
 
 That is why all user decided missing values like:
 
@@ -169,9 +169,7 @@ Before we know why we even need this useful stuff, let us explore what we miss w
 
 > Here is a plot of missing data without good stuff:
 
-
 ![Blank Bar Plot](example_images/Blank_Bar_plot.png) 
-
 
 We can see:
 
