@@ -3,7 +3,7 @@ DataLab: Unified End to End Data Library
 for Tabular and Graph data.
 """
 
-__version__ = '0.1.0.a2'
+__version__ = '0.1.0a2'
 
 import importlib
 
