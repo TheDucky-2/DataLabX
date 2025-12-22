@@ -45,6 +45,15 @@ include-package-data = true
 where = ["."]
 include = ["datalab*"]
 
+[tool.setuptools.exclude-package-data]
+"*" = [
+    "__pycache__",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd"
+    
+]
+
 [project.urls]
 
 Homepage = "https://github.com/TheDucky-2/DataLab"
