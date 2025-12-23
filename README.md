@@ -80,7 +80,7 @@ This allows you to try DataLab without cloning the repository.
 
 You can now Install DataLab pre-release using **pip**:
 
-``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0a2``
+``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0a3``
 
 ### Why this long command? 
 
