@@ -245,12 +245,18 @@ We now know:
 
 - How we can create and understand **Heatmaps** for missing data, using datalab.
 
-But, in **Heatmaps** we explored relationships between only 2 columns at once. 
+## Dendrogram:
 
-What if multiple columns, like 3 or 4 are missing data together? What do we do then?
+For now, we will be skipping dendrograms as they are Optional and will be added later in v0.2.0 of DataLab. 
 
-It will be very hard to explore and know if our columns are related together using **Heatmaps**, won't it?
+## Summary:
 
-**Absolutely.**
+- We can use 'Easy to Understand' plots to easily see where data is missing.
 
-Which is exactly what we will explore and identify next. 
+- A bar plot shows how much data is missing in data.
+
+- A matrix plot shows what rows are missing data (black (data present) and white (data missing)) in columns.
+
+- We can see notice considerable changes in missing data if we include placeholders.
+
+- A heatmap shows which columns are missing data together.
