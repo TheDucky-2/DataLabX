@@ -247,7 +247,20 @@ We now know:
 
 ## Dendrogram:
 
-For now, we will be skipping dendrograms as they are Optional and will be added later in v0.2.0 of DataLab. 
+For now, we will be skipping docs for dendrograms as they are Optional and will be added later in v0.2.0 of DataLab. 
+
+However, they are useful in checking groups of columns where data is missing similarly and groups of columns that are missing data differently.
+
+If you wish to plot dendrograms of missing data, you can do that by using **'dendrogram'** as **viz_type** in ``plot_missing()`` method of **MissingnessVisualizer** class.
+
+Example:
+
+    MissingnessVisualizer(df).plot_missing(viz_type = 'dendrogram')
+
+Output:
+
+![Dendrogram of Missing Data](example_images/Dendrogram_of_missing_data.png)
+
 
 ## Summary:
 
