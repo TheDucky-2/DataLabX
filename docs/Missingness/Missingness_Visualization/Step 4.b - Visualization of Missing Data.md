@@ -98,9 +98,9 @@ We now know:
 
 Okay!
 
-I know if one or more columns are missing values in the same rows or different rows.
+We know if one or more columns are missing values in the same rows or different rows.
 
-But what if I want to know if there are any columns in my dataset that go missing together?
+But what if we want to know if there are any columns in my dataset that go missing together?
 
 Like, "**If one column is missing data, will another column be missing data too?**"
 
@@ -116,14 +116,14 @@ These plots are especially useful when we want to see which columns have missing
 
 Example:
 
-    Income is missing in my data, is age missing too?
+    Income is missing in our data, is age missing too?
 
 We can create a heatmap of missing data by passing **'heatmap'** as **viz_type** in the ``plot_missing()`` method of **MissingnessVisualizer** class.
 
 Example:
     
     
-    MissingnessVisualizer(df).plot_missing(viz_type='heatmap')       <- Passed viz_type as 'heatmap'
+    MissingnessVisualizer(df).plot_missing(viz_type='heatmap')  
 
 Output: 
 
@@ -139,11 +139,11 @@ We can see:
 
 - On the left and bottom, we have Column Names (to identify relationships between any two columns).
 
-- Most of the squares are colored gray, which means **THESE COLUMNS DO NOT HAVE RELATIONSHIP WITH EACH OTHER IN TERMS OF MISSING DATA.**
+- Most of the squares are colored gray, which means **'These columns do not have a relationship with each other in terms of missing data'.**
 
-- Columns *'account_closed_at'* and *'last_seen_at'* have a Correlation of 0.2, which means **THERE IS A WEAK RELATIONSHIP BETWEEN THESE TWO COLUMNS IN TERMS OF MISSINGNESS**
+- Columns *'account_closed_at'* and *'last_seen_at'* have a Correlation of 0.2, which means **'There is a weak relationship between these two columns in terms of missingness'**
 
-- Columns *'phone'* and *'email'* have a Correlation of 0.9, which means **THERE IS A STRONG RELATIONSHIP BETWEEN THESE TWO COLUMNS IN TERMS OF MISSINGNESS**
+- Columns *'phone'* and *'email'* have a Correlation of 0.9, which means **'There is a strong relationship between these two columns in terms of missingness'**
 
 ## But, What is this Correlation that you just mentioned?
 
@@ -161,7 +161,7 @@ We are checking:
 
 **Example:**
 
-    Let's say that i'm filling a survey and i'm under 18. I don't have any source of income.
+    Let's say that I'm filling a survey and I'm under 18. I don't have any source of income.
 
     So, I will be leaving the income column blank, and due to that my credit score column will be having missing data too.
 
@@ -207,11 +207,11 @@ We now know the kind of relationships we are looking for, through these visualiz
 
 What's next?
 
-Well, we will now explore if there are any changes to the **Heatmap** if we pass a list of placeholders.
+We will now explore if there are any changes to the **Heatmap** if we pass a list of placeholders.
 
 ## Heatmap - With Placeholders:
 
-We can pass our list of placeholders to the heatmap of missing data like this:
+We can create a heatmap of missing data including placeholders by passing **extra_placeholders** in the ``plot_missing()`` method of **MissingnessVisualizer** class.
 
 Example:
 
@@ -247,9 +247,9 @@ We now know:
 
 But, in **Heatmaps** we explored relationships between only 2 columns at once. 
 
-What if multiple columns, like 3 or 4 are missing data together? What do I do then?
+What if multiple columns, like 3 or 4 are missing data together? What do we do then?
 
-It will be very hard to explore and know if my columns are related together using **Heatmaps**, won't it?
+It will be very hard to explore and know if our columns are related together using **Heatmaps**, won't it?
 
 **Absolutely.**
 
