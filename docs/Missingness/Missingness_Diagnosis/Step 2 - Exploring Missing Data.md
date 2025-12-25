@@ -4,8 +4,6 @@
 
 In **Step 1**, we learned what values are identified as missing in our data.
 
-In **Step 2**, we move forward and look at the data itself to understand how much data is missing and where it is missing.
-
 ## What is this step about?
 
 This step is simply about ``finding missing information in your data``.
@@ -378,7 +376,7 @@ If no rows appear, it confirms the placeholder is not used.
 
 ## Why this step?
 
-By the end of **Step 2**, we will know:
+By the end of **Step 2**, we know:
 
 - How much data is missing
 
