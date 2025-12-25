@@ -71,7 +71,7 @@ You can begin diagnosing your missing data by importing the ``MissingnessDiagnos
 
 ## Numerical Missing Data (Numbers)
 
-Numerical columns usually contain missing values like `NaN`.
+Numerical columns usually contain missing values like `NaN (Not a Number)`.
 
 Sometimes missing numbers are replaced by special values like `-1`, `0`, or `-999`.
 
@@ -137,7 +137,7 @@ We can see:
 
 ## Categorical Missing Data (text/category)
 
-Text based columns often contain missing values like `NaN`, 'NULL' or `None`.
+Text based columns often contain missing values like `NaN`, `NULL` or `None`.
 
 Sometimes missing text is written as values like:
 
@@ -207,7 +207,7 @@ We can see:
 
 ## Date and Time Data
 
-Date and time columns usually use `NaT (Not a Number)` to represent missing values.
+Date and time columns usually use `NaT (Not a Time)` to represent missing values.
 
 Sometimes missing dates are kept as fake dates like:
 
