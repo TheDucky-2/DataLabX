@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project] 
 
 name = "datalab_pre_release"             
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "DataLab: Unified & Beginner Friendly End-to-End Data Library for Tabular and Graph data."
 
 authors = [
