@@ -8,8 +8,18 @@ global-exclude *.pyc *.pyo *.pyd
 prune *.egg-info
 prune **/**.egg-info
 
+# Excluding build data 
+
+exclude build/*
+exclude dist/*
+
 # Excluding OS generated junk files
 
 global-exclude *.swp *.swo
 global-exclude .DS_Store
 global-exclude Thumbs.db
+
+# Excluding tests from being included during packaging
+
+recursive-exclude tests *
+recursive-exclude tmp *
