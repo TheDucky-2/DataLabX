@@ -7,7 +7,6 @@ def testing_datalab_imports():
                'datalab.tabular.data_cleaner',
                'datalab.tabular.data_preprocessor',
                'datalab.tabular.data_visualization',
-               'datalab.tabular.data_analysis',
                'datalab.tabular.computations',
                'datalab.tabular.utils'] 
     
