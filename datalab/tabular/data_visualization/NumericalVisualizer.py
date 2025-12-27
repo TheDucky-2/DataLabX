@@ -18,7 +18,7 @@ class NumericalVisualizer(DataVisualizer):
         else: 
             self.columns = [column for column in df.columns if column in self.df.columns]
 
-    def histogram(self,
+    def plot_histogram(self,
                   bins: int=30,
                   title: str=None,
                   xlabel: str=None,
@@ -65,14 +65,21 @@ class NumericalVisualizer(DataVisualizer):
         -----------------
             Guide on 'Histogram Interpretation' is available under Interpretation Guide section of DataLab Docs. 
         '''
+
         for column in self.df[self.columns]:
 
-            fig, ax = plt.subplots(figsize = figsize)
-            
-            ax.hist(self.df[column], bins=bins, **kwargs)
+            fig, ax = plt.subplots()
 
+            counts, bins, patches = plt.hist(self.df[column],bins=30, edgecolor='black', **kwargs)
+
+            bar_labels = [str(int(count))if count > 0 else '' for count in counts]
+
+            ax.bar_label(patches, labels=bar_labels)
+
+            ax.set_xticks(bins.astype(int))
+            
             if title:
-                ax.set_title(f'{title}: {column}')
+                ax.set_title(f'{title}')
             else:
                 ax.set_title(f'Histogram of {column}')
 
@@ -84,7 +91,7 @@ class NumericalVisualizer(DataVisualizer):
             if ylabel:
                 ax.set_ylabel(ylabel)
             else:
-                ax.set_ylabel(f'Count of {column}')
+                ax.set_ylabel(f'Number of values')
 
             plt.show()
 
@@ -173,7 +180,8 @@ class NumericalVisualizer(DataVisualizer):
                 if ylabel:
                     ax.set_ylabel(ylabel)
 
-                plt.show()
+            plt.show()
+
 
     def plot_KDE(self, bandwidth_method: str ='robust',
                   title: str=None,
