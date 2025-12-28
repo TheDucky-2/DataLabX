@@ -120,7 +120,6 @@ Let us look at this visually to understand:
 
 ![Normal Distribution](example_images/Example_histogram3.png)
 
-
 We can see:
 
 - 40 people got 2 candies on an average (middle)
@@ -149,6 +148,42 @@ Because of this balance, the average number of candies represents most students 
 
 In other words, ``a distribution is Normal when most values are near the middle, and extreme values happen rarely.``
 
-### Non-Normal Distribution
+### **Non-Normal Distribution** (Using the Candy Example)
 
---TO BE UPDATED--
+Let us go back look to our original example:
+
+- We gave 1 candy to most students.
+- A few extra candies to our close friends.
+- We gave even more candies to the teachers.
+
+Let us understand that visually:
+
+![Example Histogram](example_images/Example_histogram2.png)
+
+We can see:
+
+- Values are not balanced out on both sides like **normal distribution**.
+
+- Most values are piling up in one place, and a few values are very different.
+
+Because a few people got many candies, the average number of candies moves away from where most people are.
+
+The average becomes higher than 1, even though most people only received 1 candy.
+
+In this case, the data is extending to the right, because a few people receiving many candies is pulling the values in one direction.
+
+This kind of pattern is called a **non-normal distribution**.
+
+In other words, ``a distribution is non-normal when most values are the same, and only a few values are much larger or smaller.``
+
+## Summary:
+
+- A distribution shows how values are shared or spread across a group.
+
+- Looking at distributions helps us understand data before any kind of analysis including handling missing values.
+
+- Some distributions are normal, where most values are near the middle and extremes are rare.
+
+- Some distributions are non-normal, where most values make a group in one place and a few extreme values pull the average value to left or right.
+
+- Understanding distributions helps us know whether most values actually look similar or different.
