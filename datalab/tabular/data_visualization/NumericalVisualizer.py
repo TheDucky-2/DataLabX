@@ -7,16 +7,16 @@ import matplotlib.pyplot as plt
 class NumericalVisualizer(DataVisualizer):
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
-
+        # getting the elements of parent DataVisualizer class
         super().__init__(df, columns)
 
-        self.df.select_dtypes(include = 'number')
+        self.df = self.df.select_dtypes(include = 'number')
         
         if columns is None:
             self.columns = df.columns
 
         else: 
-            self.columns = [column for column in df.columns if column in self.df.columns]
+            self.columns = [column for column in columns if column in df.columns]
 
     def plot_histogram(self,
                   bins: int=30,
@@ -68,16 +68,10 @@ class NumericalVisualizer(DataVisualizer):
 
         for column in self.df[self.columns]:
 
-            fig, ax = plt.subplots()
+            fig, ax = plt.subplots(figsize=figsize)
 
-            counts, bins, patches = plt.hist(self.df[column],bins=30, edgecolor='black', **kwargs)
+            ax.hist(self.df[column],bins=bins, edgecolor='black', **kwargs)
 
-            bar_labels = [str(int(count))if count > 0 else '' for count in counts]
-
-            ax.bar_label(patches, labels=bar_labels)
-
-            ax.set_xticks(bins.astype(int))
-            
             if title:
                 ax.set_title(f'{title}')
             else:
