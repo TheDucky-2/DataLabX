@@ -323,8 +323,17 @@ For questions, suggestions, feedbacks or issues related to **DataLab**, you can 
 
 **Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
 
-⚠️ Even though it is a pre-release, we still aim to respond within 72 hours.
+Even though it is a pre-release, we still aim to respond within 72 hours.
 
+## ⚠️ AI Usage Disclosure
 
+AI tools were used selectively during the development of DataLab to:
 
+- Learn and clarify data concepts.
+- Explore alternative implementation approaches and edge cases.
+- Generate realistic, messy datasets to simulate real-world data scenarios for testing, research, and validation.
+
+All core design decisions, code implementation, documentation, visualizations, and examples were written, reviewed, and integrated by the author.
+
+AI was used as a support and learning tool - not as a replacement for thinking, understanding, authorship, or ownership of the library.
 
