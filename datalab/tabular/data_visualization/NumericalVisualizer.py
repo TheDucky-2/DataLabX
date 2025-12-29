@@ -4,6 +4,13 @@ from ..computations import Distribution
 
 import pandas as pd
 
+# removing underscores in column names if they exist, for plot Titles.
+def remove_underscores(column):
+    
+    column = " ".join(column.split('_'))
+
+    return column
+
 class NumericalVisualizer(DataVisualizer):
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
@@ -74,7 +81,7 @@ class NumericalVisualizer(DataVisualizer):
             if title:
                 ax.set_title(f'{title}')
             else:
-                ax.set_title(f'Histogram of {column}')
+                ax.set_title(f'Histogram of {remove_underscores(column)}')
 
             if xlabel:
                 ax.set_xlabel(xlabel)
@@ -151,7 +158,7 @@ class NumericalVisualizer(DataVisualizer):
             if title:
                 ax.set_title(f'{title}: {column}')
             else:
-                ax.set_title(f'Boxplot of {column}')
+                ax.set_title(f'Boxplot of {remove_underscores(column)}')
 
             if vert:
                 ax.set_xticks([1])
@@ -254,7 +261,7 @@ class NumericalVisualizer(DataVisualizer):
             if title:
                 ax.set_title(f'{title}: {column}')
             else:
-                ax.set_title(f'Kernel Density Estimation plot of {column}')
+                ax.set_title(f'Kernel Density Estimation plot of {remove_underscores(column)}')
 
             if xlabel:
                 ax.set_xlabel(xlabel)
@@ -318,14 +325,10 @@ class NumericalVisualizer(DataVisualizer):
             # using probplot to create a QQ plot
             stats.probplot(self.df[column], dist=distribution_name, plot=ax)
 
-            # removing underscores in column names if they exist, for title
-            split_column_names= column.split('_')
-            column_names = " ".join(split_column_names)
-
             if title:
                 ax.set_title(title)
             else:
-                ax.set_title(f'QQ plot of {column_names}')
+                ax.set_title(f'QQ plot of {remove_underscores(column)}')
             
             # setting color of data points
 
