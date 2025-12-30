@@ -1,58 +1,60 @@
-![DataLab logo](https://github.com/TheDucky-2/DataLab/blob/main/DataLab_logo_images/DataLab_logo.png)
+![DataLab logo](DataLab_logo_images/DataLab_logo.png)
 
 # 📊 DataLab (v0.1 Pre-Release)
 
-A Beginner-Friendly Library for Understanding Data
+A beginner-friendly Python library for understanding, diagnosing, and preparing data.
 
 ## What is DataLab?
 
-DataLab v0.1 is a **Python** library designed to make data understanding, diagnosis, cleaning, and preprocessing simple, intuitive, and beginner-friendly — without sacrificing performance.
+DataLab is a **Python** library designed to make data understanding, diagnosis, cleaning, and preprocessing simple, intuitive, and beginner-friendly - without sacrificing correctness or performance.
 
 It is built for:
 
-- Beginners in data science
+- Beginners learning data science
 
-- Students coming from non-technical backgrounds
+- Students from non-technical backgrounds
 
 - Analysts and researchers
 
-- Data scientists who want a fast, unified workflow
+- Data scientists who want a structured, unified workflow
 
-- Anyone who wants clean, reliable, well-diagnosed data before analysis or modeling
+- Anyone who wants well-understood data before analysis or modeling
 
-DataLab focuses on the foundation of data science:
+DataLab focuses on building strong data foundations:
 
-- Tabular Data (v0.1 -> v0.2)
-- Graph Data (coming v0.3)
-- Machine Learning (coming v0.4+)
-  
-**Goal:** 
+- **Tabular Data** (v0.1 -> v0.2)
 
-Bring all essential data tools under one roof, with simple APIs, strong defaults, and friendly documentation.
+- **Graph Data** (coming v0.3)
+
+- **Machine Learning** (coming v0.4+)
+
+**Goal:**
+
+Provide a single, guided ecosystem for understanding and preparing data - with simple APIs, strong defaults, and human-friendly documentation.
 
 ## How DataLab Works
 
-DataLab makes working with data simple, intuitive and beginner-friendly.
+DataLab is built around a simple idea:
 
-It understands that different types of data - numbers, categories, and date-time need different handling.
+``Different types of data need different ways of thinking.``
+
+DataLab automatically understands your data and guides you through the right workflow.
 
 With DataLab, you can:
 
-- Automatically detect column types -> No need to check manually
+- Automatically detect column types (numerical, categorical, datetime)
 
-- Run workflows for each data type -> Numerical, Categorical, and Date-Time are handled separately
+- Run type-specific workflows instead of one-size-fits-all functions
 
-- Clean, prepare and visualize data independently -> For easy data understanding
+- Diagnose, clean, preprocess, and visualize data independently
 
-- Focus on insights -> Spend your time exploring data, not writing repetitive code.
+- Focus on understanding data behavior before taking action
 
-By handling different types of data separately, DataLab keeps your workflow simple and organized.
-
-That makes it easy for beginners and professionals to explore and understand their data.
+By separating workflows by data type, DataLab keeps **analysis clear, structured, and beginner-safe - while remaining powerful for advanced users**.
 
 ## Current Version: v0.1 (Pre-Release)
 
-This is an early development release focusing on the Tabular Data Package, including:
+This early release focuses on **Tabular Data**, including:
 
 - Data loading
 
@@ -62,21 +64,19 @@ This is an early development release focusing on the Tabular Data Package, inclu
 
 - Numerical & categorical workflows
 
-- Data cleaning
-
-- Preprocessing
+- Cleaning and preprocessing
 
 - Computation
 
-- **Matplotlib**-based visualization (including Missingness viz)
+- **Matplotlib**-based visualizations (including missingness plots)
 
-- Detailed beginner friendly documentation + API usage guides + workflow notebooks
+- Beginner-friendly documentation, API guides, and workflow notebooks
 
-Even in v0.1, DataLab already supports **Pandas** and partially **Polars** (internally used for performance in some methods).
+DataLab currently supports **Pandas** and partially **Polars** (used internally for performance in few methods).
 
 ## Installation (v0.1 Pre-Release)
 
-DataLab is currently in early pre-release (v0.1) and is available on TestPyPI for testing and feedback.
+DataLab is available on **TestPyPI** for early testing and feedback.
 
 This allows you to try DataLab without cloning the repository.
 
@@ -86,7 +86,7 @@ You can now Install DataLab pre-release using **pip**:
 
 ### Why this long command? 
 
-That is because DataLab itself is downloaded from TestPyPI, while required dependencies (such as pandas) are downloaded from PyPI.
+That is because DataLab itself is downloaded from TestPyPI, while required dependencies (such as pandas) are downloaded from **PyPI**.
 
 ### Importing DataLab
 
@@ -96,7 +96,7 @@ You can simply import datalab after installing it like this:
 
 ### Installation Video:
 
-You can also watch the 4-minute **Installation & Getting-Started with DataLab** video on Youtube, using the link below:
+A short **Installation & Getting Started** video is available below:
 
 👉 https://youtu.be/RC4SzXxRSHk 
 
@@ -110,9 +110,7 @@ This ensures you always get the most recent pre-release version available on Tes
 
 **⚠️ Note:**
 
-The library is not yet ready for production use.
-
-Editable development installation instructions will be added once the API stabilizes.
+This is a pre-release version and is not yet intended for production use.
 
 ## Project Structure:
 
@@ -147,71 +145,41 @@ datalab/
 
 **✔️ 1. Data Loading**
 
-DataLab automatically detects and loads:
+- CSV, Excel, JSON and Parquet support
 
-- csv files
-
-- Excel files (xlsx, xls)
-
-- JSON
-
-- Parquet files
+- Automatic file type detection
 
 **✔️ 2. Data Diagnosis**
 
-Understand your dataset in minutes:
+- Dataset overview (shape, columns, dtypes, memory usage)
 
-- Data preview
+- Column type detection
 
-- Shape, columns, dtypes
+- Cardinality and duplicate detection
 
-- Index info
-
-- Memory usage
-
-- Column type detection (numerical, categorical, datetime)
-
-- Cardinality
-
-- Duplicate detection
-
-- Numerical & Categorical Data diagnosis
+- Numerical & categorical diagnosis
 
 **✔️ 3. Missingness Diagnosis and Visualization**
 
-Uses **missingno** internally to visualize:
+- Missing value statistics
 
-- Missingness Stats
+- Pattern analysis
 
-- Missing value patterns
-
-- Missingness Heatmaps
-
-- Missingness distributions
+- Missing Data Plots (via **missingno**)
 
 **✔️ 4. Cleaning & Preprocessing**
 
-DataLab offers Cleaning and Preprocessing for:
+- Numerical, categorical, and basic text workflows
 
-- Numerical Data
+- Missing data handling (guided)
 
-- Categorical Data
-
-- Datetime Data (in v0.2)
-
-- Missing Data
-
-- Text (basic)
-
-- Pandas <-> Polars conversion utilities
+- Pandas <-> Polars utilities
 
 **✔️ 5. Computation**
 
-Includes:
+- Descriptive statistics
 
-- Statistics
-
-- Distributions
+- Distribution analysis
 
 - Outlier detection
 
@@ -219,33 +187,31 @@ Includes:
 
 - Performance-optimized helpers
 
-- Early Polars-based computation engine
-
 **✔️ 6. Visualization**
-
-Simple, beginner-friendly plots using Matplotlib:
 
 - Histograms
 
 - Boxplots
 
-- Kernel Density Estimation Plot
+- KDE plots
 
-- Missingness viz (via missingno)
+- QQ Plots
 
-- Categorical Data viz
+- Categorical visualizations (bar charts, line plots etc.)
 
-✔️ 7. Documentation & Workflow Guides
+- Missingness visualizations (bar charts, matrix, heatmaps and dendrograms)
 
-DataLab includes:
+**✔️ 7. Documentation & Workflow Guides**
 
 - Friendly documentation
+
+- Beginner-first explanations
 
 - Visual examples
 
 - Step-by-step workflows
 
-- Guides explaining why and how, not just how to code
+- Conceptual guides explaining **why, not just how**
 
 ## 🧭 Roadmap:
 
@@ -291,21 +257,23 @@ DataLab includes:
   
 ## Why would I even use DataLab?
 
-Because DataLab goes by the philosophy that data science should feel like someone is sitting next to you, guiding you step-by-step.
+Because most data problems don’t come from bad models - **they come from poor data understanding**.
+
+DataLab is built to feel like:
+
+> Someone sitting next to you, explaining what your data is doing and why.
 
 DataLab is built with:
 
-- Beginner-friendly language
+- Conceptual understanding before automation
 
-- Real-world messy data testing
+- Real-world messy data
 
-- Clean modular engineering
+- Clear explanations and safe defaults
 
-- Reusable workflows
+- Modular, reusable workflows
 
-- Performance in mind
-
-- Clear explanations
+- Performance without complexity
 
 If you’re new to data… OR switching careers… OR want to understand data deeply…
 
@@ -335,5 +303,5 @@ AI tools were used selectively during the development of DataLab to:
 
 All core design decisions, code implementation, documentation, visualizations, and examples were written, reviewed, and integrated by the author.
 
-AI was used as a support and learning tool - not as a replacement for thinking, understanding, authorship, or ownership of the library.
+AI was used as a **support and learning tool** - **not as a replacement for thinking, understanding, authorship, or ownership.**
 
