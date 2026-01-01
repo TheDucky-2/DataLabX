@@ -10,10 +10,11 @@ class NumericalCleaner(DataCleaner):
         # Initializing the base data cleaner
         super().__init__(df, columns)
 
-        # only the numeric datatype
-        self.df = self.df.select_dtypes(include='number')
+        self.df = df 
+
+        numerical_columns = self.df.select_dtypes(include='number').columns.tolist() 
         # if passed column is in columns of the DataFrame
-        self.columns = [column for column in self.columns if column in self.df.columns]
+        self.columns = [column for column in numerical_columns if column in self.df.columns]
         
         print(f'NumericalCleaner initialized with columns: {self.columns}')
 
@@ -49,24 +50,11 @@ class NumericalCleaner(DataCleaner):
                     Input   :   df['salary'] = ["73892.871297", "55599.652884", "17417.103660", "18809.367362655572", "72700.914047"]
                     Usage   :   NumericalCleaner(df, ['salary']).round_off(3)
                     Output  :   Pandas series, with values converted in column 'salary' as ["73892.871", "55599.652", "17417.103", "18809.367", "72700.914"]
-
-        >>> Example: 
-                    Input   :   df['salary'] = ["73892.871297", "55599.652884", "17417.103660", "18809.367362655572", "72700.914047"]
-                    Usage   :   NumericalCleaner(df, ['salary']).round_off(2, inplace=True)
-                    Output  :   Entire Original DataFrame, with values converted in column 'salary' as ["73892.87", "55599.65", "17417.10", "18809.36", "72700.91"]
-
-            Example: 
-                
-                    Input   :   df['salary'] = ["73892.871297", "55599.652884", "17417.103660", "18809.367362655572", "72700.914047"]
-                    Usage   :   NumericalCleaner(df, ['salary']).round_off(2)
-                    Output  :   Pandas series, with values converted in column 'salary' as ["73892.87", "55599.65", "17417.10", "18809.36", "72700.91"]
         '''
-        
-        self.decimals = decimals
 
-        self.df[self.columns]= self.df[self.columns].apply(lambda column: column.round(self.decimals))
-        
         if inplace:
+            self.df[self.columns]= self.df[self.columns].apply(lambda column: column.round(decimals))
             return None
         else:
-            return self.df[self.columns].copy()
+            self.df[self.columns]= self.df[self.columns].apply(lambda column: column.round(decimals))
+            return self.df.copy()
