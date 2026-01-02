@@ -1,8 +1,7 @@
 import pandas as pd
-import missingno as msno
-import matplotlib.axes
 
 from .BaseCleaner import DataCleaner
+from ..data_diagnosis import DirtyDataDiagnosis
 
 class NumericalCleaner(DataCleaner):
 
@@ -12,13 +11,15 @@ class NumericalCleaner(DataCleaner):
 
         self.df = df 
 
-        numerical_columns = self.df.select_dtypes(include='number').columns.tolist() 
-        # if passed column is in columns of the DataFrame
-        self.columns = [column for column in numerical_columns if column in self.df.columns]
+        if columns is None: 
+            # if passed column is in columns of the DataFrame
+            self.columns = self.df.columns.tolist()
+        else:
+            self.columns = [column for column in columns if column in self.df.columns]
         
         print(f'NumericalCleaner initialized with columns: {self.columns}')
 
-    def round_off(self, decimals:int, inplace:bool=False):
+    def round_off(self, decimals:int, inplace:bool=False)-> pd.DataFrame:
         '''
         Round off numbers by 
 
@@ -58,3 +59,51 @@ class NumericalCleaner(DataCleaner):
         else:
             self.df[self.columns]= self.df[self.columns].apply(lambda column: column.round(decimals))
             return self.df.copy()
+
+    def remove_spaces_in_numbers(self)->pd.DataFrame:
+        '''
+        Removes leading or trailing spaces in numerical data for each column of DataFrame
+
+        Parameters:
+        -----------
+            self : pd.DataFrame
+                A pandas DataFrame
+
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame with removed trailing or leading spaces.
+        
+        Usage Recommendation:
+        ---------------------
+            1. Use this function when you want to remove leading or trailing spaces in numbers.
+
+        Example:
+        --------
+            DirtyDataDiagnosis(df).detect_clean_numerical_data()
+        '''
+
+        leading_spaces_pattern = r'^\s+[+-]?\d+(\.\d+)?$'
+        trailing_spaces_pattern = r'^[+-]?\d+(\.\d+)?\s+$'
+        leading_and_trailing_spaces_pattern = r'^\s+[+-]?\d+(\.\d+)?\s+$'
+
+        spaces_in_numerical_data = {}
+
+        for column in self.df[self.columns]:
+            # getting rows of data with leading spaces
+            detected_leading_spaces = self.df[column].astype(str).str.match(leading_spaces_pattern, na=False)
+            # getting rows of data with trailing spaces
+            detected_trailing_spaces = self.df[column].astype(str).str.match(trailing_spaces_pattern, na=False)
+            # getting rows of data with leading and trailing spaces
+            detected_leading_and_trailing_spaces = self.df[column].astype(str).str.match(leading_and_trailing_spaces_pattern, na=False)
+
+            mask = detected_trailing_spaces | detected_leading_spaces | detected_leading_and_trailing_spaces
+
+            # getting rows of the data with leading and trailing spaces and removing the spaces
+            self.df.loc[mask, column] = self.df.loc[mask, column].astype(str).str.strip()
+            
+        return self.df
+
+
+
+
