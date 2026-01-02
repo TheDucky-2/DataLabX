@@ -5,6 +5,18 @@ from pathlib import Path
 
 import pandas as pd
 
+def convert_numpy_scalars_to_python(number)-> dict[str, dict]:
+    import numpy as np
+
+    if isinstance(number, np.integer):
+        return int(number)
+    
+    elif isinstance(number, np.floating):
+        return float(number)
+    
+    else:
+        return number
+
 class NumericalDiagnosis(Diagnosis):
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
@@ -212,6 +224,8 @@ class NumericalDiagnosis(Diagnosis):
                     risk_score               Normal Distribution
                     dtype: object
         '''
+        import numpy as np
+        
         # getting Skewness from numerical diagnosis class and kurtosis calculation from Distribution class
         skewness = NumericalDiagnosis(self.df).check_skewness()
         kurtosis = Distribution(self.df).excess_kurtosis()
@@ -229,3 +243,36 @@ class NumericalDiagnosis(Diagnosis):
         distributions= pd.Series(distributions)
 
         return distributions
+
+    def show_minmax(self):
+        '''
+        Show minimum and maximum values prexentt in each Numerical column of the DataFrame
+
+        Parameters:
+        -----------
+            self
+
+        Returns:
+        --------
+            A dictionary of column names and min-max values present in that column
+
+        Example:
+        --------
+
+        >>> NumericalDiagnosis(df).show_min_max()
+        '''
+        range_dict = {}
+    
+        for column in self.df[self.columns]:
+            min = self.df[column].min()
+            max = self.df[column].max()
+            
+            # applying the method to convert numpy scalars into python numbers.
+            range_dict[column] = {
+                'min': convert_numpy_scalars_to_python(min),
+                'max': convert_numpy_scalars_to_python(max)
+            }
+
+        return range_dict
+
+   
