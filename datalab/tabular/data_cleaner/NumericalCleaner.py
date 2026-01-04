@@ -2,13 +2,15 @@ import pandas as pd
 
 from .BaseCleaner import DataCleaner
 from ..data_diagnosis import DirtyDataDiagnosis
+from ..utils.Logger import datalab_logger
+
+logger = datalab_logger(name = __name__.split('.')[-1])
 
 class NumericalCleaner(DataCleaner):
 
-    def __init__(self, df: pd.DataFrame, columns: list =None):
+    def __init__(self, df: pd.DataFrame, columns: list = None):
         # Initializing the base data cleaner
         super().__init__(df, columns)
-
         self.df = df 
 
         if columns is None: 
@@ -17,7 +19,7 @@ class NumericalCleaner(DataCleaner):
         else:
             self.columns = [column for column in columns if column in self.df.columns]
         
-        print(f'NumericalCleaner initialized with columns: {self.columns}')
+        logger.info(f'NumericalCleaner initialized...')
 
     def round_off(self, decimals:int, inplace:bool=False)-> pd.DataFrame:
         '''
@@ -58,9 +60,10 @@ class NumericalCleaner(DataCleaner):
             return None
         else:
             self.df[self.columns]= self.df[self.columns].apply(lambda column: column.round(decimals))
+            logger.info(f'Rounded off to {decimals} decimals.')
             return self.df.copy()
 
-    def remove_spaces_in_numbers(self)->pd.DataFrame:
+    def remove_spaces(self)->pd.DataFrame:
         '''
         Removes leading or trailing spaces in numerical data for each column of DataFrame
 
@@ -101,9 +104,11 @@ class NumericalCleaner(DataCleaner):
 
             # getting rows of the data with leading and trailing spaces and removing the spaces
             self.df.loc[mask, column] = self.df.loc[mask, column].astype(str).str.strip()
+        
+        logger.info('Removed leading and trailing spaces!')
             
         return self.df
 
-
+    
 
 
