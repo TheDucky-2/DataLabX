@@ -229,7 +229,42 @@ class DirtyDataDiagnosis:
         detected_scientific_notation = {}
         
         for col in self.df[self.columns]:  
+
             detected_scientific_notation[col] = self.df[self.df[col].astype(str).str.match(pattern, na=False)]
 
         return detected_scientific_notation
+
+    def detect_units_in_numbers(self):
+        '''
+        Detects if there are any units or text at the end of numbers (E.g 2cm or 2 kg) in each column of the DataFrame.
+
+        Parameters:
+        -----------
+            self : pd.DataFrame
+                A pandas DataFrame
+
+        Returns:
+        --------
+            dict
+                A python dictionary of column names and rows of numbers containing units
+        
+        Usage Recommendation:
+        ---------------------
+            1. Use this function when you want to see what positive or negative numbers contain units. (cm, kg, etc.)
+
+        Example:
+        --------
+            DirtyDataDiagnosis(df).detect_units_in_numbers()
+        '''
+        # ensuring that text can appear with/without spaces after numbers
+        detect_units_pattern = r'[+-]?\d{1,3}(?:[,.]\d{2,3})?\s*[A-Za-z]+$'
+
+        units_in_numbers_dict = {}
+
+        for col in self.df[self.columns]:
+            
+            # converting to pandas String datatype rather than python str, to convert null values to <NA> and disclude them from matching
+            units_in_numbers_dict[col] = self.df[self.df[col].astype('string').str.match(detect_units_pattern, na=False)]
+
+        return units_in_numbers_dict
 
