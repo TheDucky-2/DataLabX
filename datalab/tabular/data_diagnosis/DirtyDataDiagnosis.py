@@ -164,6 +164,8 @@ class DirtyDataDiagnosis:
         for col in self.df[self.columns]:
             # using regex pattern for detecting commas 
             commas_dict[col] = self.df[self.df[col].astype(str).str.match(pattern, na=False)]
+        
+        logger.info(f'Done!')
 
         return commas_dict
                     
@@ -197,6 +199,8 @@ class DirtyDataDiagnosis:
         for col in self.df[self.columns]:
 
             currency_symbols[col] = self.df[self.df[col].astype(str).str.match(detecting_currency_in_start_or_end)]
+
+        logger.info(f'Done!')
 
         return currency_symbols
 
@@ -232,6 +236,8 @@ class DirtyDataDiagnosis:
 
             detected_scientific_notation[col] = self.df[self.df[col].astype(str).str.match(pattern, na=False)]
 
+        logger.info(f'Done!')
+
         return detected_scientific_notation
 
     def detect_units_in_numbers(self):
@@ -266,6 +272,8 @@ class DirtyDataDiagnosis:
             # converting to pandas String datatype rather than python str, to convert null values to <NA> and disclude them from matching
             units_in_numbers_dict[col] = self.df[self.df[col].astype('string').str.match(detect_units_pattern, na=False)]
 
+        logger.info(f'Done!')
+
         return units_in_numbers_dict
 
     def detect_only_letters(self):
@@ -298,7 +306,81 @@ class DirtyDataDiagnosis:
         for col in df.columns:
             # using fullmatch to ensure only rows containing only letters is detected
             text_only_dict[col]=self.df[self.df[col].astype('string').str.fullmatch(text_pattern, na=False)]
+        
+        logger.info(f'Done!')
 
         return text_only_dict
     
+    def count_commas(self)-> dict[str, int]:
+
+        '''
+        Counts the number of rows with strings that contain commas in each column of the DataFrame
+        
+        Returns:
+        --------
+            dict
+                A python dictionary of columns and number of rows with comma
+        '''
+
+        comma_count = {}
+
+        for col in self.df[self.columns]:
+
+            #  taking a count of strings that contain a comma ','
+            comma_count[col] = int(self.df[col].astype('string').str.count(',').sum())
+
+        return comma_count
+
+    def count_decimals(self)-> dict[str, int]:
+
+        '''
+        Counts the number of rows that have decimals, in each column of the DataFrame
+        
+        Returns:
+        --------
+            dict
+                A python dictionary of columns and number of rows with decimal (.)
+
+        Example:
+        -------
+            DirtyDataDiagnosis(df).count_decimals()
+        '''
+
+        decimal_count = {}
+
+        for col in self.df[self.columns]:
+            #  taking a count of strings that contain a decimal
+            decimal_count[col] = int(self.df[col].astype('string').str.count(r'\.').sum())
+
+        return decimal_count
+
+    def count_commas_with_decimals(self)-> dict[str, int]:
+        '''
+        Counts the number of rows that have decimals and commas both in each column of the DataFrame
+        
+        Returns:
+        --------
+            dict
+                A python dictionary of columns and number of rows with decimal (.) and commas. (E.g: 1,250.40)
+            
+        Example:
+        -------
+            DirtyDataDiagnosis(df).count_commas_with_decimals()
+            
+        '''
+        commas_and_decimals_count = {}
+
+        for col in self.df[self.columns]:
+
+            # ensuring that string contains a dot(or decimal)
+            has_decimals = self.df[col].astype('string').str.count(r'\.')
+
+            # ensuring that string contains a comma
+            has_commas = self.df[col].astype('string').str.count(r',')
+
+            # the string must atleast have 1 dot and 1 comma
+            commas_and_decimals_count[col] = int(((has_decimals >=1) & (has_commas>=1)).sum())
+
+        return commas_and_decimals_count
+        
 
