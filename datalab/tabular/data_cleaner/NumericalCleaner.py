@@ -142,7 +142,7 @@ class NumericalCleaner(DataCleaner):
 
         return self.df
 
-    def remove_currency_symbols(self):
+    def remove_currency_symbols(self)-> pd.DataFrame:
         '''
         Removes currency symbols appearing before or after numbers in each column of the DataFrame
 
@@ -171,7 +171,7 @@ class NumericalCleaner(DataCleaner):
 
         return self.df
 
-    def replace_commas_with_decimals(self):
+    def replace_commas_with_decimals(self)-> pd.DataFrame:
         '''
         Replaces commas (,) that are used as decimal replacements, with decimals (.) in each column of the DataFrame
 
@@ -197,6 +197,41 @@ class NumericalCleaner(DataCleaner):
             # replacing commas with decimals in those values
             self.df.loc[mask, col]= self.df.loc[mask, col].astype(str).str.replace(',', '.')
 
+        return self.df
+
+    def convert_scientific_notation_to_numbers(self)-> pd.DataFrame:
+        '''
+        Converts scientific notation like (4.67e01 or 4,67e01 or 1.04e+05) to readable numbers like 104000 in each column of the DataFrame
+
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame
+        
+        Usage Recommendation:
+        ----------------------
+            1. Use this method to convert scientific notation into numbers, during numerical cleaning.
+
+        Example:
+        --------
+            NumericalCleaner(df).convert_scientific_notation_into_numbers()
+
+        '''
+
+        from decimal import Decimal
+
+        pattern = r'^[+-]?\d+(?:([.,])\d+)?[eE][+-]?\d+$'
+        
+        scientific_notation_dict = {}
+
+        def scientific_notation_to_number(text):
+            text = text.replace(',', '.').replace('E', 'e')
+            return format(Decimal(text), 'f')
+
+        for col in self.df[self.columns]:
+            mask = self.df[col].astype(str).str.match(pattern)
+            self.df.loc[mask, col] = self.df.loc[mask, col].apply(scientific_notation_to_number)
+            
         return self.df
 
 
