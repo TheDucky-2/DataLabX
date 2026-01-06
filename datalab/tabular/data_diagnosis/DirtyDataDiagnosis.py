@@ -1,5 +1,7 @@
 from ..utils.Logger import datalab_logger
+from ..utils.BackendConverter import BackendConverter
 import pandas as pd
+import polars as pl
 
 logger = datalab_logger(name = __name__.split('.')[-1])
 
@@ -404,3 +406,60 @@ class DirtyDataDiagnosis:
 
         return symbols_dict
 
+    def diagnose_numbers(self)-> pd.DataFrame:
+        '''
+        Detects patterns and common formatting issues in numbers in each column of the DataFrame.
+
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame
+
+        Usage Recommendation:
+        ---------------------
+            1. Use this function when you want to see what kind of issues exist in columns that contain numbers in your DataFrame
+
+        Considerations:
+        ---------------
+            1. All pattern matching is performed using Polars regex.
+            2. Each diagnostic is converted back to pandas before being returned.
+            3. This method is intended for diagnostic purposes, not data mutation.
+
+        Example:
+        --------
+        >>>     diagnostics = DirtyDataDiagnosis(df).diagnose_numbers()
+
+        >>>     diagnostics["price"]["has_currency"].head()
+        
+        '''
+
+        # converting pandas DataFrame -> polars DataFrame
+        polars_df = BackendConverter(self.df).pandas_to_polars()
+
+        # creating an empty dictionary
+        numeric_diagnosis = {}
+        
+        for col in polars_df.columns:
+            
+            numeric_diagnosis[col] = {
+                'only_numbers' : None,
+                'is_dirty' : None,
+                'has_commas': None,
+                'has_decimals': None,
+                'has_units': None,
+                'has_symbols': None,
+                'has_scientific_notation': None,
+                'only_text': None
+            }
+            
+            # checking patterns using polars string expressions and converting to pandas DataFrame
+            numeric_diagnosis[col]['only_numbers']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
+            numeric_diagnosis[col]['only_text'] = BackendConverter(polars_df.filter(pl.col(col).str.contains(r'[A-Za-z ]+'))).polars_to_pandas()
+            numeric_diagnosis[col]['is_dirty']= BackendConverter(polars_df.filter(~pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
+            numeric_diagnosis[col]['has_units']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'))).polars_to_pandas()
+            numeric_diagnosis[col]['has_symbols']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]'))).polars_to_pandas()
+            numeric_diagnosis[col]['has_commas']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'\d[\d.,]*,\d'))).polars_to_pandas()
+            numeric_diagnosis[col]['has_currency']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$'))).polars_to_pandas()
+            numeric_diagnosis[col]['has_scientific_notation']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:[.,]\d+)[eE][+-]?\d+'))).polars_to_pandas()
+        
+        return numeric_diagnosis
