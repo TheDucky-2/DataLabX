@@ -156,7 +156,7 @@ class DirtyDataDiagnosis:
             
             # checking patterns using polars string expressions and converting to pandas DataFrame
             numeric_diagnosis[col]['only_numbers']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
-            numeric_diagnosis[col]['only_text'] = BackendConverter(polars_df.filter(pl.col(col).str.contains(r'[A-Za-z ]+'))).polars_to_pandas()
+            numeric_diagnosis[col]['only_text'] = BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[A-Za-z ]+$'))).polars_to_pandas()
             numeric_diagnosis[col]['is_dirty']= BackendConverter(polars_df.filter(~pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
             numeric_diagnosis[col]['has_units']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'))).polars_to_pandas()
             numeric_diagnosis[col]['has_symbols']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]'))).polars_to_pandas()
