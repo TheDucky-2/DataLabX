@@ -93,92 +93,110 @@ class DirtyDataDiagnosis:
 
     def diagnose_numbers(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
-        Detects patterns and common formatting issues in numbers in each column of the DataFrame.
+            Detects patterns and common formatting issues in numbers in each column of the DataFrame.
 
-        The following diagnostics are computed per column:
+            The following diagnostics are computed per column:
 
-        - only_numbers:            Values containing only integers or decimals (e.g: 1000, -10.048)
-        - only_text:               Values containing alphabetic characters and spaces ('unknown', 'error', 'missing', what)
-        - is_dirty:                Values that are not strictly numeric (e.g: approx 1000, $100,00CD#44)
-        - is_null:                 Values that are null or missing values (pandas missing types- NA or NaN)
-        - has_commas:              Numeric values containing comma separators (e.g: 10,000 or 1,000,000)
-        - has_decimals:            Numeric values containing decimal points (e.g: -1.62, 1000.44)
-        - has_units:               Numeric values suffixed with alphabetic units (e.g., "10kg")
-        - has_symbols:             Values containing non-alphanumeric or special symbols (e.g: '?', '/' , '.')
-        - has_currency:            Values containing currency symbols (prefix or suffix) (e.g. $10 or 10$)
-        - has_scientific_notation: Values expressed in scientific notation (e.g: 1.06E+1)
-        - has_spaces:              Values that contain leading or trailing spaces (e.g: '  missing', '1.066 ', '1.34    ')
-        - has_double_decimals:     Values that contain double decimals (e.g: 1.34.567, 1.4444.0000)
+            - only_numbers:            Values containing only integers or decimals (e.g: 1000, -10.048)
+            - only_text:               Values containing alphabetic characters and spaces ('unknown', 'error', 'missing', what)
+            - is_dirty:                Values that are not strictly numeric (e.g: approx 1000, $100,00CD#44)
+            - is_null:                 Values that are null or missing values (pandas missing types- NA or NaN)
+            - has_commas:              Numeric values containing comma separators (e.g: 10,000 or 1,000,000)
+            - has_decimals:            Numeric values containing decimal points (e.g: -1.62, 1000.44)
+            - has_units:               Numeric values suffixed with alphabetic units (e.g., "10kg")
+            - has_symbols:             Values containing non-alphanumeric or special symbols (e.g: '?', '/' , '.')
+            - has_currency:            Values containing currency symbols (prefix or suffix) (e.g. $10 or 10$)
+            - has_scientific_notation: Values expressed in scientific notation (e.g: 1.06E+1)
+            - has_spaces:              Values that contain leading or trailing spaces (e.g: '  missing', '1.066 ', '1.34    ')
+            - has_double_decimals:     Values that contain double decimals (e.g: 1.34.567, 1.4444.0000)
 
-        Parameters:
-        -----------
-            self
+            Parameters:
+            -----------
+                self
 
-            Optional:
-            ---------
-            show_available_methods : bool (default is False)
-                Shows diagnostic options that are available in diagnose_numbers() method.
+                Optional:
+                ---------
+                show_available_methods : bool (default is False)
+                    Shows diagnostic options that are available in diagnose_numbers() method.
 
-        Returns:
-        --------
-            pd.DataFrame
-                A pandas DataFrame
+            Returns:
+            --------
+                pd.DataFrame
+                    A pandas DataFrame
 
-        Usage Recommendation:
-        ---------------------
-            1. Use this function when you want to see what kind of issues exist in columns that contain numbers in your DataFrame
+            Usage Recommendation:
+            ---------------------
+                1. Use this function when you want to see what kind of issues exist in columns that contain numbers in your DataFrame
 
-        Considerations:
-        ---------------
-            1. This method uses Polars regex under the hood for pattern matching and is converted back to pandas before being returned.
-            2. This method is intended for diagnostic purposes, not data mutation.
+            Considerations:
+            ---------------
+                1. This method adds a default **index** column by resetting the DataFrame's index.
+                2. This is necessary to preserve original row IDs during conversion to Polars and back.
+                3. The index column DOES NOT AFFECT your transformations and are automatically restored in all returned DataFrames
+                4. This method also uses Polars regex under the hood for pattern matching
+                5. This method is intended for diagnostic purposes, not data mutation.
 
-        Example:
-        --------
-        >>>     diagnostics = DirtyDataDiagnosis(df).diagnose_numbers()
+            Example:
+            --------
+            >>>     diagnostics = DirtyDataDiagnosis(df).diagnose_numbers()
 
-        >>>     diagnostics['price']['has_currency'].head()
-        
-        '''
+            >>>     diagnostics['price']['has_currency'].head()
+            
+            '''
         from ..utils.BackendConverter import BackendConverter
+        
+        # resetting index to ensure index is turned into a new column 'index' in pandas dataframe
+        self.df = self.df.reset_index()   
 
-        # converting pandas DataFrame -> polars DataFrame
+        # passing dataframe including the new column 'index'
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
-        # creating an empty dictionary
-        numeric_diagnosis = {}
-        
-        for col in polars_df.columns:
-            
-            numeric_diagnosis[col] = {
-                'only_numbers' : None,
-                'is_dirty' : None,
-                'has_commas': None,
-                'has_decimals': None,
-                'has_units': None,
-                'has_symbols': None,
-                'has_scientific_notation': None,
-                'only_text': None,
-                'has_currency': None,
-                'has_double_decimals': None,
-                'has_spaces': None,
-                'is_null': None
-            }
-            
-            # checking patterns using polars string expressions and converting to pandas DataFrame
-            numeric_diagnosis[col]['only_numbers']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
-            numeric_diagnosis[col]['only_text'] = BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[A-Za-z ]+$'))).polars_to_pandas()
-            numeric_diagnosis[col]['is_dirty']= BackendConverter(polars_df.filter(~pl.col(col).str.contains(r'^[+-]?\d+(\.\d+)?$'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_units']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_symbols']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_commas']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'\d[\d.,]*,\d'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_currency']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_scientific_notation']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:[.,]\d+)[eE][+-]?\d+'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_double_decimals']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d+(?:\.\d+){2,}$'))).polars_to_pandas()
-            numeric_diagnosis[col]['has_spaces']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^\s+[+-]?\d+(?:\.\d+)?$|^[+-]?\d+(?:\.\d+)?\s+$|^\s+[+-]?\d+(?:\.\d+)?\s+$'))).polars_to_pandas()
-            numeric_diagnosis[col]['is_null']= BackendConverter(polars_df.filter(pl.col(col).is_null())).polars_to_pandas()
-            numeric_diagnosis[col]['has_decimals']= BackendConverter(polars_df.filter(pl.col(col).str.contains(r'^[+-]?\d*\.\d+$'))).polars_to_pandas()
+        numeric_diagnosis={}
 
+        # patterns is a dictionary of available methods and regex patterns to detect them 
+        patterns = {
+            'only_numbers': r'^[+-]?\d+(\.\d+)?$',
+            'only_text': r'^[A-Za-z ]+$',
+            'is_dirty': r'^[+-]?\d+(\.\d+)?$',
+            'has_units': r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$',
+            'has_symbols': r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]',
+            'has_commas': r'\d[\d.,]*,\d',
+            'has_currency': r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$',
+            'has_scientific_notation': r'^[+-]?\d+(?:[.,]\d+)[eE][+-]?\d+',
+            'has_double_decimals': r'^[+-]?\d+(?:\.\d+){2,}$',
+            'has_spaces': r'^\s+[+-]?\d+(?:\.\d+)?$|^[+-]?\d+(?:\.\d+)?\s+$|^\s+[+-]?\d+(?:\.\d+)?\s+$',
+            'is_null': None,
+            'has_decimals': r'^[+-]?\d*\.\d+$'
+            }
+
+        # excluding index column so that it is not involved in diagnosis 
+        columns_to_diagnose = [column for column in polars_df.columns if column != 'index']
+
+        for col in columns_to_diagnose:
+            
+            numeric_diagnosis[col] = {}
+            series = polars_df[col]
+
+            for method, pattern in patterns.items():
+                
+                if method == 'is_null':
+                    mask = series.is_null()
+
+                elif method == 'is_dirty':
+
+                    mask = ~series.str.contains(patterns['is_dirty'])
+
+                else:
+                    mask = series.str.contains(pattern)
+                
+                # filtering pattern masks out of the polars dataframe 
+                result_df = BackendConverter(polars_df.filter(mask)).polars_to_pandas()
+
+                # setting default index to be 'index'
+                result_df.set_index('index', inplace=True)
+
+                numeric_diagnosis[col][method] = result_df
+                
         if show_available_methods:
             logger.info(f'Available diagnostic methods: {list(numeric_diagnosis[col].keys())}')
 
