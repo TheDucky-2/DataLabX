@@ -1,15 +1,16 @@
 import pandas as pd
-from .BaseCleaner import DataCleaner
-from ..utils import BackendConverter
 import polars as pl
+from polars import selectors as cs
+
+from .BaseCleaner import DataCleaner
+from ..utils.Logger import datalab_logger
+from ..utils.BackendConverter import BackendConverter
+
+logger = datalab_logger(name= __name__.split('.')[-1])
 
 class TextCleaner(DataCleaner):
     
     def __init__(self, df:pd.DataFrame, columns:list=None):
-
-        import polars as pl
-        from ..utils import BackendConverter
-        import pandas as pd
         
         if not isinstance(df, (pd.DataFrame, pd.Series)):
             raise TypeError(f'df must be a pandas DataFrame or pandas Series, got {type(df).__name__}')
@@ -26,50 +27,111 @@ class TextCleaner(DataCleaner):
             self.columns = df.columns.to_list()
         else:
             # columns would be the list of columns passed
-            self.columns = columns
+            self.columns = [column for column in columns if column in self.df.columns]
+
+        logger.info('Text Cleaner initialized...')
 
     def to_lowercase(self: pd.DataFrame) -> pd.DataFrame:
+        '''
+        Converts text to uppercase in one or multiple columns of the DataFrame.
 
-        df=BackendConverter(self.df).pandas_to_polars()
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame
+
+        Usage Recommendation:
+        ---------------------
+            Use this function when you have mixed values and want to convert strings to lowercase
+
+        Consideration:
+        --------------
+            1. Uses polars with_columns to apply regex to all string columns
+            2. However, it still takes and returns a pandas DataFrame
+
+        Example:
+        --------
+        >>>    TextCleaner(df, columns=['user_status']).to_lowercase()
+        '''
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        polars_df = polars_df.with_columns(
+            cs.string()
+            .str.to_lowercase())
         
-        df=df.select((pl.all().str.to_lowercase()))
+        self.df = BackendConverter(polars_df).polars_to_pandas()
 
-        return BackendConverter(df).polars_to_pandas()
+        logger.info('Converted to lowercase!')
+
+        return self.df
 
     def to_uppercase(self: pd.DataFrame) -> pd.DataFrame:
+        '''
+        Converts text to lowercase in one or multiple columns of the DataFrame.
 
-        df = BackendConverter(self.df).pandas_to_polars()
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame
 
-        df = df.select(pl.all().str.to_uppercase())
+        Usage Recommendation:
+        ---------------------
+            Use this function when you have mixed values and want to convert strings to uppercase
 
-        return BackendConverter(df).polars_to_pandas()
+        Consideration:
+        --------------
+            1. Uses polars with_columns to apply regex to all string columns
+            2. However, it still takes and returns a pandas DataFrame
 
-        
-    def replace_multiple_spaces_with_single(self) -> pd.DataFrame:
+        Example:
+        --------
+        >>>    TextCleaner(df, columns=['user_status']).to_uppercase()
+        '''
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        polars_df = polars_df.with_columns(
+            cs.string().str.to_uppercase()
+        )
+
+        self.df = BackendConverter(polars_df).polars_to_pandas()
+
+        logger.info('Converted to uppercase!')
+
+        return self.df
+
+    def replace_multiple_spaces(self) -> pd.DataFrame:
         '''
         Replaces multiple spaces within characters or words with a single space (" ") for each column of the DataFrame.
 
         Returns:
+        --------
             pd.DataFrame
-            A pandas DataFrame of columns replaced text.
+                A pandas DataFrame of columns replaced text.
 
         Usage Recommendation:
+        ---------------------
             Use this function when you want to replace multiple spaces within text with a single space.
 
         Consideration:
-            Uses polars's with_columns to apply regex to all string columns
+        --------------
+            1. Uses polars with_columns to apply regex to all string columns
+            2. However, it still takes and returns a pandas DataFrame
 
         Example:
-            TextCleaner(df).replace_multiple_spaces_with_single()
-
+        --------
+        >>>    TextCleaner(df, columns=['gender']).replace_multiple_spaces()
         '''
-        polars_df = BackendConverter(self.df).pandas_to_polars()
+        multiple_spaces_pattern = r'\s+'
 
-        replaced_polars_df = polars_df.with_columns(pl.col(pl.Utf8).str.replace_all(r'\s+', " "))
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
-        replaced_polars_df = BackendConverter(replaced_polars_df).polars_to_pandas()
-        
-        return replaced_polars_df
+        polars_df = polars_df.with_columns(cs.string().str.replace_all(multiple_spaces_pattern, " "))
+
+        self.df = BackendConverter(polars_df).polars_to_pandas()
+
+        logger.info('Replaced multiple spaces!')
+
+        return self.df
 
     def replace_splitters(self, splitters:list[str]=None, replacement:str=None):
         '''
@@ -135,5 +197,7 @@ class TextCleaner(DataCleaner):
             )
 
         self.df = BackendConverter(polars_df).polars_to_pandas()
+
+        logger.info('Replaced splitters!')
 
         return self.df
