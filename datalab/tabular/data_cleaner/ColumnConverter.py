@@ -230,6 +230,6 @@ class ColumnConverter:
             df_copy[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors='coerce')
 
             #  reverting NaN values back to original missing values
-            df_copy[self.columns] = df_copy.combine_first(self.df[self.columns])
+            df_copy[self.columns] = df_copy[self.columns].combine_first(self.df[self.columns])
             return df_copy
 
