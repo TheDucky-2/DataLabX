@@ -160,7 +160,8 @@ class TextCleaner(DataCleaner):
 
         Consideration:
         ---------------
-            Uses polars's with_columns to apply regex to all string columns
+            1. Uses polars with_columns to apply regex to all string columns
+            2. However, it still takes and returns a pandas DataFrame
 
         Example:
         --------
@@ -179,8 +180,9 @@ class TextCleaner(DataCleaner):
             raise TypeError(f"splitters must be a list of strings like ',', '/' etc., got {type(splitter)}")
 
         if not isinstance(replacement, str):
-            raise TypeError(f"replacement must be a strings like ',' etc., got {type(replacement)}")
+            raise TypeError(f"replacement must be a string like ',' etc., got {type(replacement)}")
 
+        # joining splitters to ensure they are passed as regex
         splitters = f'[{"".join(splitters)}]'
 
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
@@ -201,3 +203,61 @@ class TextCleaner(DataCleaner):
         logger.info('Replaced splitters!')
 
         return self.df
+
+    def replace_symbols(self, symbols_and_replacements: dict[str, str]=None):
+        '''
+        Replaces different kinds of symbols present in data, with the desired value in one or multiple columns of the DataFrame.
+
+        Example: 'Germ@any' -> 'Germany', 'Empl0y3d' -> 'Employed' or '<<active>>' -> 'active'
+
+        Parameters:
+        -----------
+            self
+
+            Optional:
+
+            symbols_and_replacements: dict 
+                A dictionary of symbols and their replacements
+
+        Returns:
+        --------
+            pd.DataFrame
+                A pandas DataFrame
+
+        Usage Recommendation:
+        ----------------------
+            1. Use this function when you want to replace symbols with text or other symbols
+
+        Consideration:
+        ---------------
+            1. Uses polars with_columns to apply regex to all string columns
+            2. However, it still takes and returns a pandas DataFrame
+
+        Example:
+        --------
+        >>>    TextCleaner(df, columns=['user_status]).replace_symbols({'@':'a', '0':'o'})
+
+        '''
+        import re
+
+        # if symbols and replacements are not passed, they default to empty strings 
+        if symbols_and_replacements is None:
+            symbols_and_replacements = {"":""} 
+
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        for col in polars_df.columns:
+
+            for symbol, replacement in symbols_and_replacements.items():
+                
+                polars_df = polars_df.with_columns(
+                    # using re.escape to ensure symbols passed are used as literal characters
+                    pl.when(pl.col(col).str.contains(re.escape(symbol)))
+                    .then(pl.col(col).str.replace_all(re.escape(symbol), replacement))
+                    .otherwise(pl.col(col))
+                )
+    
+        self.df = BackendConverter(polars_df).polars_to_pandas()
+
+        return self.df
+
