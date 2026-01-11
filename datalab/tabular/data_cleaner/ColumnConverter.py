@@ -232,3 +232,54 @@ class ColumnConverter:
             df_copy[self.columns] = df_copy[self.columns].combine_first(self.df[self.columns])
             return df_copy
 
+    def to_numerical_forced(self, inplace:bool=False)-> pd.DataFrame:
+        '''
+        Convert one or more columns column into numerical columns forcibly as it turns non-convertible values to NaN.
+
+        Parameters:
+        -----------
+        inplace  : bool
+            Making changes to the original dataframe. E.g: True or False
+
+        Returns:
+        --------
+        pd.DataFrame
+            A pandas DataFrame 
+                1. return the original dataframe with converted numerical columns, if inplace=True
+                2. return only the dataframe of converted numerical columns, if inplace=False
+
+        Usage Recommendation:
+        ---------------------
+            1. Use this function to convert columns into numeric datatype for later calculations.
+        
+        Considerations:
+        ---------------
+            1. This function converts non-convertible values to NaN.
+
+        Examples:
+        
+        >>> ColumnConverter(df).to_numerical_forced(df, ['Quantity', 'Price Per Unit', 'Total Spent'], inplace=True]) 
+        #   returns full original dataframe with converted columns
+
+        >>> ColumnConverter(df).to_numerical_forced(df, ['Quantity', 'Price Per Unit', 'Total Spent'])
+        #   returns dataframe of numeric columns ['Quantity', 'Price Per Unit', 'Total Spent']
+
+        ''' 
+        if not isinstance(inplace, bool):
+            raise TypeError(f'inplace must be True or False, got {type(inplace).__name__}')
+
+        if inplace:
+            original_columns = self.df[self.columns].copy()
+            
+            # first converting all data to numerical, and non-numerical get converted to NaN
+            self.df[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce')
+            return None
+
+        else:
+            df_copy = self.df.copy()
+            # first converting all data to numerical, and non-numerical get converted to NaN
+            df_copy[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors='coerce')
+
+            return df_copy
+
+
