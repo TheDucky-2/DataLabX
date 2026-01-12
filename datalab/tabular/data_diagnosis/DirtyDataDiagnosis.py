@@ -162,7 +162,7 @@ class DirtyDataDiagnosis:
             'has_symbols': r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]',
             'has_commas': r'\d[\d.,]*,\d',
             'has_currency': r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$',
-            'has_scientific_notation': r'^[+-]?\d+(?:[.,]\d+)[eE][+-]?\d+',
+            'has_scientific_notation': r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$',
             'has_double_decimals': r'^[+-]?\d+(?:\.\d+){2,}$',
             'has_spaces': r'^\s+[+-]?\d+(?:\.\d+)?$|^[+-]?\d+(?:\.\d+)?\s+$|^\s+[+-]?\d+(?:\.\d+)?\s+$',
             'is_null': None,
