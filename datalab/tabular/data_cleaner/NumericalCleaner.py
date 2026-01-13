@@ -193,7 +193,7 @@ class NumericalCleaner(DataCleaner):
 
         for col in self.df[self.columns]:
             # creating a mask of matched values
-            mask = self.df[col].astype(str).str.match(commas_pattern, na=False)
+            mask = self.df[col].astype('string').str.match(commas_pattern, na=False)
             # replacing commas with decimals in those values
             self.df.loc[mask, col]= self.df.loc[mask, col].astype(str).str.replace(',', '.')
 
@@ -218,18 +218,24 @@ class NumericalCleaner(DataCleaner):
         '''
         from decimal import Decimal
 
-        pattern = r'^[+-]?\d+(?:([.,])\d+)?[eE][+-]?\d+$'
+        pattern = r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$'
         
         scientific_notation_dict = {}
 
         def scientific_notation_to_number(text):
-            text = text.replace(',', '.').replace('E', 'e')
-            return format(Decimal(text), 'f')
+            text = text.strip().replace(',', '.').replace('E', 'e')
+            try:
+                return format(Decimal(text), 'f')
+            except:
+                return text
 
         for col in self.df[self.columns]:
+            before = self.df[col].copy()
             mask = self.df[col].astype(str).str.match(pattern)
             self.df.loc[mask, col] = self.df.loc[mask, col].apply(scientific_notation_to_number)
-            
+            after = self.df[col]
+            self.track_not_cleaned(col=col, method='convert_scientific_notation_to_numbers',mask=mask, before=before, after=after )
+    
         return self.df
 
     def convert_text_to_numbers(self, text_and_number: dict[str,str]=None)-> pd.DataFrame:
@@ -276,9 +282,11 @@ class NumericalCleaner(DataCleaner):
 
             for column in self.df[self.columns]:
 
-                self.df[column] = self.df[column].str.replace(text, str(number))
+                self.df[column] = self.df[column].astype('string').str.replace(text, str(number))
 
             logger.info(f"Converted '{text}' to '{number}'.")
 
         return self.df
+
+    
 
