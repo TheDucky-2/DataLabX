@@ -1,4 +1,5 @@
 import pandas as pd
+import polars as pl
 
 class DataCleaner:
     
@@ -37,29 +38,32 @@ class DataCleaner:
 
         return self.df.drop_duplicates(subset=in_columns)
     
-    def track_not_cleaned(self, *, method:str, col:str, before: pd.Series, mask:pd.Series, after:pd.Series):
+    def track_not_cleaned(self, *, method:str, col:str, before: pd.Series|pl.Series, mask:pd.Series|pl.Series, after:pd.Series|pl.Series):
 
         if not isinstance(method, str):
             raise TypeError(f"'method' must be a str, got {type(method)}")
 
         if not isinstance(col, str):
             raise TypeError(f"'col' must be a str, got {type(col)}")
-
-        if not isinstance(before, pd.Series):
-            raise TypeError(f"'before' must be a str, got {type(before)}")
-
-        if not isinstance(mask, pd.Series):
-            raise TypeError(f"'mask' must be a str, got {type(mask)}")
-
-        if not isinstance(after, pd.Series):
-            raise TypeError(f"'after' must be a str, got {type(after)}")
-
+        
+        def series_to_pandas(series):
+            if isinstance(series, pd.Series):
+                return series
+            if isinstance(series, pl.Series):
+                return series.to_pandas()
+            else:
+                raise TypeError(f'Expected pandas or polars Series, got {type(series)}')
+        
+        before = series_to_pandas(before)
+        mask = series_to_pandas(mask)
+        after = series_to_pandas(after)
+        
         # if conversion failed, 
         cleaning_failed = mask & (before == after)
 
         if cleaning_failed.any():
             self.not_cleaned.setdefault(col, {})
-            self.not_cleaned[col].setdefault(method, set() )
+            self.not_cleaned[col].setdefault(method, set())
 
             self.not_cleaned[col][method].update(before[cleaning_failed].tolist())
 
