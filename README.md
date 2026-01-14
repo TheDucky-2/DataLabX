@@ -34,31 +34,24 @@ Provide a single, guided ecosystem for understanding and preparing data - with s
 
 ## What makes DataLab different?
 
-Most data libraries assume your dataset is already clean but in real projects, it rarely is.
+Real-world data is messy. Often, numbers aren’t really numbers, text has hidden symbols, units, or placeholders, and missing values are everywhere.  
 
-Real-world data is often inconsistent, partially missing, and filled with symbols, units, placeholders, or human-entered text. 
+Most libraries assume your data is already clean - DataLab doesn’t.
 
-Even values labeled as 'numeric' are frequently unreliable.
+Instead, it helps you **see what’s really in your data** before taking action:
 
-**DataLab is built for this messy reality.**
+- Detect hidden formatting issues and inconsistencies  
+- Reveal missing values and patterns  
+- Identify outliers and extreme values  
+- Understand skewness and distributions  
 
-Instead of immediately dropping, filling, or converting values, DataLab helps you understand what’s actually in your data first.
-
-It reveals value distributions, hidden corruption (mixed formats, units, currencies), skewness, outliers, and extreme values before they distort analysis.
-
-By making data behavior visible and explainable before any transformation, DataLab enables safer cleaning decisions.
-
-This is especially needed in cases of external or uncertain datasets where blind automation risks losing important signals.
-
-**The result is safer cleaning, preprocessing, fewer silent errors, and data you actually understand before using it for analysis or decision-making.**
+By **visualizing and explaining the data first**, you make safer cleaning decisions, avoid silent mistakes, and build a solid foundation for analysis or modeling.
 
 ## How DataLab Works
 
 DataLab is built around a simple idea:
 
 ``Different types of data need different ways of thinking.``
-
-DataLab automatically understands your data and guides you through the right workflow.
 
 With DataLab, you can:
 
