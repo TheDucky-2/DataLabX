@@ -21,7 +21,7 @@ It means checking your data to see:
 - Whether data is numbers, text, or date-time
 - If anything looks unusual or suspicious
 
-Data Diagnosis is required because if your data is 'sick', anything you build using it (like visualizations, analysis, or predictions) will be unreliable.
+> Data Diagnosis is required because if your data is 'sick', anything you build using it (like visualizations, analysis, or predictions) will be unreliable.
 
 ## What Can I Diagnose?
 
