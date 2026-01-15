@@ -156,9 +156,9 @@ class DirtyDataDiagnosis:
         # patterns is a dictionary of available methods and regex patterns to detect them 
         patterns = {
             'is_valid': r'^[+-]?\d+(\.\d+)?$',
+            'is_dirty': r'^[+-]?\d+(\.\d+)?$',  # keeping the same as 'is_valid' and since everything that is not valid will be dirty
             'is_text': r'^[A-Za-z ]+$',
             'is_symbol': r'^[^A-Za-z0-9]$',
-            'is_dirty': r'^[+-]?\d+(\.\d+)?$',
             'is_missing': None,
             'is_scientific_notation': r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$',
             'has_units': r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$',
@@ -167,7 +167,8 @@ class DirtyDataDiagnosis:
             'has_currency': r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$',
             'has_double_decimals': r'^[+-]?\d+(?:\.\d+){2,}$',
             'has_spaces': r'^\s+[+-]?\d+(?:\.\d+)?$|^[+-]?\d+(?:\.\d+)?\s+$|^\s+[+-]?\d+(?:\.\d+)?\s+$',
-            'has_decimals': r'^[+-]?\d*\.\d+$'
+            'has_decimals': r'^[+-]?\d*\.\d+$',
+            'has_text': r'(?i)(?:[A-Za-z]+.*\d+|\d+.*[A-Za-z])'
             }
 
         # excluding index column so that it is not involved in diagnosis 
@@ -180,12 +181,18 @@ class DirtyDataDiagnosis:
 
             for method, pattern in patterns.items():
                 
-                if method == 'is_null':
+                if method == 'is_missing':
                     pattern_mask = series.is_null()
 
                 elif method == 'is_dirty':
 
-                    pattern_mask = ~series.str.contains(patterns['is_dirty'])
+                    pattern_mask = ~series.str.contains(patterns['is_valid'])
+
+                elif method == 'has_text':
+                    # ensuring that only text that is not part of units or scientific notation is detected
+                    pattern_mask = (series.str.contains(patterns['has_text'])
+                     & ~series.str.contains(patterns['has_units'])
+                     & ~series.str.contains(patterns['is_scientific_notation']))
 
                 else:
                     pattern_mask = series.str.contains(pattern)
