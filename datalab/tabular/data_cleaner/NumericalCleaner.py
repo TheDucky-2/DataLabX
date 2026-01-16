@@ -159,18 +159,34 @@ class NumericalCleaner(DataCleaner):
             NumericalCleaner(df).remove_units()
         '''
         # pattern for detecting rows containing units
-        detect_units_pattern = r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'
+        UNITS_PATTERN = r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'
 
         # pattern for detecting only text, so we can use this to replace the units
         units = r'\s*[A-Za-z]+$'
+        
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
-        for col in self.df[self.columns]:
+        for col in polars_df.columns:
 
-            unit_mask = self.df[col].astype('string').str.match(detect_units_pattern, na=False)
+            before = polars_df.select(pl.col(col)).to_series()
+            mask = polars_df.select(pl.col(col).str.contains(UNITS_PATTERN)).to_series()
+            polars_df = polars_df.with_columns(
+                pl.when(pl.col(col).str.contains(UNITS_PATTERN))
+                .then(pl.col(col).str.replace_all(units, ""))
+                .otherwise(pl.col(col))
+                )
+            after = polars_df.select(pl.col(col)).to_series()
+        
+            self.track_not_cleaned(col = col, method= 'remove_units', before = before, mask = mask, after = after)
 
-            self.df.loc[unit_mask, col] = self.df.loc[unit_mask, col].astype('string').str.replace(units, "", regex=True)
-
-        return self.df
+        if self.inplace:
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            logger.info(f'Removed units in place.')
+            return None    
+        else:
+            df = BackendConverter(polars_df).polars_to_pandas()
+            logger.info(f'Removed units.')
+            return df
 
     def remove_currency_symbols(self)-> pd.DataFrame:
         '''
