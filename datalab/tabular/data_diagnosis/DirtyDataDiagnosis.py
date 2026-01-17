@@ -91,24 +91,25 @@ class DirtyDataDiagnosis:
 
         return commas_and_decimals_count
 
-    def diagnose_numbers(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
+    def diagnose_numbers(self, show_available_methods: bool=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
             Detects patterns and common formatting issues in numbers in each column of the DataFrame.
 
             The following diagnostics are computed per column:
 
             - is_valid:                Values containing only valid integers or decimals (e.g: 1000, -10.048)
-            - is_text:               Values containing alphabetic characters and spaces ('unknown', 'error', 'missing', what)
+            - is_text:                 Values containing alphabetic characters and spaces ('unknown', 'error', 'missing', what)
             - is_dirty:                Values that are not strictly numeric (e.g: approx 1000, $100,00CD#44)
-            - is_missing:                 Values that are null or missing values (pandas missing types- NA or NaN)
-            - has_commas:              Numeric values containing comma separators (e.g: 10,000 or 1,000,000)
-            - has_decimals:            Numeric values containing decimal points (e.g: -1.62, 1000.44)
-            - has_units:               Numeric values suffixed with alphabetic units (e.g., "10kg")
-            - has_symbols:             Values containing non-alphanumeric or special symbols (e.g: '?', '/' , '.')
-            - has_currency:            Values containing currency symbols (prefix or suffix) (e.g. $10 or 10$)
-            - is_scientific_notation: Values expressed in scientific notation (e.g: 1.06E+1)
-            - has_spaces:              Values that contain leading or trailing spaces (e.g: '  missing', '1.066 ', '1.34    ')
-            - has_double_decimals:     Values that contain double decimals (e.g: 1.34.567, 1.4444.0000)
+            - is_missing:              Values that are null or missing values (pandas missing types- NA or NaN)
+            - is_scientific_notation:  Numbers expressed in scientific notation (e.g: 1.06E+1)
+            - has_commas:              Numbers that contain commas (e.g: 10,000 or 1,000,000)
+            - has_decimals:            Numbers that contain decimal points (e.g: -1.62, 1000.44)
+            - has_units:               Numbers that are suffixed with alphabetical units (e.g: '10kg', '100cm')
+            - has_symbols:             Numbers containing non-alphanumeric or special symbols (e.g: '?', '/' , '.')
+            - has_currency:            Numbers containing currency symbols (prefix or suffix) (e.g. $10 or 10$)
+            - has_spaces:              Numbers that contain leading or trailing spaces (e.g: '  missing', '1.066 ', '1.34    ')
+            - has_multiple_decimals:     Numbers that contain double decimals (e.g: 1.34.567, 1.4444.0000)
+            - has_multiple_commas:     Numbers that contain more than one commas (e.g: '9,628,62' or '1234,56')
 
             Parameters:
             -----------
@@ -151,7 +152,7 @@ class DirtyDataDiagnosis:
         # passing dataframe including the new column 'index'
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
-        numeric_diagnosis={}
+        numeric_diagnosis = {}
 
         # patterns is a dictionary of available methods and regex patterns to detect them 
         patterns = {
@@ -165,7 +166,8 @@ class DirtyDataDiagnosis:
             'has_symbols': r'[^A-Za-z0-9\s,.+$€£¥₹₩₺₫₦₱₪฿₲₴₡-]',
             'has_commas': r'\d[\d.,]*,\d',
             'has_currency': r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(\.\d+)?$|^\d[\d,]*(\.\d+)?\s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$',
-            'has_double_decimals': r'^[+-]?\d+(?:\.\d+){2,}$',
+            'has_multiple_decimals': r'^[+-]?\d*(?:\.\d+){2,}$',
+            'has_multiple_commas': r'^[+-]?\d*(?:,\d+){2,}$',
             'has_spaces': r'^\s+[+-]?\d+(?:\.\d+)?$|^[+-]?\d+(?:\.\d+)?\s+$|^\s+[+-]?\d+(?:\.\d+)?\s+$',
             'has_decimals': r'^[+-]?\d*\.\d+$',
             'has_text': r'(?i)(?:[A-Za-z]+.*\d+|\d+.*[A-Za-z])'
@@ -189,7 +191,7 @@ class DirtyDataDiagnosis:
                     pattern_mask = ~series.str.contains(patterns['is_valid'])
 
                 elif method == 'has_text':
-                    # ensuring that only text that is not part of units or scientific notation is detected
+                    # ensuring that only text that is not units or scientific notation is detected
                     pattern_mask = (series.str.contains(patterns['has_text'])
                      & ~series.str.contains(patterns['has_units'])
                      & ~series.str.contains(patterns['is_scientific_notation']))
