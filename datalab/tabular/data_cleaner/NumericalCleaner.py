@@ -281,7 +281,7 @@ class NumericalCleaner(DataCleaner):
         '''
         from decimal import Decimal
 
-        pattern = r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$'
+        SCIENTIFIC_NOTATION_PATTERN = r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$'
         
         scientific_notation_dict = {}
 
@@ -292,14 +292,27 @@ class NumericalCleaner(DataCleaner):
             except:
                 return text
 
-        for col in self.df[self.columns]:
-            before = self.df[col].copy()
-            mask = self.df[col].astype(str).str.match(pattern)
-            self.df.loc[mask, col] = self.df.loc[mask, col].apply(scientific_notation_to_number)
-            after = self.df[col]
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+        
+        for col in polars_df.columns:
+            before = polars_df.select(pl.col(col)).to_series()
+            mask = polars_df.select(pl.col(col).str.contains(SCIENTIFIC_NOTATION_PATTERN)).to_series()
+            polars_df = polars_df.with_columns(
+                pl.when(pl.col(col).str.contains(SCIENTIFIC_NOTATION_PATTERN))
+                .then(pl.col(col).map_elements(scientific_notation_to_number))
+                .otherwise(pl.col(col))
+            )
+            after = polars_df.select(pl.col(col)).to_series()
             self.track_not_cleaned(col=col, method='convert_scientific_notation_to_numbers',mask=mask, before=before, after=after )
-    
-        return self.df
+
+        if self.inplace:
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            logger.info('Converted scientific notation to readable numbers in place.')
+            return None
+        else:
+            df = BackendConverter(polars_df).polars_to_pandas()
+            logger.info('Converted scientific notation to readable numbers.')
+            return df
 
     def convert_text_to_numbers(self, text_to_number:dict[str, str]=None)-> pd.DataFrame:
         '''
