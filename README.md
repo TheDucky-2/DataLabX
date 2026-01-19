@@ -263,13 +263,6 @@ datalab/
 
 - Full library review + stability
   
-**v0.6 -> v1.0**
-
-- Deep Learning (PyTorch + JAX optimizations)
-- GNNs / GATs (Graph Neural Networks using PyG)
-- Complete Tabular + Graph Ecosystem
-- Backend auto-selection (Polars/Pandas)
-  
 ## Why would I even use DataLab?
 
 Because most data problems don’t come from bad models - **they come from poor data understanding**.
