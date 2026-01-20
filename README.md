@@ -2,7 +2,7 @@
 
 # 📊 DataLab (v0.1 Pre-Release)
 
-A beginner-friendly Python library for understanding, diagnosing, and preparing real-world data.
+A Python library for understanding, diagnosing, and preparing real-world data.
 
 ## What is DataLab?
 
@@ -34,18 +34,17 @@ Provide a single, guided ecosystem for understanding and preparing data - with s
 
 ## What makes DataLab different?
 
-Real-world data is messy. Often, numbers aren’t really numbers, text has hidden symbols, units, or placeholders, and missing values are everywhere.  
+Real-world data is messy - often very messy.
 
-Most libraries assume your data is already clean - DataLab doesn’t.
+Numbers may not be numeric, text can hide symbols or replacements, and missing data itself can appear in many different forms.
 
-Instead, it helps you **see what’s really in your data** before taking action:
+``DataLab assumes your data is dirty by default``.
 
-- Detect hidden formatting issues and inconsistencies  
-- Reveal missing values and patterns  
-- Identify outliers and extreme values  
-- Understand skewness and distributions  
+Because of this, it performs full, type-aware detection of numerical, categorical, and datetime data, using regex-based checks to surface hidden issues before any cleaning.
 
-By **visualizing and explaining the data first**, you make safer cleaning decisions, avoid silent mistakes, and build a solid foundation for analysis or modeling.
+DataLab was built on extremely dirty datasets (≈77–90% dirty) and tested on datasets with up to ~5 million rows for diagnosis and cleaning.
+
+By showing what your data is actually doing first, DataLab makes diagnosis and cleaning simpler, safer, and intentional, helping you build a reliable foundation for analysis or modeling.
 
 ## How DataLab Works
 
