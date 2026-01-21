@@ -8,7 +8,7 @@ class DirtyDataDiagnosis:
 
     def __init__(self, df: pd.DataFrame, columns: list = None):
         '''
-        Initializing the Numerical Dirty Data Diagnosis
+        Initializing the Dirty Data Diagnosis
         '''
         self.df = df
      
@@ -83,9 +83,9 @@ class DirtyDataDiagnosis:
         numeric_diagnosis = {}
 
         # patterns is a dictionary of available methods and regex patterns to detect them 
-        patterns = {
+        PATTERNS = {
             'is_valid': r'^[+-]?\d+(\.\d+)?$',
-            'is_dirty': r'^[+-]?\d+(\.\d+)?$',  # keeping the same as 'is_valid' and since everything that is not valid will be dirty
+            'is_dirty': r'^[+-]?\d+(\.\d+)?$',  # keeping the same as 'is_valid' since everything that is not valid will be dirty
             'is_text': r'^[A-Za-z ]+$',
             'is_symbol': r'^[^A-Za-z0-9]$',
             'is_missing': None,
@@ -109,20 +109,20 @@ class DirtyDataDiagnosis:
             numeric_diagnosis[col] = {}
             series = polars_df[col]
 
-            for method, pattern in patterns.items():
+            for method, pattern in PATTERNS.items():
                 
                 if method == 'is_missing':
                     pattern_mask = series.is_null()
 
                 elif method == 'is_dirty':
 
-                    pattern_mask = ~series.str.contains(patterns['is_valid'])
+                    pattern_mask = ~series.str.contains(PATTERNS['is_valid'])
 
                 elif method == 'has_text':
                     # ensuring that only text that is not units or scientific notation is detected
-                    pattern_mask = (series.str.contains(patterns['has_text'])
-                     & ~series.str.contains(patterns['has_units'])
-                     & ~series.str.contains(patterns['is_scientific_notation']))
+                    pattern_mask = (series.str.contains(PATTERNS['has_text'])
+                     & ~series.str.contains(PATTERNS['has_units'])
+                     & ~series.str.contains(PATTERNS['is_scientific_notation']))
 
                 else:
                     pattern_mask = series.str.contains(pattern)
@@ -189,8 +189,8 @@ class DirtyDataDiagnosis:
 
         text_diagnosis = {}
 
-        patterns = {
-                'is_dirty': r'[^A-Za-z]',
+        PATTERNS = {
+                'is_dirty': r'^[^A-Za-z ]+$',
                 'is_symbol': r'^[^\p{L}]+$',
                 'is_empty': r'^$',
                 'has_symbols': r'\p{L}.*[^\p{L}]|[^\p{L}].*\p{L}',
@@ -206,13 +206,13 @@ class DirtyDataDiagnosis:
 
             series = polars_df[col]
 
-            for method, pattern in patterns.items():
+            for method, pattern in PATTERNS.items():
                 
                 if method == 'is_null': 
                     pattern_mask = series.is_null()
 
                 elif method == 'is_dirty':
-                    pattern_mask = series.str.contains(patterns['is_dirty'])
+                    pattern_mask = series.str.contains(PATTERNS['is_dirty'])
 
                 else:
                     pattern_mask = series.str.contains(pattern)
