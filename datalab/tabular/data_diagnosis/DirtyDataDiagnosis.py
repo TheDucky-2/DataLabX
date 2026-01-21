@@ -1,4 +1,4 @@
-from ..utils.Logger import datalab_logger
+²from ..utils.Logger import datalab_logger
 import pandas as pd
 import polars as pl
 
@@ -16,8 +16,6 @@ class DirtyDataDiagnosis:
             self.columns = [column for column in columns if column in self.df.columns]
         else:
             self.columns = self.df.columns
-
-        self.method_masks = {}
 
         logger.info(f'Dirty Data Diagnosis initialized!')
 
