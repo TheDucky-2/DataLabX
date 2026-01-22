@@ -29,15 +29,15 @@ class DirtyDataDiagnosis:
         else:
             self.columns = [column for column in columns if column in self.df.columns]
 
-        self.array_type = array_type
+        self.array_type= array_type
         self.conversion_threshold = conversion_threshold
 
-        logger.info(f'Dirty Data Diagnosis initialized!')
+        logger.info(f'Dirty Data Diagnosis initialized with {self.array_type} backend!')
 
     def diagnose_numbers(self, show_available_methods: bool=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
             Detects patterns and common formatting issues in numbers in each column of the DataFrame.
-
+res
             The following diagnostics are computed per column:
 
             - is_valid:                Values containing only valid integers or decimals (e.g: 1000, -10.048)
@@ -143,7 +143,7 @@ class DirtyDataDiagnosis:
                     pattern_mask = series.str.contains(pattern)
                 
                 # filtering pattern masks out of the polars dataframe 
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
+                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
                 # setting default index to be 'index'
                 result_df.set_index('index', inplace=True)
@@ -234,7 +234,7 @@ class DirtyDataDiagnosis:
 
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
                 
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
+                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
                 result_df.set_index('index', inplace=True)
 
@@ -245,8 +245,7 @@ class DirtyDataDiagnosis:
 
         return text_diagnosis
 
-    def diagnose_datetime(self, show_available_methods=False,array_type: str='auto', conversion_threshold: int=None):
-
+    def diagnose_datetime(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
         Detects patterns and formatting issues in date-time in one or multiple columns of the DataFrame.
 
@@ -324,7 +323,7 @@ class DirtyDataDiagnosis:
                     pattern_mask = series.str.contains(pattern)
                     
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
-                result_df =BackendConverter(pol_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
+                result_df =BackendConverter(pol_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
                 result_df.set_index('index', inplace=True)
 
