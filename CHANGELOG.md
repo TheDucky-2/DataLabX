@@ -11,7 +11,7 @@ The first stable public release on PyPI will be **0.1.0**.
 ## v0.1.0b2 - Jan 22, 2026
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLab **v0.1.b2** is a pre-release version with improvements in **performance, dirty data diagnosis, visualizations, and usability**.
+DataLab **v0.1.0b2** is a pre-release version with improvements in **performance, dirty data diagnosis, visualizations, and usability**.
 
 It provides a **Pandas-facing API**, so users always work with familiar Pandas DataFrames, while internally using **Polars** for performance and memory-efficient computations.  
 
@@ -112,7 +112,7 @@ Backend flexibility will be extended to other Polars-based classes in future rel
 ## **v0.1.0a4 – Dec 26, 2025**  
 **Status:** Alpha (pre-release – TestPyPI only)  
 
-v0.1.a4 focused on **missing data visualization, initial diagnosis workflows, and documentation improvements**.  
+v0.1.0a4 focused on **missing data visualization, initial diagnosis workflows, and documentation improvements**.  
 
 ### 🚀 Major Changes
 
