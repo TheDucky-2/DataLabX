@@ -6,20 +6,35 @@ logger = datalab_logger(name = __name__.split('.')[-1])
 
 class DirtyDataDiagnosis:
 
-    def __init__(self, df: pd.DataFrame, columns: list = None):
+    def __init__(self, df: pd.DataFrame, columns: list = None, array_type='auto', conversion_threshold = None):
         '''
         Initializing the Dirty Data Diagnosis
         '''
+        if not isinstance(df, pd.DataFrame):
+            raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
+
+        if not isinstance(columns, (list, type(None))):
+            raise TypeError(f'columns must be list of strings or type None, got {type(columns).__name__}')
+
+        if not isinstance(array_type, str):
+            raise TypeError(f'array type must be a string, got {type(array_type).__name__}')
+
+        if not isinstance(conversion_threshold, (int, type(None))):
+            raise TypeError(f'conversion threshold must be an integer or type None, got {type(conversion_threshold).__name__}')
+
         self.df = df
      
-        if columns is not None:
-            self.columns = [column for column in columns if column in self.df.columns]
+        if columns is None:
+            self.columns = self.df.columns.tolist()
         else:
-            self.columns = self.df.columns
+            self.columns = [column for column in columns if column in self.df.columns]
+
+        self.array_type = array_type
+        self.conversion_threshold = conversion_threshold
 
         logger.info(f'Dirty Data Diagnosis initialized!')
 
-    def diagnose_numbers(self, show_available_methods: bool=False, array_type: str='auto', conversion_threshold: int=None)-> dict[str, dict[str, pd.DataFrame]]:
+    def diagnose_numbers(self, show_available_methods: bool=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
             Detects patterns and common formatting issues in numbers in each column of the DataFrame.
 
@@ -128,7 +143,7 @@ class DirtyDataDiagnosis:
                     pattern_mask = series.str.contains(pattern)
                 
                 # filtering pattern masks out of the polars dataframe 
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=array_type, conversion_threshold=conversion_threshold)
+                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
 
                 # setting default index to be 'index'
                 result_df.set_index('index', inplace=True)
@@ -140,7 +155,7 @@ class DirtyDataDiagnosis:
 
         return numeric_diagnosis
 
-    def diagnose_text(self, show_available_methods=False, array_type: str='auto', conversion_threshold: int=None)-> dict[str, dict[str, pd.DataFrame]]:
+    def diagnose_text(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
         '''
         Detects patterns and common formatting issues in text in each column of the DataFrame.
 
@@ -219,7 +234,7 @@ class DirtyDataDiagnosis:
 
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
                 
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=array_type, conversion_threshold=conversion_threshold)
+                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
 
                 result_df.set_index('index', inplace=True)
 
@@ -309,7 +324,7 @@ class DirtyDataDiagnosis:
                     pattern_mask = series.str.contains(pattern)
                     
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
-                result_df =BackendConverter(pol_df.filter(pattern_mask)).polars_to_pandas(array_type=array_type, conversion_threshold=conversion_threshold)
+                result_df =BackendConverter(pol_df.filter(pattern_mask)).polars_to_pandas(array_type=self.array_type, conversion_threshold=self.conversion_threshold)
 
                 result_df.set_index('index', inplace=True)
 
