@@ -83,48 +83,26 @@ def load_tabular(file_path: str, file_type: str = None, array_type='auto', conve
 
     if file_type == 'csv':
         polars_df = pl.read_csv(file_path)
-        df_size = polars_df.height
-
-        if array_type == 'auto':
-            if df_size > conversion_threshold:
-                return polars_df.to_pandas(use_pyarrow_extension_array=True)
-            else:
-                return polars_df.to_pandas()
-
-        if array_type == 'numpy':
-            return polars_df.to_pandas()
-
-        elif array_type == 'pyarrow':
-            return polars_df.to_pandas(use_pyarrow_extension_array=True)
-
-        else:
-            raise ValueError(f"Supported array types are: 'numpy', 'pyarrow' or 'auto', got {array_type}")
-    
-    elif file_type in ['xlsx', 'xls']:
-        return pd.read_excel(file_path, **kwargs)
-    
     elif file_type == 'parquet':
         polars_df = pl.read_parquet(file_path)
-        df_size = polars_df.height
-
-        if array_type == 'auto':
-            if df_size > conversion_threshold:
-                return polars_df.to_pandas(use_pyarrow_extension_array=True)
-            else:
-                return polars_df.to_pandas()
-
-        elif array_type == 'numpy':
-            return polars_df.to_pandas()
-        
-        elif array_type == 'pyarrow':
-            return polars_df.to_pandas(use_pyarrow_extension_array=True)
-        
-        else:
-            raise ValueError(f"Supported array types are: 'numpy', 'pyarrow' or 'auto', got {array_type}")
-    
     elif file_type == 'json':
-        return pd.read_json(file_path, **kwargs)
-
+        polars_df = pl.read_json(file_path)
+    elif file_type in ['xlsx', 'xls']:
+        return pd.read_excel(file_path, **kwargs)
     else:
         raise ValueError(f'Unsupported file type: {file_type}')
+
+    df_size = polars_df.height
+
+    if array_type == 'auto':
+        if df_size > conversion_threshold:
+            return polars_df.to_pandas(use_pyarrow_extension_array=True)
+        else:
+            return polars_df.to_pandas()
+
+    if array_type == 'numpy':
+        return polars_df.to_pandas()
+
+    elif array_type == 'pyarrow':
+        return polars_df.to_pandas(use_pyarrow_extension_array=True)
     
