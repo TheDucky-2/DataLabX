@@ -2,26 +2,34 @@ import pandas as pd
 from pathlib import Path
 import polars as pl
 
-def load_tabular(file_path: str, file_type: str = None, conversion_threshold:int=None, **kwargs) -> pd.DataFrame:
+def load_tabular(file_path: str, file_type: str = None, array_type='auto', conversion_threshold:int=None, **kwargs) -> pd.DataFrame:
     '''
-    ----- Welcome to the first step of this workflow -------------
-
     Use this function for loading your tabular data as a pandas DataFrame.
     
     Parameters:
     ------------
+
     file_path: str
-        Path of your data file
+        Path of your data file or just file name
   
-    file_type: str, default is 'csv'
+    file_type: str (default is 'csv')
         Supported File Types: 'csv', 'excel, 'parquet', 'JSON'
-    
+
+    array_type: str (default is 'auto')
+        Determines the array/backend type used in pandas operations.
+
+        Options are:
+
+        - 'numpy' -> usual NumPy backend (slower for very large datasets with object types)
+        - 'pyarrow' -> PyArrow backend for better performance on large datasets
+        - 'auto' -> automatically selects backend based on input and dataset size 
+            
     conversion_threshold: int (default is 100000)
-            The number of rows at which the conversion from Polars to pandas switches to Arrow-backed pandas arrays for performance. 
-            Users can increase or decrease this threshold depending on their dataset size and memory availability.
+        The number of rows at which the conversion from Polars to pandas switches to Arrow-backed pandas arrays for performance. 
+        Users can increase or decrease this threshold depending on their dataset size and memory availability.
        
     kwargs: dict
-        Extra arguments you want to pass into pandas file readers.
+        Extra arguments you want to pass into pandas file readers (for excel and JSON files only).
      
     Returns:
     ---------
@@ -29,24 +37,39 @@ def load_tabular(file_path: str, file_type: str = None, conversion_threshold:int
     
     Usage Recommendation:
     ---------------------
-        Use this function for loading your dataset without having to memorize multiple functions for reading different data files.
+        Use this function to load datasets quickly without memorizing multiple read functions.
+        Polars -> pandas conversion ensures efficient memory usage and stability, even on low-RAM systems.
 
     Considerations:
-    -------------- 
-        If you get an error while reading parquet file, use **kwargs: engine = 'fastparquet' 
-        E.g: load_tabular('your_file_name.parquet', engine='fastparquet')
+    ---------------
+        Adjust array_type and conversion_threshold for very large datasets to optimize performance and memory usage.
 
     Example:
     --------------
-    >>>   load_tabular('example.csv')   
-    >>>   load_tabular('example.xlsx')
-    >>>   load_tabular('some/path/to/my/csv/file.csv')
-    >>>   load_tabular('example.json')
-    
+    >>> # Load a CSV file (default parameters)
+        df1 = load_tabular('example.csv')
+
+    >>> # Load an Excel file
+        df2 = load_tabular('example.xlsx', file_type='excel')               # file_type is optional
+
+    >>> # Load a Parquet file using PyArrow backend
+        df3 = load_tabular('example.parquet', array_type='pyarrow')
+
+    >>> # Load a large CSV file with custom conversion threshold
+        df4 = load_tabular('large_dataset.csv', conversion_threshold=2000000)
+
+    >>> # Load a JSON file from a subdirectory with auto array backend
+        df5 = load_tabular('some/path/to/data.json') 
     '''
     if not isinstance(file_path, (str, Path)):
         raise TypeError('file path must be a string or a file path')
 
+    if not isinstance(file_type, (str, type(None))):
+        raise TypeError(f'file type must be a string, got {type(file_type).__name__}')     
+        
+    if not isinstance(array_type, str):
+            raise TypeError(f'array type must be a string, got {type(array_type).__name__}')
+    
     if not isinstance(conversion_threshold,(int, type(None))):
         raise TypeError(f'conversion threshold must be an integer, got {type(conversion_threshold).__name__} ')
 
@@ -59,25 +82,49 @@ def load_tabular(file_path: str, file_type: str = None, conversion_threshold:int
         conversion_threshold = 100_000 
 
     if file_type == 'csv':
-        scanned_df = pl.scan_csv(file_path)
-        polars_df = scanned_df.collect()
-        num_of_rows = polars_df.height
+        polars_df = pl.read_csv(file_path)
+        df_size = polars_df.height
 
-        if num_of_rows >= conversion_threshold:
-            df = polars_df.to_pandas(use_pyarrow_extension_array=True)
+        if array_type == 'auto':
+            if df_size > conversion_threshold:
+                return polars_df.to_pandas(use_pyarrow_extension_array=True)
+            else:
+                return polars_df.to_pandas()
+
+        if array_type == 'numpy':
+            return polars_df.to_pandas()
+
+        elif array_type == 'pyarrow':
+            return polars_df.to_pandas(use_pyarrow_extension_array=True)
+
         else:
-            df = polars_df.to_pandas()
+            raise ValueError(f"Supported array types are: 'numpy', 'pyarrow' or 'auto', got {array_type}")
     
     elif file_type in ['xlsx', 'xls']:
-        df = pd.read_excel(file_path, **kwargs)
+        return pd.read_excel(file_path, **kwargs)
     
     elif file_type == 'parquet':
-        df = pd.read_parquet(file_path, **kwargs)
+        polars_df = pl.read_parquet(file_path)
+        df_size = polars_df.height
+
+        if array_type == 'auto':
+            if df_size > conversion_threshold:
+                return polars_df.to_pandas(use_pyarrow_extension_array=True)
+            else:
+                return polars_df.to_pandas()
+
+        elif array_type == 'numpy':
+            return polars_df.to_pandas()
+        
+        elif array_type == 'pyarrow':
+            return polars_df.to_pandas(use_pyarrow_extension_array=True)
+        
+        else:
+            raise ValueError(f"Supported array types are: 'numpy', 'pyarrow' or 'auto', got {array_type}")
     
     elif file_type == 'json':
-        df = pd.read_json(file_path, **kwargs)
+        return pd.read_json(file_path, **kwargs)
 
     else:
         raise ValueError(f'Unsupported file type: {file_type}')
     
-    return df
