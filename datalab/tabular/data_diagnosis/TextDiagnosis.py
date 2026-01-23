@@ -1,98 +1,138 @@
-from ..utils import BackendConverter
+"""Diagnoses the Text columns in your tabular dataset"""
+
+from ..utils.BackendConverter import BackendConverter
+from ..utils.Logger import datalab_logger
 
 import pandas as pd
 import polars as pl
-
 import polars.selectors as cs
 
-class TextDiagnosis():
+logger = datalab_logger(name = __name__.split('.')[-1])
+
+class TextDiagnosis:
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
         from pathlib import Path
-        '''
-        Initializing the Diagnosis
+        """
+        Initializing Text Diagnosis.
 
         Parameters:
         -----------
         df: pd.DataFrame
-            A pandas dataframe you wish to diagnose
+            A pandas dataframe you wish to diagnose.
 
-        columns: list
-            A list of columns you wish to apply numerical cleaning on
-
-        Considerations:
-            This class uses polars under the hood for text processing, since pandas was extremely slow.
-            
-            However, it accepts pandas DataFrame as input and returns a pandas DataFrame as output.
-        '''
+        columns: list, optional
+            A list of columns you wish to diagnose text in, by default None.
+        
+        """
         self.df = df.select_dtypes(include = ['string', 'object', 'category'])
 
         if columns is not None:
             self.columns = [column for column in columns if column in self.df.columns]
         else:
             self.columns = self.df.columns
+
+        logger.info(f'Text Diagnosis Initialized.')
     
-    def detect_empty_string(self) -> pd.DataFrame:
-        '''
+    def detect_empty_string(self) -> dict[str, pd.DataFrame]:
+        """
         Filters rows with empty strings for each column of Text DataFrame (string, object or category type columns).
-        
-        Return:
-            df : pd.DataFrame
-            A pandas DataFrame of rows with empty strings.
-        
-        Usage Recommendation:
+
+        Returns
+        --------
+        dict[str, pd.DataFrame]
+            A dictionary of columns names with rows of DataFrame containing empty strings as text
+
+        Usage Recommendation
+        ---------------------
             Use this function when you want to diagnose rows with empty strings during text diagnosis.
 
-        Considerations:
+        Considerations
+        ---------------
             This function uses polars's filter method to filter out rows where value is an empty string ("").
 
-        Example: 
-            TextDiagnosis(df).detect_empty_string()
-		    ->
-			    Returns all rows with empty_strings
+        Example:
+        --------
+        >>> TextDiagnosis(df).detect_empty_string()
         
-        '''
-        # converting pandas -> polars
+        """
+        empty_strings_dict = {}
+
+        # generating index as a column
+        self.df = self.df.reset_index()
+
+        # converting pandas -> polars with the index column, to preserve rows
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
-        # setting an extra column called 'Index' to preserve row id.
-        polars_df = polars_df.with_row_index('Index')
+        columns_to_diagnose = [column for column in polars_df.columns if column!='index']
         
-        # checking for empty string in any column  while also excluding 'Index' column
-        empty_string_df = polars_df.filter(pl.any_horizontal(cs.exclude('Index').str.len_chars() == 0))
+        for column in columns_to_diagnose:
+            # ensuring that length of string should be equal to 0
+            series_mask = (polars_df[column].str.len_chars() == 0)
+            
+            result_df = BackendConverter(polars_df.filter(series_mask)).polars_to_pandas()
 
-        # converting back to Pandas
-        empty_string_df = BackendConverter(empty_string_df).polars_to_pandas()
+            result_df.set_index('index', inplace=True)
 
-        # setting 'Index' column as the index to preserve row id
-        empty_string_df.index = empty_string_df['Index']
+            empty_strings_dict[column] = result_df
 
-        # removing the extra 'Index' column
-        empty_string_df.drop(columns='Index', inplace=True)
+        return empty_strings_dict
+
+    def detect_splitters(self, splitters:list = None)-> dict[str, pd.DataFrame]:
+        """
+        Filters rows with splitters for one or multiple columns of Text DataFrame.
+
+        Parameters
+        ----------
+        splitters: list
+            A list of splitters that may be present in your text, default is ','
+
+        Returns
+        --------
+        dict[str, pd.DataFrame]
+            A dictionary of columns names with rows of DataFrame containing splitters in text
+
+        Usage Recommendation
+        ---------------------
+            Use this function when you want to diagnose rows of text where values are split.
+
+        Considerations
+        ---------------
+            This function uses polars's filter method to filter out rows where values have a splitter.
+
+        Example:
+        --------
+        >>> TextDiagnosis(df).detect_splitters()
         
-        return empty_string_df
+        """
 
-    def detect_splitters(self, splitters = [","]):
+        if not isinstance(splitters, (list, type(None))):
+            raise TypeError(f'splitters must be a list of strings, got {type(splitters).__name__}')
+
+        if splitters is None:
+            splitters = [","]
+        
+        splitters_dict = {}
+
+        self.df = self.df.reset_index()
 
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
-        polars_df = polars_df.with_row_index('Index')
+        columns_to_diagnose = [column for column in polars_df.columns if column!='index']
 
         # joining splitters to convert them into a regex pattern for detecting splitters
         joined_splitters=f'[{"".join(splitters)}]+'
 
         # filtering rowx where text contains splitters passed in by the user
-        splitters_df = polars_df.filter(
-        pl.any_horizontal(
-        [pl.col(column).str.contains(joined_splitters) for column in self.columns]))
+        for column in columns_to_diagnose:
+            series_mask = (polars_df[column].str.contains(joined_splitters))
+            
+            result_df = BackendConverter(polars_df.filter(series_mask)).polars_to_pandas()
+            # setting 'index' as index of pandas DataFrame
+            result_df.set_index('index', inplace=True)
 
-        df = BackendConverter(splitters_df).polars_to_pandas()
+            splitters_dict[column] = result_df
 
-        df.index = df['Index']
-
-        df.drop(columns='Index', inplace=True)
-        
-        return df
-
+        return splitters_dict
 
 
