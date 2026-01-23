@@ -1,11 +1,14 @@
-import pandas as pd
+"""Diagnoses the Categorical columns in your DataFrame"""
 
+import pandas as pd
+from ..utils.BackendConverter import BackendConverter
+# importing parent class
 from .Diagnosis import Diagnosis
 
 class CategoricalDiagnosis(Diagnosis):
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
-        '''
+        """
         Parameters
         -----------
 
@@ -15,8 +18,7 @@ class CategoricalDiagnosis(Diagnosis):
         columns : list or type(None)
             A list column names. 
             Use column names when you want to apply diagnosis only on the desired columns
-
-        ''' 
+        """
         super().__init__(df, columns)
 
         self.df = df.select_dtypes(include=['object', 'string', 'category'])
@@ -24,12 +26,16 @@ class CategoricalDiagnosis(Diagnosis):
         if columns is not None:
             self.columns = [column for column in df.columns if column in self.df.columns]
         else:
-            self.columns = df.columns
+            self.columns = df.columns.tolist()
         
     def count_unique_categories(self):
-        '''
-        Shows count of unique categories in one or multiple columns of DataFrame
-        '''
+        """Shows count of unique categories in one or multiple columns of DataFrame.
+        
+        Returns
+        --------
+        dict
+            A dictionary of count of unique categories in each column
+        """
         
         unique_categories = {}
 
@@ -39,8 +45,7 @@ class CategoricalDiagnosis(Diagnosis):
         return unique_categories
 
     def show_frequency(self, method='count'):
-        '''
-        Shows frequency ('count' or 'percent') of categories in one or multiple columns of DataFrame
+        """Shows frequency ('count' or 'percent') of categories in one or multiple columns of DataFrame.
 
         Parameters
         -----------
@@ -51,8 +56,7 @@ class CategoricalDiagnosis(Diagnosis):
 
             - 'count': Counts the number of unique values in each category (default)
             - 'percent': Calculates the percentage of values in each category
-                    
-        '''
+        """
         # using a dictionary for storing frequency of category values
         frequency_count = {}
 
@@ -71,5 +75,4 @@ class CategoricalDiagnosis(Diagnosis):
         # returning the dictionary of frequency percentage
         
         return frequency_count
-    
     

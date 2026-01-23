@@ -62,4 +62,10 @@ Documentation = "https://github.com/TheDucky-2/DataLab/tree/main/docs"
 Guides = "https://github.com/TheDucky-2/DataLab/tree/main/guides"
 Issues = "https://github.com/TheDucky-2/DataLab/issues"
 
+[tool.ruff]
+# Only checking for missing docstrings
+select = ["D100", "D101", "D103"]
+
+#ignoring common folders
+exclude = ["__pycache__", "venv", ".git"]
 
