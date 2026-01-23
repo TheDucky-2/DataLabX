@@ -1,17 +1,20 @@
+"""Provides a diagnosis of overall dataframe."""
+
 from ..data_loader import load_tabular
 from ..computations import Statistics
 from ..computations import Distribution
+from ..utils.Logger import datalab_logger
 
 from pathlib import Path
-
 import pandas as pd
 import numpy as np
+
+logger = datalab_logger(name = __name__.split('.')[-1])
 
 class Diagnosis:
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
-        '''
-        Initializing the Diagnosis
+        """Initializing the Diagnosis.
 
         Parameters
         -----------
@@ -21,29 +24,25 @@ class Diagnosis:
 
         columns: list
             A list of columns you wish to diagnose
-        '''
-
+        """
         # making sure that the passed df is a pandas DataFrame
-        if isinstance(df, pd.DataFrame):
-            self.df = df    
+        if not isinstance(df, pd.DataFrame):
+            raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
 
-        elif isinstance(df, (str, Path)):
-            self.df = load_tabular(df)     # reading if a file  
+        if not isinstance(columns, (list, type(None))):
+            raise TypeError(f'columns must be a list of column names, got {type(columns).__name__}')
 
-        else:
-            raise TypeError(f'df must be a pandas DataFrame or a file path, got {type(df).__name__}')
+        self.df = df
 
         if columns is None:
-            columns = df.columns.to_list()
-        # ensuring that the columns passed are in a list
-        elif not isinstance(columns, list):
-            raise TypeError(f'columns must be a list of column names, got {type(self.columns).__name__}')
+            self.columns = df.columns.to_list()
+        else:
+            self.columns = [column for column in columns if column in self.df.columns]
 
-        self.columns = [column for column in columns if column in df.columns]
+        logger.info(f'Data Diagnosis initialized with columns: {self.columns}')
 
-    def data_preview(self, number_of_rows=10):
-        '''
-        Shows a preview of N rows of your DataFrame
+    def data_preview(self, number_of_rows=10)-> pd.DataFrame:
+        """Shows a preview of N rows of your DataFrame.
 
         Parameters
         ----------
@@ -66,13 +65,11 @@ class Diagnosis:
         Example
         --------
         >>>     Diagnosis(df).data_preview(5)
-                
-        '''
+        """
         return self.df.head(number_of_rows)
 
-    def data_summary(self):
-        '''
-        Shows a summary of your DataFrame
+    def data_summary(self)-> dict[str]:
+        """Shows a summary of your DataFrame.
 
         Returns
         --------
@@ -85,10 +82,9 @@ class Diagnosis:
 
         Example
         --------
-        >>>     Diagnosis(df).data_summary()    
-        '''
+        >>>     Diagnosis(df).data_summary()
+        """
         summary = {
-
             'shape'        : self.df.shape,
             'columns'      : self.columns,
             'dtypes'       : self.df.dtypes,
@@ -97,8 +93,19 @@ class Diagnosis:
 
         return summary
 
-    def show_memory_usage(self, usage_by='total'):
+    def show_memory_usage(self, usage_by='total')-> pd.Series:
+        """Shows memory being used by your DataFrame.
 
+        Parameters
+        ----------
+        usage_by: str (default is 'total')
+            Shows memory usage of a DataFrame
+
+            Supported methods:
+
+            - 'total': Shows memory usage by whole DataFrame
+            - 'separate' : Shows memory usage per column
+        """
         if usage_by == 'total':
 
             total_usage = self.df.memory_usage(deep=True).sum()/(1024**2)
@@ -112,14 +119,14 @@ class Diagnosis:
             return separate_usage
 
     def detect_column_types(self) -> dict [str, list[str]]:
-        '''
-        Detect the column types (Categorical, Numerical, Datetime) for one or multiple columns of a DataFrame
-            
+        """Detect the column types (Categorical, Numerical, Datetime) for one
+        or multiple columns of a DataFrame.
+
         Returns
         --------
         dict
             Return a dictionary with list of column types.
-            
+
             Supported column datatypes:
 
             - Numerical  : List of Numerical type columns
@@ -130,8 +137,7 @@ class Diagnosis:
         ---------------------
             1. Use this function to check whether a column is categorized as 'Categorical or text', 'Numerical', or Datetime.
             2. Use 'ColumnConverter' to change column types if column type is not detected correctly.
-
-        '''
+        """
         self.column_types = {'Numerical': [], 'Datetime' :[], 'Categorical':[]}
 
         for col in self.df.columns:
@@ -147,9 +153,9 @@ class Diagnosis:
         return self.column_types 
 
     def show_unique_values(self) -> dict[list[str]]:
-        '''
-        Shows a list of unique values present in each column of the DataFrame
-            
+        """Shows a list of unique values present in each column of the
+        DataFrame.
+
         Returns
         --------
             dict
@@ -175,7 +181,7 @@ class Diagnosis:
                 'phone_number': ['123-456-7890', '-999', nan],
                 'is_active': [False, True, nan]
                 }
-        '''
+        """
         unique_values = {}
 
         for column in self.df.columns:
@@ -184,15 +190,15 @@ class Diagnosis:
 
         return unique_values  
 
-    def show_cardinality(self)-> dict:
-        '''
-        Shows the number of unique values that exist in one or multiple columns of the DataFrame.
+    def show_cardinality(self)-> dict[str, int]:
+        """Shows the number of unique values that exist in one or multiple
+        columns of the DataFrame.
 
         Returns
         --------
         dict
             A python dictionary of column names and cardinality values
-        
+
         Usage Recommendation
         ---------------------
             1. Use this function when you want to see how many unique values exist before using encoding your Categorical data.
@@ -200,7 +206,7 @@ class Diagnosis:
         Example
         --------
             Diagnosis(df).show_cardinality()
-        '''
+        """
         # using a dictionary to store values for each column
         cardinality={}
 
@@ -210,19 +216,31 @@ class Diagnosis:
 
         return cardinality
 
-    def show_duplicates(self, in_columns=None) -> pd.Series:
+    def show_duplicates(self, in_columns=None) -> pd.DataFrame:
+        """Shows duplicate values in one or multiple columns of the DataFrame.
+
+        Returns
+        -------
+        pd.DataFrame
+            A pandas DataFrame of duplicate values
+        """
 
         return self.df[self.df[self.columns].duplicated(subset=in_columns)]
 
-    def count_duplicates(self, in_columns=None ):
+    def count_duplicates(self, in_columns=None)-> int:
+        """Counts duplicate values in one or multiple columns of the DataFrame.
 
+        Returns
+        -------
+        int
+            Number of duplicate values
+        """
         return self.df[self.columns].duplicated(subset=in_columns).sum()
     
-    def get_numerical_columns(self):
-        '''
-        Separates Numerical (numbers) columns from rest of the DataFrame.
+    def get_numerical_columns(self)-> pd.DataFrame:
+        """Separates Numerical (numbers) columns from rest of the DataFrame.
 
-        Return
+        Returns
         -------
         pd.DataFrame
             A pandas DataFrame of Numerical columns.
@@ -235,15 +253,15 @@ class Diagnosis:
         Example
         --------
         >>> Diagnosis(df).get_numerical_columns()
-        '''
+        """
 
         return self.df.select_dtypes(include='number')
 
-    def get_categorical_columns(self):
-        '''
-        Separates Categorical (text or category) columns from rest of the DataFrame.
+    def get_categorical_columns(self)-> pd.DataFrame:
+        """Separates Categorical (text or category) columns from rest of the
+        DataFrame.
 
-        Return
+        Returns
         -------
         pd.DataFrame
             A pandas DataFrame of Categorical columns.
@@ -257,13 +275,12 @@ class Diagnosis:
         --------
         
         >>> Diagnosis(df).get_categorical_columns()
-    
-        '''
+        """
         return self.df.select_dtypes(include=['object', 'string', 'category'])
 
-    def get_datetime_columns(self):
-        '''
-        Separates Datetime (dates or timestamps) columns from rest of the DataFrame.
+    def get_datetime_columns(self)-> pd.DataFrame:
+        """Separates Datetime (dates or timestamps) columns from rest of the
+        DataFrame.
 
         Returns
         -------
@@ -279,7 +296,6 @@ class Diagnosis:
         --------
         
         >>> Diagnosis(df).get_datetime_columns()
-    
-        '''
+        """
 
         return self.df.select_dtypes(include = ['datetime'])
