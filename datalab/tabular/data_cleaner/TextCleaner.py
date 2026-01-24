@@ -1,8 +1,11 @@
+"""Clean text or Categorical columns in a tabular dataset"""
+
 import pandas as pd
 import polars as pl
 from polars import selectors as cs
 
 from .BaseCleaner import DataCleaner
+
 from ..utils.Logger import datalab_logger
 from ..utils.BackendConverter import BackendConverter
 
@@ -11,6 +14,18 @@ logger = datalab_logger(name= __name__.split('.')[-1])
 class TextCleaner(DataCleaner):
     
     def __init__(self, df:pd.DataFrame, columns:list=None):
+
+        """
+        Initializing Text Cleaner.
+
+        Parameters
+        -----------
+        df: pd.DataFrame
+            A pandas DataFrame
+        
+        columns: list, optional
+            List of columns you wish to apply cleaning on, by default None
+        """
         
         if not isinstance(df, (pd.DataFrame, pd.Series)):
             raise TypeError(f'df must be a pandas DataFrame or pandas Series, got {type(df).__name__}')
@@ -18,41 +33,38 @@ class TextCleaner(DataCleaner):
         if not isinstance(columns, (list, type(None))):
             raise TypeError(f'columns must be a list of strings or type None, got {type(columns).__name__}')
             
-        # creating a copy of the original dataframe
+        # ensuring only text based datatypes are selected
         self.df = df.select_dtypes(include = ['object', 'string', 'category']) 
         
-        # if user passes a list of columns
         if columns is None: 
-            # columns would default to all of the columns of the dataframe
-            self.columns = df.columns.to_list()
+            self.columns = self.df.columns.to_list()
         else:
-            # columns would be the list of columns passed
             self.columns = [column for column in columns if column in self.df.columns]
 
-        logger.info('Text Cleaner initialized...')
+        logger.info('Text Cleaner initialized.')
 
-    def to_lowercase(self: pd.DataFrame) -> pd.DataFrame:
-        '''
+    def to_lowercase(self) -> pd.DataFrame:
+        """
         Converts text to uppercase in one or multiple columns of the DataFrame.
 
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
             Use this function when you have mixed values and want to convert strings to lowercase
 
-        Consideration:
+        Consideration
         --------------
             1. Uses polars with_columns to apply regex to all string columns
             2. However, it still takes and returns a pandas DataFrame
 
-        Example:
+        Example
         --------
         >>>    TextCleaner(df, columns=['user_status']).to_lowercase()
-        '''
+        """
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         polars_df = polars_df.with_columns(
@@ -65,20 +77,20 @@ class TextCleaner(DataCleaner):
 
         return self.df
 
-    def to_uppercase(self: pd.DataFrame) -> pd.DataFrame:
-        '''
+    def to_uppercase(self) -> pd.DataFrame:
+        """
         Converts text to lowercase in one or multiple columns of the DataFrame.
 
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
             Use this function when you have mixed values and want to convert strings to uppercase
 
-        Consideration:
+        Consideration
         --------------
             1. Uses polars with_columns to apply regex to all string columns
             2. However, it still takes and returns a pandas DataFrame
@@ -86,7 +98,7 @@ class TextCleaner(DataCleaner):
         Example:
         --------
         >>>    TextCleaner(df, columns=['user_status']).to_uppercase()
-        '''
+        """
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         polars_df = polars_df.with_columns(
@@ -99,88 +111,83 @@ class TextCleaner(DataCleaner):
 
         return self.df
 
-    def replace_multiple_spaces(self) -> pd.DataFrame:
-        '''
-        Replaces multiple spaces within characters or words with a single space (" ") for each column of the DataFrame.
+    def remove_multiple_spaces(self) -> pd.DataFrame:
+        """
+        Removes multiple spaces within characters or words for one or multiple columns of the DataFrame.
 
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame of columns replaced text.
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
-            Use this function when you want to replace multiple spaces within text with a single space.
+            Use this function when you want to remove multiple spaces within text values.
 
-        Consideration:
+        Considerations
         --------------
             1. Uses polars with_columns to apply regex to all string columns
             2. However, it still takes and returns a pandas DataFrame
 
-        Example:
+        Example
         --------
-        >>>    TextCleaner(df, columns=['gender']).replace_multiple_spaces()
-        '''
+        >>>    TextCleaner(df, columns=['gender']).remove_multiple_spaces()
+        """
         multiple_spaces_pattern = r'\s+'
 
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
-        polars_df = polars_df.with_columns(cs.string().str.replace_all(multiple_spaces_pattern, " "))
+        polars_df = polars_df.with_columns(cs.string().str.replace_all(multiple_spaces_pattern, ""))
 
         self.df = BackendConverter(polars_df).polars_to_pandas()
 
-        logger.info('Replaced multiple spaces!')
+        logger.info('Removed multiple spaces!')
 
         return self.df
 
-    def replace_splitters(self, splitters_and_replacements=None):
-        '''
-        Replaces different kinds of splitters present in data, with a single splitter in each column of the DataFrame.
+    def replace_splitters(self, splitters_and_replacements: dict[str, str]=None):
+        """
+        Replaces different kinds of splitters present in data with the desired value, in one or multiple columns of the DataFrame.
 
-        Example: 'active/member' -> 'active-member', 'masters/ male' -> 'masters, male'
+        E.g: 'active/member' -> 'active-member', 'masters/ male' -> 'masters, male'.
 
-        Parameters:
+        Parameters
         -----------
-            self
+        splitters_and_replacements: dict 
+            A dictionary of splitters and their replacements
 
-            Optional:
-
-            splitters_and_replacements: dict 
-                A dictionary of splitters and their replacements
-
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
-        ----------------------
+        Usage Recommendation
+        ---------------------
             Use this function when you want to normalize multiple splitters with one kind of splitter
 
-        Consideration:
+        Considerations
         ---------------
             1. Uses polars with_columns to apply regex to all string columns
             2. However, it still takes and returns a pandas DataFrame
 
-        Example:
+        Example
         --------
         >>>    TextCleaner(df, columns=['user_status]).replace_splitters({',': ''})
-
-        '''
-        from datalab import BackendConverter
+        """
+        from ..utils.BackendConverter import BackendConverter
         import re
         
         if splitters_and_replacements is None:
             splitters_and_replacements={'':''}
 
         # joining splitters to ensure they are passed as regex
-
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         for column in polars_df.columns:
             
             for splitter, replacement in splitters_and_replacements.items():
-
+                
+                # using re.escape to make values as literal
                 polars_df=polars_df.with_columns(
                     pl.when(pl.col(column).str.contains(re.escape(splitter)))
                     .then(pl.col(column).str.replace_all(re.escape(splitter), replacement))
@@ -192,39 +199,34 @@ class TextCleaner(DataCleaner):
         return self.df
 
     def replace_symbols(self, symbols_and_replacements: dict[str, str]=None):
-        '''
+        """
         Replaces different kinds of symbols present in data, with the desired value in one or multiple columns of the DataFrame.
 
         Example: 'Germ@any' -> 'Germany', 'Empl0y3d' -> 'Employed' or '<<active>>' -> 'active'
 
-        Parameters:
+        Parameters
         -----------
-            self
+        symbols_and_replacements: dict 
+            A dictionary of symbols and their replacements, by default None
 
-            Optional:
-
-            symbols_and_replacements: dict 
-                A dictionary of symbols and their replacements
-
-        Returns:
+        Returns
         --------
             pd.DataFrame
                 A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ----------------------
             1. Use this function when you want to replace symbols with text or other symbols
 
-        Consideration:
+        Consideration
         ---------------
             1. Uses polars with_columns to apply regex to all string columns
             2. However, it still takes and returns a pandas DataFrame
 
-        Example:
+        Example
         --------
         >>>    TextCleaner(df, columns=['user_status]).replace_symbols({'@':'a', '0':'o'})
-
-        '''
+        """
         import re
 
         # if symbols and replacements are not passed, they default to empty strings 
