@@ -4,7 +4,6 @@ import pandas as pd
 import polars as pl
 
 from .BaseCleaner import DataCleaner # base data cleaner class 
-
 from ..utils.BackendConverter import BackendConverter
 from ..utils.Logger import datalab_logger # logger for logging
 
@@ -12,7 +11,7 @@ logger = datalab_logger(name = __name__.split('.')[-1])
 
 class NumericalCleaner(DataCleaner):
     
-    def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False):
+    def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False, array_type:str='auto', conversion_threshold:int=None):
         """
         Initializing Numerical Cleaner.
         
@@ -26,7 +25,6 @@ class NumericalCleaner(DataCleaner):
 
         inplace: bool, optional
             Whether you wish to apply changes in place, by default False.
-        
         """
         #Initializing the base data cleaner
         super().__init__(df, columns, inplace)
@@ -39,6 +37,8 @@ class NumericalCleaner(DataCleaner):
             self.columns = [column for column in columns if column in self.df.columns]
         
         self.inplace = inplace
+        self.array_type = array_type
+        self.conversion_threshold = conversion_threshold
 
         logger.info(f'Numerical Cleaner initialized.')
 
@@ -92,11 +92,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col=col, method = 'round_off',mask=mask, before=before, after=after)
             
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Rounded off to {decimals} decimals, inplace.')
             return None
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Rounded off to {decimals} decimals')
             return df
     
@@ -143,11 +143,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col = col, method= 'remove_spaces', before = before, mask = mask, after = after)
         
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed leading or trailing spaces in place.')
             return None    
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed leading or trailing spaces.')
             return df
 
@@ -194,11 +194,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col = col, method= 'remove_units', before = before, mask = mask, after = after)
 
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed units in place.')
             return None    
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed units.')
             return df
 
@@ -245,11 +245,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col = col, method= 'remove_currency_symbols', before = before, mask = mask, after = after)
 
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed currency symbols in place.')
             return None    
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f'Removed currency symbols.')
             return df
 
@@ -307,11 +307,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col=col, method='replace_commas', mask=mask, before=before, after=after)
 
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f"Replaced commas with '{replacement}', inplace.")
             return None
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info(f"Replaced commas with '{replacement}'.")
             return df
 
@@ -364,11 +364,11 @@ class NumericalCleaner(DataCleaner):
             self.track_not_cleaned(col=col, method='convert_scientific_notation_to_numbers',mask=mask, before=before, after=after )
 
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info('Converted scientific notation to readable numbers in place.')
             return None
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
             logger.info('Converted scientific notation to readable numbers.')
             return df
 
@@ -427,11 +427,11 @@ class NumericalCleaner(DataCleaner):
                 self.track_not_cleaned(col=col, method = 'convert_text_to_numbers', before = before, mask = mask, after = after)
 
         if self.inplace:
-            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
-            logger.info(f"Converted '{text}' to '{number}' in place.")
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
+            logger.info(f"Converted text to numbers in place.")
             return None
 
         else:
-            df = BackendConverter(polars_df).polars_to_pandas()
-            logger.info(f"Converted '{text}' to '{number}'.")
+            df = BackendConverter(polars_df).polars_to_pandas(array_type = self.array_type, conversion_threshold=self.conversion_threshold)
+            logger.info(f"Converted text to numbers.")
             return df
