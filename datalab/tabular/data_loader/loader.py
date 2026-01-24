@@ -108,8 +108,11 @@ def load_tabular(file_path: str, file_type: str = None, array_type: str='auto', 
         else:
             return polars_df.to_pandas()
 
-    if array_type == 'numpy':
+    elif array_type == 'numpy':
         return polars_df.to_pandas()
 
     elif array_type == 'pyarrow':
         return polars_df.to_pandas(use_pyarrow_extension_array=True)
+
+    else:
+        raise ValueError(f'Unsupported array type: {array_type}')
