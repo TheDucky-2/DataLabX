@@ -1,9 +1,10 @@
 """Class and methods for Numerical Plots (histogram, QQ plot, KDE and Box plot)."""
 
-from .DataVisualizer import DataVisualizer
 from ..computations import Distribution
-
 import pandas as pd
+from ..utils.Logger import datalab_logger
+
+logger = datalab_logger(name=__name__.split('.')[-1])
 
 # removing underscores in column names if they exist, for plot Titles.
 def remove_underscores(column):
@@ -13,12 +14,11 @@ def remove_underscores(column):
 
     return column
 
-class NumericalVisualizer(DataVisualizer):
+class NumericalVisualizer():
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
         """Initializing Numerical Visualizer."""
         # getting the elements of parent DataVisualizer class
-        super().__init__(df, columns)
 
         self.df = self.df.select_dtypes(include = 'number')
         
@@ -27,6 +27,8 @@ class NumericalVisualizer(DataVisualizer):
         else: 
             self.columns = [column for column in columns if column in df.columns]
 
+        logger.info(f'Numerical Visualizer initialized.')
+        
     def plot_histogram(self,
                   bins: int=30,
                   title: str=None,

@@ -1,20 +1,21 @@
-from .DataVisualizer import DataVisualizer
+"""Class and methods for visualizing Categorical data."""
+
 from ..data_diagnosis import CategoricalDiagnosis
 import pandas as pd
 import matplotlib.pyplot as plt
 
-class CategoricalVisualizer(DataVisualizer):
+class CategoricalVisualizer():
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
-        super().__init__(df, columns)
+        """Initializing Categorical Visualizer."""
 
-        self.df.select_dtypes(include = 'number')
+        self.df.select_dtypes(include = ['string', 'object', 'category'])
         
         if columns is None:
             self.columns = df.columns
 
         else: 
-            self.columns = [column for column in df.columns if column in self.df.columns]
+            self.columns = [column for column in columns if column in self.df.columns]
 
     def visualize_frequency(self,
                             method:str ='count',
@@ -23,63 +24,60 @@ class CategoricalVisualizer(DataVisualizer):
                             xlabel: str=None,
                             ylabel: str=None,
                             figsize: tuple =(6, 4)):
-        '''
-        Visualize frequency for each column of Categorical DataFrame
+        """
+        Visualize frequency for each column of Categorical DataFrame.
 
-            Parameters:
-            -----------
+        Parameters
+        -----------
+        method : str, optional
+            Whether you would like to visualize count or percentage of frequency, default is 'count'.
 
-            Optional:
+            Available methods:
 
-                method : str (default is 'count')
+            - 'count': Visualizes the count of unique values in each category (default).
+            - 'percent': Visualizes the percentage of values in each category.
 
-                    Available methods:
+        viz_type : str, optional
+            Type of visualization, default is 'bar'.
 
-                    - 'count': Visualizes the count of unique values in each category (default)
-                    - 'percent': Visualizes the percentage of values in each category
-                
-                viz_type : str (default is 'bar')
+            Available viz types:
 
-                    Available viz_type:
+            - 'bar'   : Vertical bar chart (default)
+            - 'line'  : Line plot
+            - 'barh'  : Horizontal bar chart
+            - 'hist'  : Histogram
+            - 'box'   : Boxplot
+            - 'kde'   : Kernel density estimate
+            - 'area'  : Area plot
+            - 'pie"   : Pie chart
 
-                    - 'bar'	    Vertical bar chart (default)
-                    - 'line'	Line plot 
-                    - 'barh'	Horizontal bar chart
-                    - 'hist'	Histogram
-                    - 'box'	    Boxplot
-                    - 'kde'	    Kernel density estimate
-                    - 'area'	Area plot
-                    - 'pie"	    Pie chart
+        xlabel : str, optional
+            Label for x-axis, default is None.
 
-                xlabel : str or type(None)
-                    Label for x-axis.
+        ylabel : str, optional
+            Label for y-axis, default is None.
 
-                ylabel : str 
-                    Label for y-axis.
+        title : str, optional
+            Title of the plot, default is None.
 
-                title : str 
-                    Title of the plot. Adds column name by default.
+        figsize : tuple, optional
+            Size of the figure (width, height) in inches, default is (6, 4)
 
-                figsize : tuple (default is (6, 4))
-                    Size of the figure (width, height) in inches.
+        Returns
+        --------
+        None
+                This function is intended for visualization only and does not return anything.
 
-            Returns:
-            --------
-                None
-                    This function is intended for visualization only. 
-                    It only displays the plot and does not return anything.
+        Usage Recommendation
+        ----------------------
+            Use this method of visualization only for categorical data.
 
-            Usage Recommendations:
-            ----------------------
-                Use this method of visualization only for categorical data.
+        Considerations
+        ---------------
+            1. Do not use the default settings, if there are many unique categories.
 
-            Considerations:
-            ---------------
-                Do not use this function as default or using viz_type as 'bar' if there are many unique categories.
-                
-                Use viz_type as 'hist' if you have many-many unique categories, otherwise you'll have to wait for a long-long time. 
-        
-        '''
+            2. Use viz_type as 'hist' if you have many-many unique categories, otherwise processing may be slower.
+        """
         for column in self.df[self.columns]:
 
             (CategoricalDiagnosis(self.df).show_frequency(method=method)[column]).plot(kind=viz_type)
