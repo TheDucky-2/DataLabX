@@ -1,7 +1,10 @@
+"""Cleans Dirty Numerical Data (numbers) in one or multiple columns of a tabular DataFrame."""
+
 import pandas as pd
 import polars as pl
 
 from .BaseCleaner import DataCleaner # base data cleaner class 
+
 from ..utils.BackendConverter import BackendConverter
 from ..utils.Logger import datalab_logger # logger for logging
 
@@ -10,7 +13,21 @@ logger = datalab_logger(name = __name__.split('.')[-1])
 class NumericalCleaner(DataCleaner):
     
     def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False):
-        # Initializing the base data cleaner
+        """Initializing Numerical Cleaner.
+        
+        Parameters
+        -----------
+        df: pd.DataFrame
+            A pandas DataFrame
+        
+        columns: list, optional
+            A list of columns you wish to apply numerical cleaning on, by default None.
+
+        inplace: bool, optional
+            Whether you wish to apply changes in place, by default False.
+        
+        """
+        #Initializing the base data cleaner
         super().__init__(df, columns, inplace)
         self.df = df 
 
@@ -22,46 +39,38 @@ class NumericalCleaner(DataCleaner):
         
         self.inplace = inplace
 
-        logger.info(f'NumericalCleaner initialized...')
+        logger.info(f'Numerical Cleaner initialized.')
 
     def round_off(self, decimals:int=2)-> pd.DataFrame:
-        '''
-        Round off numbers by N decimals in one or multiple columns of the DataFrame
+        """
+        Round off numbers by N decimals.
 
-        E.g: '23.00000000757575'-> '23.00', '3333556.89786'-> '3333556.89'
+        E.g: '23.00000000757575'-> '23.00', '3333556.89786'-> '3333556.89'.
 
-        Parameters:
+        Parameters
         -----------
-            self
-                A pandas DataFrame
-            
-            Optional:
-            ---------
-                decimals : int (default is 2)
-                    Number of decimals you want to round off by
+        decimals : int, optional
+            Number of decimals you want to round off by, by default 2.
 
-                inplace : bool (default is False)
-                    If True, modifies the DataFrame in place and returns None.
-                    If False, returns a new DataFrame.
-
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame 
+        pd.DataFrame
+            A pandas DataFrame 
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
             1. Use this function when you want to round off floats (decimals) to either 2 or 3 decimal places.
 
-        Considerations:
-        ----------------
+        Considerations
+        ---------------
             1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be rounded off.
 
         Example:
         ---------
         >>> cleaner = NumericalCleaner(df, columns= ['salary'])
         >>> cleaner.round_off(3, inplace=True)
-        '''
+        """
         if not isinstance(decimals, int):
             raise TypeError(f'decimals must be a int, got {type(decimals).__name__}')
 
@@ -91,27 +100,27 @@ class NumericalCleaner(DataCleaner):
             return df
     
     def remove_spaces(self):
-        '''
-        Removes leading or trailing spaces in numerical data for each column of DataFrame
+        """
+        Removes leading or trailing spaces in numerical data.
 
-        Parameters:
-        -----------
-            self : pd.DataFrame
-                A pandas DataFrame
-
-        Returns:
+        Returns
         --------
             pd.DataFrame
                 A pandas DataFrame with removed trailing or leading spaces.
-        
-        Usage Recommendation:
+
+        Usage Recommendation
         ---------------------
             1. Use this function when you want to remove leading or trailing spaces in numbers.
 
-        Example:
+        Considerations
+        ---------------
+            1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be cleaned.
+
+        Example
         --------
-            DirtyDataDiagnosis(df).remove_spaces()
-        '''
+        >>>    NumericalCleaner(df).remove_spaces()
+        """
         SPACES_PATTERN = r'^\s+|\s+$'
 
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
@@ -142,22 +151,26 @@ class NumericalCleaner(DataCleaner):
             return df
 
     def remove_units(self)-> pd.DataFrame:
-        '''
-        Detects units (like cm or kg) appearing after numbers and removes them in each column of the DataFrame.
+        """Detects units (like cm or kg) appearing after numbers and removes them.
 
-        Returns:
+        Returns
         --------
             pd.DataFrame
                 A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
             1. Use this function when you want to clean numbers that contain units or text appearing after numbers.
+        
+        Considerations
+        ---------------
+            1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be cleaned.
 
         Example:
         --------
-            NumericalCleaner(df).remove_units()
-        '''
+        >>>    NumericalCleaner(df).remove_units()
+        """
         # pattern for detecting rows containing units
         UNITS_PATTERN = r'^[+-]?\d+(?:[,.]\d+)?\s*[A-Za-z]+$'
 
@@ -189,22 +202,27 @@ class NumericalCleaner(DataCleaner):
             return df
 
     def remove_currency_symbols(self)-> pd.DataFrame:
-        '''
-        Removes currency symbols appearing before or after numbers in each column of the DataFrame
+        """
+        Removes currency symbols appearing before or after numbers.
 
-        Returns:
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
             1. Use this function when you want to remove currency symbols like $.
-        
+
+        Considerations
+        ---------------
+            1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be cleaned.
+
         Example:
         ---------
-            NumericalCleaner(df).remove_currency_symbols()
-        '''
+        >>>    NumericalCleaner(df).remove_currency_symbols()
+        """
         # ensuring that currency is detected at beginning or end of string
         CURRENCY_SYMBOLS_PATTERN = r'^[$€£¥₹₩₺₫₦₱₪฿₲₴₡]\s*\d[\d,]*(.\d+)?$|^\d[\d,]*(.\d+)?s*[$€£¥₹₩₺₫₦₱₪฿₲₴₡]$'
 
@@ -221,7 +239,6 @@ class NumericalCleaner(DataCleaner):
                 .then(pl.col(col).str.replace_all(CURRENCY_SYMBOLS_PATTERN, ""))
                 .otherwise(pl.col(col))
             )
-            
             after = polars_df.select(pl.col(col)).to_series()
         
             self.track_not_cleaned(col = col, method= 'remove_currency_symbols', before = before, mask = mask, after = after)
@@ -235,42 +252,77 @@ class NumericalCleaner(DataCleaner):
             logger.info(f'Removed currency symbols.')
             return df
 
-    def replace_commas_with_decimals(self)-> pd.DataFrame:
-        '''
-        Replaces commas (,) that are used as decimal replacements, with decimals (.) in each column of the DataFrame
+    def replace_commas(self, replacement: str=None):
+        """
+        Replaces commas (,) that are used as decimal replacements, with decimals (.) or any other value.
 
-        Returns:
+        Parameters
+        -----------
+        replacement: str, optional
+            Value you wish to replace commas with, by default None
+
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
+        Usage Recommendation
         ---------------------
-            1. Use this function when you want to replace commas with decimal values during numerical cleaning
+            1. Use this function when you want to replace commas with decimal values during numerical cleaning.
         
-        Example:
+        Considerations
+        ---------------
+            1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be cleaned.
+
+        Example
         ---------
-            NumericalCleaner(df).replace_commas_with_decimals()
-        '''
-        commas_pattern = r'^-?\d+(\,\d+)$'
+        >>>    NumericalCleaner(df).replace_commas(replacement = "")
 
-        for col in self.df[self.columns]:
-            # creating a mask of matched values
-            mask = self.df[col].astype('string').str.match(commas_pattern, na=False)
-            # replacing commas with decimals in those values
-            self.df.loc[mask, col]= self.df.loc[mask, col].astype(str).str.replace(',', '.')
+        >>>    NumericalCleaner(df).replace_commas(replacement = '.', inplace=True)
+        """
+        from ..utils.BackendConverter import BackendConverter
 
-        return self.df
+        if not isinstance(replacement, (str, type(None))):
+            raise TypeError(f'replacement must be a string, got {type(replacement).__name__}')
+
+        if replacement is None:
+            replacement = ','
+
+        PATTERN = r'^\d*,\d*$'
+
+        polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        for col in polars_df.columns:
+            before = polars_df.select(pl.col(col)).to_series()
+            mask = polars_df.select(pl.col(col).str.contains(PATTERN)).to_series()
+            
+            polars_df = polars_df.with_columns(
+                pl.when(pl.col(col).str.contains(PATTERN))
+                .then(pl.col(col).str.replace_all(',', replacement))
+                .otherwise(pl.col(col))
+            )
+            after = polars_df.select(pl.col(col)).to_series()
+            self.track_not_cleaned(col=col, method='replace_commas', mask=mask, before=before, after=after)
+
+        if self.inplace:
+            self.df[self.columns] = BackendConverter(polars_df).polars_to_pandas()
+            logger.info(f"Replaced commas with '{replacement}', inplace.")
+            return None
+        else:
+            df = BackendConverter(polars_df).polars_to_pandas()
+            logger.info(f"Replaced commas with '{replacement}'.")
+            return df
 
     def convert_scientific_notation_to_numbers(self)-> pd.DataFrame:
-        '''
-        Converts scientific notation like (4.67e01 or 4,67e01 or 1.04e+05) to readable numbers like 104000 in each column of the DataFrame
+        """Converts scientific notation like (4.67e01 or 4,67e01 or 1.04e+05)
+        to readable numbers like 104000 in each column of the DataFrame.
 
         Returns:
         --------
             pd.DataFrame
                 A pandas DataFrame
-        
+
         Usage Recommendation:
         ----------------------
             1. Use this method to convert scientific notation into numbers, during numerical cleaning.
@@ -278,7 +330,7 @@ class NumericalCleaner(DataCleaner):
         Example:
         --------
             NumericalCleaner(df).convert_scientific_notation_into_numbers()
-        '''
+        """
         from decimal import Decimal
 
         SCIENTIFIC_NOTATION_PATTERN = r'^[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d*$'
@@ -315,8 +367,8 @@ class NumericalCleaner(DataCleaner):
             return df
 
     def convert_text_to_numbers(self, text_to_number:dict[str, str]=None)-> pd.DataFrame:
-        '''
-        Converts text to numbers in one or multiple columns of the DataFrame
+        """Converts text to numbers in one or multiple columns of the
+        DataFrame.
 
         E.g: 'five' ->  5, 'one' -> 1, 'thirty' -> 30 etc.
 
@@ -345,7 +397,7 @@ class NumericalCleaner(DataCleaner):
         Example:
         --------
         >>>    NumericalCleaner(df).convert_text_to_numbers({'five': 5, 'two': 2, 'one': 1})
-        '''
+        """
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         if text_to_number is None:
@@ -376,4 +428,3 @@ class NumericalCleaner(DataCleaner):
             df = BackendConverter(polars_df).polars_to_pandas()
             logger.info(f"Converted '{text}' to '{number}'.")
             return df
-                
