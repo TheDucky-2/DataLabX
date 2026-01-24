@@ -1,9 +1,7 @@
-"""Allows to convert Pandas DataFrame <-> Polars DataFrame."""
-from .Logger import datalab_logger
+"""Allows conversion from Pandas DataFrame <-> Polars DataFrame."""
+
 import pandas as pd
 import polars as pl
-
-logger = datalab_logger(name = __name__.split('.')[-1])
 
 class BackendConverter:
 
@@ -44,8 +42,6 @@ class BackendConverter:
 
             else:
                 self.columns = [column for column in columns if column in self.df.columns]
-
-        logger.info('BackendConverter initialized.')
 
     def polars_to_pandas(self, array_type: str='auto', conversion_threshold: int=None)-> pd.DataFrame:
         """
