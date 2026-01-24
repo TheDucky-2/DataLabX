@@ -1,4 +1,5 @@
-# from datalab
+"""Class and methods for Numerical Plots (histogram, QQ plot, KDE and Box plot)."""
+
 from .DataVisualizer import DataVisualizer
 from ..computations import Distribution
 
@@ -6,6 +7,7 @@ import pandas as pd
 
 # removing underscores in column names if they exist, for plot Titles.
 def remove_underscores(column):
+    """Remove underscores from column name. """
     
     column = " ".join(column.split('_'))
 
@@ -14,14 +16,14 @@ def remove_underscores(column):
 class NumericalVisualizer(DataVisualizer):
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
+        """Initializing Numerical Visualizer."""
         # getting the elements of parent DataVisualizer class
         super().__init__(df, columns)
 
         self.df = self.df.select_dtypes(include = 'number')
         
         if columns is None:
-            self.columns = df.columns
-
+            self.columns = df.columns.tolist()
         else: 
             self.columns = [column for column in columns if column in df.columns]
 
@@ -32,44 +34,38 @@ class NumericalVisualizer(DataVisualizer):
                   ylabel: str=None,
                   figsize: tuple =(6, 4),
                   **kwargs):
-        '''
-        Visualize histogram for each column of Numerical DataFrame
+        """
+        Visualize histogram for one or multiple columns of Numerical DataFrame.
 
-        Parameters:
+        Parameters
         -----------
+        bins : int , optional
+            Number of bins you wish to visualize, default is 30.
 
-        Optional:
+        xlabel : str, optional
+            Label for x-axis, default is None.
 
-            bins : int , (default is 30)
-                Number of bins you wish to visualize
-            
-            xlabel : str or type(None)
-                Label for x-axis.
+        ylabel : str, optional 
+            Label for y-axis, default is None.
 
-            ylabel : str 
-                Label for y-axis.
+        title : str, optional
+            Title of the plot, default is None.
 
-            title : str 
-                Title of the plot. Adds column name by default.
+        figsize : tuple, optional 
+            Size of the figure (width, height) in inches, default is (6,4)
 
-            figsize : tuple (default is (6, 4))
-                Size of the figure (width, height) in inches.
+        **kwargs : dict
+            Dictionary of keyword arguments passed to ``matplotlib.pyplot.hist``.
 
-            **kwargs : dict
-                Dictionary of keyword arguments passed to 'matplotlib.pyplot.boxplot'.
-
-        Returns:
+        Returns
         --------
-            None
-                This function is intended for visualization only. 
-                It only displays the plot and does not return anything.
+        None        
+            This function is intended for visualization only and does not return anything. 
 
-        Usage Recommendations:
+        Usage Recommendation
         ----------------------
             Use this method of visualization only for numerical data.
-        
-        '''
-
+        """
         import matplotlib.pyplot as plt
 
         for column in self.df[self.columns]:
@@ -104,42 +100,43 @@ class NumericalVisualizer(DataVisualizer):
                 **kwargs):
 
         import matplotlib.pyplot as plt
-        '''
-        Visualize box plot for each column of Numerical DataFrame
+        """
+        Visualize box plot for one or multiple columns of Numerical DataFrame.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
+        orientation : str , optional
+            Orientation of the boxplots, default is 'v'.
 
-        Optional:
+            Options are:
 
-            orientation : str , (default is 'h')
-                Orientation of the boxplots. Whether 'horizontal'/'h' or 'vertical'/'v'
-            
-            xlabel : str or type(None)
-                Label for x-axis.
+            - 'vertical' or 'v'
+            - 'horizontal' or 'h'
 
-            ylabel : str 
-                Label for y-axis.
+        xlabel : str, optional
+            Label for x-axis, default is None.
 
-            title : str 
-                Title of the plot. Adds column name by default.
+        ylabel : str
+            Label for y-axis, default is None.
 
-            figsize : tuple (default is (6, 4))
-                Size of the figure (width, height) in inches.
+        title : str, optional
+            Title of the plot, default is None.
 
-            **kwargs : dict
-                Dictionary of keyword arguments passed to 'matplotlib.pyplot.boxplot'.
+        figsize : tuple, optional
+            Size of the figure (width, height) in inches, default is (6, 4).
 
-        Returns:
+        **kwargs : dict
+            Dictionary of keyword arguments passed to ``matplotlib.pyplot.boxplot``.
+
+        Returns
         --------
-            None
-                This function is intended for visualization only. 
-                It only displays the plot and does not return anything.
+        None
+            This function is intended for visualization only and does not return anything.
 
-        Usage Recommendations:
+        Usage Recommendation
         ----------------------
             Use this method of visualization only for numerical data.
-        '''
+        """
 
         if orientation not in ('horizontal', 'vertical', 'h', 'v'):
             raise ValueError(f"orientation must be horizontal or 'h' OR vertical or 'v', got {orientation}")
@@ -182,66 +179,59 @@ class NumericalVisualizer(DataVisualizer):
 
             plt.show()
 
-
     def plot_KDE(self, bandwidth_method: str ='robust',
                   title: str=None,
                   xlabel: str=None,
                   ylabel: str=None,
                   figsize: tuple =(6, 4),
                   **kwargs):
-        '''
-        Visualize Kernel Density Estimation plot (curves, including bell curve) for each column of Numerical DataFrame
+        """
+        Visualize Kernel Density Estimation plot (curves, including bell curve) for one or multiple columns of DataFrame.
 
         Parameters:
         -----------
-            self
-            A pandas DataFrame
+        bandwidth_method: 'str' 
+            The method you wish to use for computing KDE, default is 'robust'.
 
-            Optionals:
+            Methods available:
 
-                bandwidth_method: 'str' (default is 'Silverman')
+            For Normal Distribution:
 
-                bandwidth methods available:
+                - 'silverman'
+                - 'scott'
 
-                For Normal Distribution:
+            For Skewed Distribution:
 
-                    - 'silverman' 
-                    - 'scott'
+                - 'robust' (uses robust scott)
 
-                For Skewed Distribution:
+        xlabel : str, optional
+            Label for x-axis, default is None.
 
-                    - 'robust' (uses robust scott)
+        ylabel : str
+            Label for y-axis, default is None.
 
-                xlabel : str or type(None)
-                    Label for x-axis.
+        title : str, optional
+            Title of the plot, default is None.
 
-                ylabel : str 
-                    Label for y-axis.
+        figsize : tuple, optional
+            Size of the figure (width, height) in inches, default is (6, 4).
 
-                title : str 
-                    Title of the plot. Adds column name by default.
+        **kwargs : dict
+            Dictionary of keyword arguments passed to ``matplotlib.pyplot.plot``.
 
-                figsize : tuple (default is (6, 4))
-                    Size of the figure (width, height) in inches.
-
-                **kwargs : dict
-                    Dictionary of keyword arguments to pass into 'matplotlib.pyplot.plot'.
-
-        Returns:
+        Returns
         --------
-            None
-                This function is intended for visualization only. 
-                It only displays the KDE plot and does not return anything.
+        None
+            This function is intended for visualization only and does not return anything.
 
-        Usage Recommendations:
+        Usage Recommendation
         ----------------------
-            Use this method of visualization only for numerical data.
+            Use this method of visualization only of numerical data.
 
         Considerations:
         ---------------
-            This function uses compute_KDE() and compute_histogram() from Distribution class of the Computation Package
-
-            '''
+            This function uses ``compute_KDE()`` and ``compute_histogram()`` from Distribution class of the Computation Package
+        """
         import matplotlib.pyplot as plt
 
         # compute_KDE() returns a DataFrame
@@ -278,38 +268,30 @@ class NumericalVisualizer(DataVisualizer):
             plt.show()
 
     def plot_QQ(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green'):
-
-        '''
-        Visualize Quantile-Quantile plot (QQ plot) for each column of Numerical DataFrame
+        """
+        Visualize Quantile-Quantile plot (QQ plot) for one or multiple columns of Numerical DataFrame.
 
         Parameters:
         -----------
 
-        self : pd.DataFrame
-            A pandas DataFrame
+        distribution_type: str (default is 'norm')
+            Type of Distribution you would like to see.
 
-        Optional:
+        title : str, optional
+            Title of the plot, default is None. 
 
-            distribution_type: str (default is 'norm')
-                Type of Distribution you would like to see
+        points_color : str, optional
+            Color of data points, default is 'green'.
 
-            title : str or type None
-                Title of the plot. Adds column name by default.
-
-            points_color : str (default is 'green')
-                Color of data points
-
-        Returns:
+        Returns
         --------
-            None
-                This function is intended for visualization only. 
-                It only displays the plot and does not return anything.
+        None
+            This function is intended for visualization only and does not return anything.
 
-        Usage Recommendations:
+        Usage Recommendation
         ----------------------
-            Use this method of visualization only for numerical data.
-
-        '''
+            Use this method of visualization only of numerical data.
+        """
         from scipy import stats
         import matplotlib.pyplot as plt
 
@@ -338,4 +320,3 @@ class NumericalVisualizer(DataVisualizer):
         
 
 
-                
