@@ -13,7 +13,8 @@ logger = datalab_logger(name = __name__.split('.')[-1])
 class NumericalCleaner(DataCleaner):
     
     def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False):
-        """Initializing Numerical Cleaner.
+        """
+        Initializing Numerical Cleaner.
         
         Parameters
         -----------
@@ -315,21 +316,26 @@ class NumericalCleaner(DataCleaner):
             return df
 
     def convert_scientific_notation_to_numbers(self)-> pd.DataFrame:
-        """Converts scientific notation like (4.67e01 or 4,67e01 or 1.04e+05)
-        to readable numbers like 104000 in each column of the DataFrame.
-
-        Returns:
+        """
+        Converts scientific notation like (4.67e01 or 4,67e01 or 1.04e+05) to readable numbers like 104000.
+            
+        Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame
+        pd.DataFrame
+            A pandas DataFrame
 
-        Usage Recommendation:
-        ----------------------
+        Usage Recommendation
+        ---------------------
             1. Use this method to convert scientific notation into numbers, during numerical cleaning.
 
-        Example:
+        Considerations
+        ---------------
+            1. Use this method only on numerical data.
+            2. This method keeps a track of values that cannot be cleaned.
+
+        Example
         --------
-            NumericalCleaner(df).convert_scientific_notation_into_numbers()
+        >>>    NumericalCleaner(df).convert_scientific_notation_into_numbers()
         """
         from decimal import Decimal
 
@@ -367,38 +373,39 @@ class NumericalCleaner(DataCleaner):
             return df
 
     def convert_text_to_numbers(self, text_to_number:dict[str, str]=None)-> pd.DataFrame:
-        """Converts text to numbers in one or multiple columns of the
-        DataFrame.
+        """
+        Converts text to numbers in one or multiple columns of the DataFrame.
 
         E.g: 'five' ->  5, 'one' -> 1, 'thirty' -> 30 etc.
 
-        Parameters:
+        Parameters
         -----------
-            self
+        text_to_number : dict
+            A dictionary of text you wish to replace and its replacement number.
 
-            Optional:
-            ---------
-                text_to_number : dict
-                    A dictionary of text and its replacement number.
-
-        Returns:
-        ---------
-            pd.DataFrame
-                A pandas DataFrame
+        Returns
+        --------
+        pd.DataFrame
+            A pandas DataFrame
         
-        Usage Recommendation:
-        ----------------------
-            1. Use this method to convert textual numbers 'one', 'two' to numbers like 1, 2, during numerical cleaning.
+        Usage Recommendation
+        ---------------------
+            Use this method to convert textual numbers 'one', 'two' to numbers like 1, 2, during numerical cleaning.
         
-        Considerations:
+        Considerations
         ---------------
             1. This method keeps the converted number as string instead of a numerical datatype like int or float.
+            2. Use this method only on numerical data.
+            3. This method keeps a track of values that cannot be cleaned.
 
-        Example:
+        Example
         --------
         >>>    NumericalCleaner(df).convert_text_to_numbers({'five': 5, 'two': 2, 'one': 1})
         """
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        if not isinstance(text_to_number, dict):
+            raise TypeError(f'text to number must be a dictionary of text and its replacement number, got {type(text_to_number).__name__}')
 
         if text_to_number is None:
             logger.info('No text-to-number mapping received, hence, no changes made!')
