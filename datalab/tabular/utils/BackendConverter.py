@@ -136,7 +136,7 @@ class BackendConverter:
 
         return polars_df
 
-    def pandas_to_polars_as_string(self, array_type:str='auto', include_index:bool=False):
+    def pandas_to_polars_as_string(self, array_type:str='auto', conversion_threshold:int=None, include_index:bool=False):
         """
         Converts a pandas DataFrame to a polars DataFrame with all columns as string.
 
@@ -163,8 +163,11 @@ class BackendConverter:
         """
         df_size = len(self.df)
 
+        if conversion_threshold is None:
+            conversion_threshold = 100_000
+
         if array_type == 'auto':
-            if df_size >= 100000:
+            if df_size >= conversion_threshold:
                 return pl.from_pandas(self.df.astype('string[pyarrow]'), include_index=include_index)
             else:
                 return pl.from_pandas(self.df.astype('string'), include_index=include_index)
