@@ -123,7 +123,7 @@ class BackendConverter:
         -------
         pl.DataFrame
             A polars DataFrame
-
+            
         Considerations
         ---------------
             Polars do not have the concept of index like pandas does, hence, you can adjust include_index depending on your requirement.
@@ -132,52 +132,7 @@ class BackendConverter:
         if not isinstance(include_index, bool):
             raise TypeError(f'include_index must be either True or False, got {type(include_index).__name__}')
 
-        polars_df = pl.from_pandas(self.df, include_index=include_index)
+        polars_df = pl.from_pandas(self.df, include_index = include_index)
 
         return polars_df
-
-    def pandas_to_polars_as_string(self, array_type:str='auto', conversion_threshold:int=None, include_index:bool=False):
-        """
-        Converts a pandas DataFrame to a polars DataFrame with all columns as string.
-
-        Parameters
-        -----------
-        array_type: str
-    
-            Determines the array/backend type used in pandas operations, by default 'auto'.
-
-            Options are:
-
-            - 'numpy' -> usual NumPy backend (slower for very large datasets with object types)
-            - 'pyarrow' -> PyArrow backend for better performance on large datasets
-            - 'auto' -> automatically selects backend based on input and dataset size 
-        
-        Returns
-        -------
-        pl.DataFrame
-            A polars DataFrame
-
-        Considerations
-        ---------------
-            Polars do not have the concept of index like pandas does, hence, you can adjust include_index depending on your requirement.
-        """
-        df_size = len(self.df)
-
-        if conversion_threshold is None:
-            conversion_threshold = 100_000
-
-        if array_type == 'auto':
-            if df_size >= conversion_threshold:
-                return pl.from_pandas(self.df.astype('string[pyarrow]'), include_index=include_index)
-            else:
-                return pl.from_pandas(self.df.astype('string'), include_index=include_index)
-
-        elif array_type == 'numpy':
-            return pl.from_pandas(self.df.astype('string'), include_index=include_index)
-
-        elif array_type == 'pyarrow':
-            return pl.from_pandas(self.df.astype('string[pyarrow]'), include_index=include_index)
-
-        else:
-            raise ValueError(f'Unsupported array type: {array_type}')
 
