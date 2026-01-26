@@ -1,3 +1,4 @@
+"""Base Preprocessor class"""
 import pandas as pd
 
 class DataPreprocessor:
@@ -28,4 +29,3 @@ class DataPreprocessor:
 
 
 
-    
