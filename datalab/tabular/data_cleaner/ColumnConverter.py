@@ -6,8 +6,7 @@ from ..utils.Logger import datalab_logger
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class ColumnConverter:
-    def __init__(self, df:pd.DataFrame, columns: list = None):
-        """
+    """
         Initializing the ColumnConverter.
 
         Parameters
@@ -15,9 +14,11 @@ class ColumnConverter:
         df : pd.DataFrame
             A pandas DataFrame.
 
-        columns : list or type(None)
+        columns : list, optional
             List of columns you wish to convert, by default None.
-        """
+    """
+    def __init__(self, df:pd.DataFrame, columns: list = None):
+
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be pandas DataFrame, got {type(df).__name__}')
 

@@ -6,6 +6,14 @@ import polars as pl
 class DataCleaner:
     """
     Initializing Base Cleaner
+            
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to clean.
+
+    columns: list, optional
+        A list of columns you wish to apply cleaning on, default is None.
     """
     
     def __init__(self, df:pd.DataFrame, columns:list=None, inplace: bool=False):

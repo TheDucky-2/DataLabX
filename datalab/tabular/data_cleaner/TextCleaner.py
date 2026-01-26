@@ -12,20 +12,19 @@ from ..utils.BackendConverter import BackendConverter
 logger = datalab_logger(name= __name__.split('.')[-1])
 
 class TextCleaner(DataCleaner):
+    """
+    Initializing Text Cleaner.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas DataFrame
+    
+    columns: list, optional
+        List of columns you wish to apply cleaning on, by default None.
+    """
     
     def __init__(self, df:pd.DataFrame, columns:list=None):
-
-        """
-        Initializing Text Cleaner.
-
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas DataFrame
-        
-        columns: list, optional
-            List of columns you wish to apply cleaning on, by default None
-        """
         
         if not isinstance(df, (pd.DataFrame, pd.Series)):
             raise TypeError(f'df must be a pandas DataFrame or pandas Series, got {type(df).__name__}')
@@ -180,7 +179,6 @@ class TextCleaner(DataCleaner):
         if splitters_and_replacements is None:
             splitters_and_replacements={'':''}
 
-        # joining splitters to ensure they are passed as regex
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         for column in polars_df.columns:

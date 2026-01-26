@@ -10,9 +10,7 @@ from ..utils.Logger import datalab_logger # logger for logging
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class NumericalCleaner(DataCleaner):
-    
-    def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False, array_type:str='auto', conversion_threshold:int=None):
-        """
+    """
         Initializing Numerical Cleaner.
         
         Parameters
@@ -25,7 +23,16 @@ class NumericalCleaner(DataCleaner):
 
         inplace: bool, optional
             Whether you wish to apply changes in place, by default False.
-        """
+        
+        array_type: str, optional
+            The backend you wish to work with in pandas: 'numpy' or 'pyarrow', by default 'auto'.
+
+        conversion_threshold: int, optional
+            The number of rows upon which backend automatically switches to 'pyarrow' in pandas, by default 100000.
+    """
+    
+    def __init__(self, df: pd.DataFrame, columns: list = None, inplace:bool=False, array_type:str='auto', conversion_threshold:int=None):
+
         #Initializing the base data cleaner
         super().__init__(df, columns, inplace)
         self.df = df 
@@ -38,7 +45,11 @@ class NumericalCleaner(DataCleaner):
         
         self.inplace = inplace
         self.array_type = array_type
-        self.conversion_threshold = conversion_threshold
+
+        if conversion_threshold is None:
+            self.conversion_threshold = 100_000
+        else:
+            self.conversion_threshold = conversion_threshold
 
         logger.info(f'Numerical Cleaner initialized.')
 
@@ -404,7 +415,7 @@ class NumericalCleaner(DataCleaner):
         """
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
-        if not isinstance(text_to_number, dict):
+        if not isinstance(text_to_number, (dict,type(None))):
             raise TypeError(f'text to number must be a dictionary of text and its replacement number, got {type(text_to_number).__name__}')
 
         if text_to_number is None:

@@ -4,8 +4,17 @@ import pandas as pd
 import numpy as np
 
 class MissingHandler():
-    """Initializing Missing Handler."""
+    """
+    Initializing Missing Handler.
 
+    Parameters
+    -----------
+    df : pd.DataFrame
+        A pandas DataFrame containing missing data.
+
+    columns : list, optional
+        List of columns you wish to convert, by default None.
+    """
     def __init__(self, df, columns: list=None, extra_placeholders: list = None):
 
         self.df = df
