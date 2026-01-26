@@ -67,6 +67,10 @@ class NumericalVisualizer():
         Usage Recommendation
         ----------------------
             Use this method of visualization only for numerical data.
+        
+        Example
+        -------
+        >>> NumericalVisualizer(df).plot_box()
         """
         import matplotlib.pyplot as plt
 
@@ -138,6 +142,10 @@ class NumericalVisualizer():
         Usage Recommendation
         ----------------------
             Use this method of visualization only for numerical data.
+
+        Example
+        -------
+        >>> NumericalVisualizer(df).plot_box()
         """
 
         if orientation not in ('horizontal', 'vertical', 'h', 'v'):
@@ -181,7 +189,7 @@ class NumericalVisualizer():
 
             plt.show()
 
-    def plot_KDE(self, bandwidth_method: str ='robust',
+    def plot_kde(self, bandwidth_method: str ='robust',
                   title: str=None,
                   xlabel: str=None,
                   ylabel: str=None,
@@ -233,6 +241,10 @@ class NumericalVisualizer():
         Considerations:
         ---------------
             This function uses ``compute_KDE()`` and ``compute_histogram()`` from Distribution class of the Computation Package
+
+        Example
+        -------
+        >>> NumericalVisualizer(df).plot_kde()
         """
         import matplotlib.pyplot as plt
 
@@ -269,7 +281,7 @@ class NumericalVisualizer():
 
             plt.show()
 
-    def plot_QQ(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green'):
+    def plot_qq(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green'):
         """
         Visualize Quantile-Quantile plot (QQ plot) for one or multiple columns of Numerical DataFrame.
 
@@ -293,6 +305,10 @@ class NumericalVisualizer():
         Usage Recommendation
         ----------------------
             Use this method of visualization only of numerical data.
+
+        Example
+        --------
+        >>> NumericalVisualizer(df).plot_qq()
         """
         from scipy import stats
         import matplotlib.pyplot as plt
@@ -318,7 +334,7 @@ class NumericalVisualizer():
 
             ax.get_lines()[0].set_color(points_color)   # points
             
-        plt.show()
+            plt.show()
         
 
 
