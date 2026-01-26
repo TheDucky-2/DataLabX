@@ -3,19 +3,19 @@
 import pandas as pd
 
 class Computation:
-    
+    """
+    Initializing Computation.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose
+
+    columns: list, optional
+        A list of columns you wish to apply computations on, default is None.
+    """
     def __init__(self, df:pd.DataFrame, columns:list=None):
-        """
-        Initializing Computation.
 
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose
-
-        columns: list, optional
-            A list of columns you wish to apply computations on, default is None.
-        """
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
 

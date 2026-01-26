@@ -6,21 +6,22 @@ import pandas as pd
 import numpy as np
 
 class Statistics(Computation):
+    """
+    Initializing the Statistics Computation.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe
+
+    columns: list, optional
+        A list of columns you wish to compute statistics of, default is None.
+    """
     
     def __init__(self, df:pd.DataFrame, columns:list=None):
         import pandas as pd
         import numpy as np
-        '''
-        Initializing the Statistics Computation
 
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose
-
-        columns: list
-            A list of columns you wish to apply numerical cleaning on
-        '''
         super().__init__(df, columns)
 
         self.df = df.select_dtypes(include = 'number')

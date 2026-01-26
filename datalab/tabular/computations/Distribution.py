@@ -6,9 +6,7 @@ from .Statistics import Statistics
 import pandas as pd
 
 class Distribution(Computation):
-
-    def __init__(self, df: pd.DataFrame, columns:list = None):
-        """
+    """
         Initializing Distribution Computation.
 
         Parameters
@@ -18,7 +16,10 @@ class Distribution(Computation):
 
         columns: list, optional
             A list of columns you wish to compute distribution in, default is None.
-        """
+    """
+
+    def __init__(self, df: pd.DataFrame, columns:list = None):
+
         import pandas as pd
 
         super().__init__(df, columns)

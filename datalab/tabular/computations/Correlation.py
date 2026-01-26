@@ -8,19 +8,20 @@ from ..utils.Logger import datalab_logger
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class Correlation(Computation):
+    """
+    Initializing the Correlation Computation .
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose.
+
+    columns: list, optional
+        A list of columns you wish to check correlation for, by default None.
+    """
 
     def __init__(self, df:pd.DataFrame, columns:list=None):
-        """
-        Initializing the Correlation Computation .
 
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose.
-
-        columns: list, optional
-            A list of columns you wish to check correlation for, by default None.
-        """
         super().__init__(df, columns)
 
         self.df = df
