@@ -4,20 +4,21 @@ import pandas as pd
 import polars as pl
 
 class BackendConverter:
+    """
+    Initializing the Backend Converter.
+
+    Parameters
+    -----------
+    df: pd.DataFrame or pl.DataFrame
+        A pandas DataFrame or a polars DataFrame.
+
+    columns: list, optional
+        A list of columns you wish to convert, default is None.
+
+    """
 
     def __init__(self, df:pd.DataFrame|pl.DataFrame, columns:list=None):
-        """
-        Initializing the Backend Converter.
 
-        Parameters
-        -----------
-        df: pd.DataFrame or pl.DataFrame
-            A pandas DataFrame or a polars DataFrame.
-
-        columns: list, optional
-            A list of columns you wish to convert, default is None.
-
-        """
         if not isinstance(df, (pd.DataFrame, pl.DataFrame)):
             raise TypeError(f'Backend Converter expects a pandas DataFrame or a polars DataFrame, got {type(df).__name__}')
 
