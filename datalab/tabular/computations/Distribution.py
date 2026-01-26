@@ -1,3 +1,5 @@
+"""Computes distribution related statistics in one or multiple columns of a DataFrame."""
+
 from .Computation import Computation
 from .Statistics import Statistics
 
@@ -6,54 +8,66 @@ import pandas as pd
 class Distribution(Computation):
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
+        """
+        Initializing Distribution Computation.
+
+        Parameters
+        -----------
+        df: pd.DataFrame
+            A pandas DataFrame
+
+        columns: list, optional
+            A list of columns you wish to compute distribution in, default is None.
+        """
         import pandas as pd
 
-        # bringing the properties of parent class forth into the child
         super().__init__(df, columns)
 
-        self.df = df.copy()
-        self.columns = [column for column in self.columns if column in self.df.columns] 
+        self.df = df
 
+        if columns is None:
+            self.columns = self.df.columns.tolist()
+        else:
+
+            self.columns = [column for column in columns if column in self.df.columns] 
     
     def compute_histogram(self, n_bins: int =30, density: bool =False) -> pd.DataFrame:
-        '''
+        """
         Pre-Compute histogram for each numerical column of your DataFrame.
 
-        Parameters:
+        Parameters
         -----------
-        n_bins : int (Default is 30)
-            Number of bins to use in the histogram. Default is 30
+        n_bins : int, optional
+            Number of bins to use in the histogram, by default 30.
         
-        density : bool (Default is False)
-            Density is used when we want to see histogram in terms of proabability distributions like normal, exponential or uniform and all.
+        density :bool, optional 
+            Density is used when we want to see histogram in terms of proabability distributions like normal, exponential or uniform and all, by default False.
             
             If False, 
                 It usually shows how many values fall in each bin
             If True, 
-                It usually shows how likely values are to fill within each range — i.e., the probability density.
+                It usually shows how likely values are to fill within each range - i.e., the probability density.
                 The total area under the histogram equals to 1.
 
-        Returns:
+        Returns
         --------
             dict 
             A dictionary of of each column as key, and precomputed bins with bin_centers and counts of the histogram for that column as value
     
-        Usage Recommendation:
-        ---------------------
+        Usage Recommendation
+        --------------------
             Use this function to convert columns into numeric values for later calculations.
         
-        Considerations:
+        Considerations
         ---------------
             This function converts non-convertible values into np.nan (Not a Number) by default.
 
         Examples:
         
-        >>> to_numerical(df, ['Quantity', 'Price Per Unit', 'Total Spent'], inplace=True]) 
-        #   returns full original dataframe with converted columns
+        >>> Distribution(df).compute_histogram(n_bins=50) 
 
-        >>> to_numerical(df, ['Quantity', 'Price Per Unit', 'Total Spent'])
-        #   returns dataframe of numeric columns ['Quantity', 'Price Per Unit', 'Total Spent']
-        ''' 
+        >>> Distribution(df).compute_histogram(density=True)
+        """ 
         import numpy as np
 
         computed_bins = {}
@@ -84,10 +98,8 @@ class Distribution(Computation):
             
         return computed_bins
 
-    
     def raw_kurtosis(self) -> pd.Series :
-
-        '''
+        """
         Computes the raw kurtosis for each numerical column of your DataFrame.
 
         Raw Kurtosis:
@@ -95,7 +107,7 @@ class Distribution(Computation):
             1. It measures how the tails or peaks of a distribution differ from a normal distribution (bell-curve)
             2. It observes whether the data has more or fewer outliers (extreme values) than a normal distribution.
             3. For a normal distribution, kurtosis value is very close to 3
-            
+
             - kurtosis > 3 means the data has heavy tails (more outliers).
             - kurtosis ~ 3 means the data is close to normal.
             - kurtosis < 3 means the data has light tails (fewer outliers).
@@ -103,7 +115,7 @@ class Distribution(Computation):
         Formula:
 
             raw_kurtosis = (average of (x - mean)^4) / (variance^2)
-        
+
         Returns:
             pd.Series
             A pandas series of raw kurtosis values for each numerical column of your DataFrame
@@ -111,7 +123,7 @@ class Distribution(Computation):
         Usage Recommendation:
             1. Use raw kurtosis if you are comparing several distributions mathematically.
             2. Use excess kurtosis if you are comparing to a normal distribution
-        ''' 
+        """ 
 
         n = len(self.df)
 
@@ -120,12 +132,12 @@ class Distribution(Computation):
 
         fourth_central_moment = (((self.df - df_mean)**4).sum())/n
 
-        raw_kurtosis = fourth_central_moment / (df_std_dev)**4
+        raw_kurtosis = fourth_central_moment / ((df_std_dev)**4)
 
         return raw_kurtosis
 
     def excess_kurtosis(self) -> pd.Series :
-        '''
+        """
         Computes the excess kurtosis for each numerical column of your DataFrame.
 
         Excess Kurtosis:
@@ -133,24 +145,25 @@ class Distribution(Computation):
             1. It measures how the tails or peaks of a distribution differ from a normal distribution (bell-curve)
             2. It observes whether your data has many outliers (extreme values).
             3. For a normal distribution, excess kurtosis value is very close to 0
-            
+
             - kurtosis > 0 means the data has heavy tails (more outliers).
             - kurtosis ~ 0 means the data is close to normal.
             - kurtosis < 0 means the data has light tails (fewer outliers).
 
-        Formula:
-
+        Formula
+        --------
             excess kurtosis = raw kurtosis - 3
-        
-        Returns:
-            pd.Series
-            A pandas series of excess kurtosis values for each numerical column of your DataFrame
 
-        Usage Recommendation:
+        Returns
+        --------
+        pd.Series
+            A pandas Series
+
+        Usage Recommendation
+        ---------------------
             1. Use excess kurtosis if you are comparing to a normal distribution
             2. Use raw kurtosis if you are comparing several distributions mathematically.
-        
-        '''
+        """
 
         raw_kurtosis = Distribution(self.df).raw_kurtosis()
 
@@ -162,13 +175,14 @@ class Distribution(Computation):
         import numpy as np
         import pandas as pd
         from scipy.signal import fftconvolve
-        '''
-        Computes the KDE (Kernel Density) for each numerical column of the DataFrame.
-        
+        """
+        Computes the KDE (Kernel Density) for each numerical column of the
+        DataFrame.
+
         Intuition:
         ----------
 
-            KDE is just a smoothened histogram where bars are now curves 
+            KDE is just a smoothened histogram where bars are now curves
             Instead of showing counts per bin, KDE uses a smooth “kernel” (a bell-shaped curve) to estimate the probability distribution.
 
         Formula:
@@ -187,8 +201,8 @@ class Distribution(Computation):
 
             For Normal Distribution:
 
-                - 'silverman' : 1.06 * std * (n ** (-1/5)) 
-                - 'scott': 		std * (n ** (-1/5)) , same as silverman without the optimized constant 1.06
+                - 'silverman' : 1.06 * std * (n ** (-1/5))
+                - 'scott':              std * (n ** (-1/5)) , same as silverman without the optimized constant 1.06
 
             For Skewed Distribution:
 
@@ -197,7 +211,7 @@ class Distribution(Computation):
         Returns:
         --------
             pd.DataFrame
-            A pandas DataFrame of KDE values 
+            A pandas DataFrame of KDE values
 
         Usage Recommendation:
             1. Use this function when you want to compute KDE values, for visualization or analysis
@@ -206,8 +220,7 @@ class Distribution(Computation):
 
         Considerations:
             This function calculates bandwidth (width of bump) separately for each column, which is why it is a bit slower.
-
-        '''
+        """
         n = len(self.df)
         std_dev =Statistics(self.df).standard_deviation()
 
@@ -255,4 +268,29 @@ class Distribution(Computation):
 
         return pd.DataFrame(KDE_dict)
 
+    def skewness(self):
+        """
+        Computes the skewness (if data is being pulled in one direction).
+
+        Skewness:
+        
+        - Values near 0 means the data is roughly symmetric.
+        - Positive values indicate that data is being pulled towards right direction.
+        - Negative values indicate taht data is being pulled towards left direction.
+
+        Formula
+        -------
+            skewness = (1/n) * sum of ((x - mean of x)/std dev of x)**3
+
+        Returns
+        -------
+            pd.Series
+            A pandas Series
+        
+        Usage Recommendation
+        ---------------------
+            Use this function for checking the shape of your data (whether it follows normal distribution or non-normal distribution).
+        """ 
+
+        return self.df.skew()
 
