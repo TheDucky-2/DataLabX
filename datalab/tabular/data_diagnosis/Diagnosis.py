@@ -12,19 +12,19 @@ import numpy as np
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class Diagnosis:
+    """Initializing the Diagnosis.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose
+
+    columns: list, optional
+        A list of columns you wish to diagnose, by default None.
+    """
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
-        """Initializing the Diagnosis.
 
-        Parameters
-        -----------
-
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose
-
-        columns: list
-            A list of columns you wish to diagnose
-        """
         # making sure that the passed df is a pandas DataFrame
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')

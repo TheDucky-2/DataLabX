@@ -7,25 +7,26 @@ import polars as pl
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class DirtyDataDiagnosis:
+    """
+    Initialize the DirtyDataDiagnosis class.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose.
+
+    columns: list, optional
+        A list of columns you wish to diagnose, by default None.
+
+    array_type: str, optional
+        The backend you wish to work with in pandas: 'numpy' or 'pyarrow', by default 'auto'.
+
+    conversion_threshold: int, optional
+        The number of rows upon which backend automatically switches to 'pyarrow' in pandas, by default 100000.
+    """
 
     def __init__(self, df: pd.DataFrame, columns: list = None, array_type='auto', conversion_threshold: int= None):
-        """
-        Initialize the DirtyDataDiagnosis class.
-
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose.
-
-        columns: list, optional
-            A list of columns you wish to diagnose, by default None.
-
-        array_type: str, optional
-            The backend you wish to work with in pandas: 'numpy' or 'pyarrow', by default 'auto'.
-
-        conversion_threshold: int, optional
-            The number of rows upon which backend automatically switches to 'pyarrow' in pandas, by default 100000.
-        """
+     
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
 
@@ -103,7 +104,7 @@ class DirtyDataDiagnosis:
         self.df = self.df.reset_index()   
 
         # passing dataframe including the new column 'index'
-        polars_df = BackendConverter(self.df).pandas_to_polars_as_string(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+        polars_df = BackendConverter(self.df).pandas_to_polars()
 
         numeric_diagnosis = {}
 
@@ -211,7 +212,7 @@ class DirtyDataDiagnosis:
 
         self.df = self.df.reset_index()
         
-        polars_df = BackendConverter(self.df).pandas_to_polars_as_string(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+        polars_df = BackendConverter(self.df).pandas_to_polars()
 
         columns_to_diagnose = [column for column in polars_df.columns if column!= 'index']
 
@@ -304,8 +305,7 @@ class DirtyDataDiagnosis:
         
         self.df = self.df.reset_index()
 
-        pol_df = BackendConverter(self.df).pandas_to_polars_as_string(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
-        
+        pol_df = BackendConverter(self.df).pandas_to_polars()
         datetime_diagnosis = {}
 
         PATTERNS = {

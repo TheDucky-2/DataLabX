@@ -8,20 +8,20 @@ from .Diagnosis import Diagnosis
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class CategoricalDiagnosis():
+    """
+    Initializing Categorical Diagnosis.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas DataFrame.
+
+    columns : list, optional
+        A list of column names you want to apply diagnosis on, by default None.
+    """
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
-        """
-        Initializing Categorical Diagnosis.
 
-        Parameters
-        -----------
-
-        df: pd.DataFrame
-            A pandas DataFrame.
-
-        columns : list, optional
-            A list of column names you want to apply diagnosis on, by default None.
-        """
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
 

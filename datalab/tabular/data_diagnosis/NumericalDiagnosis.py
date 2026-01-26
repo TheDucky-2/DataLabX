@@ -8,20 +8,21 @@ import pandas as pd
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class NumericalDiagnosis:
+    """
+    Initializing the Numerical Diagnosis.
+
+    Parameters
+    -----------
+
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose.
+
+    columns: list, optional
+        A list of columns you wish to apply numerical diagnosis on, by default None.
+    """
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
-        """
-        Initializing the Numerical Diagnosis.
 
-        Parameters
-        -----------
-
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose.
-
-        columns: list, optional
-            A list of columns you wish to apply numerical diagnosis on, by default None.
-        """
 
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')

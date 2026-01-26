@@ -10,24 +10,25 @@ import numpy as np
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class MissingnessDiagnosis:
+    """
+    Initialize the Missingness Diagnosis.
+
+    Parameters
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose.
+
+    columns: list, optional
+        A list of columns you wish to apply numerical cleaning on, by default None
+
+    extra_placeholders: list, optional
+        A list of extra placeholders considered as missing values depending on the domain, by default None
+    """
 
     def __init__(self, df: pd.DataFrame, columns:list = None, extra_placeholders:list|type(None)=None):
         import pandas as pd
         import numpy as np
-        """
-        Initialize the MissingnessDiagnosis class.
 
-        Parameters
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose.
-
-        columns: list, optional
-            A list of columns you wish to apply numerical cleaning on, by default None
-
-        extra_placeholders: list, optional
-            A list of extra placeholders considered as missing values depending on the domain, by default None
-        """
         # making sure that the passed df is a pandas DataFrame
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')

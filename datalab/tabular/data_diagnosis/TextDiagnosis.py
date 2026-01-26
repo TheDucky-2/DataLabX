@@ -10,21 +10,21 @@ import polars.selectors as cs
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class TextDiagnosis:
+    """
+    Initializing Text Diagnosis.
+
+    Parameters:
+    -----------
+    df: pd.DataFrame
+        A pandas dataframe you wish to diagnose.
+
+    columns: list, optional
+        A list of columns you wish to diagnose text in, by default None.
+        
+    """
 
     def __init__(self, df: pd.DataFrame, columns:list = None):
-        from pathlib import Path
-        """
-        Initializing Text Diagnosis.
 
-        Parameters:
-        -----------
-        df: pd.DataFrame
-            A pandas dataframe you wish to diagnose.
-
-        columns: list, optional
-            A list of columns you wish to diagnose text in, by default None.
-        
-        """
         self.df = df.select_dtypes(include = ['string', 'object', 'category'])
 
         if columns is not None:
