@@ -90,7 +90,7 @@ def load_tabular(file_path: str, file_type: str = None, array_type: str='auto', 
         conversion_threshold = 100_000 
 
     if file_type == 'csv':
-        polars_df = pl.read_csv(file_path)
+        polars_df = pl.read_csv(file_path, infer_schema_length=0)
     elif file_type == 'parquet':
         polars_df = pl.read_parquet(file_path)
     elif file_type == 'json':

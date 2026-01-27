@@ -1,7 +1,7 @@
 """
-"DataLab v0.1.0b3 - Beta Pre-release: structured dirty data diagnosis, Polars + backend optimization, and enhanced data visualization."
+"DataLab v0.1.0b4 - Beta Pre-release: Structured dirty data diagnosis, Polars + Backend optimization, and Enhanced data visualization."
 """
-__version__ = '0.1.0b3'
+__version__ = '0.1.0b4'
 
 import importlib
 
