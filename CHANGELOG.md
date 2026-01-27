@@ -8,6 +8,76 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ---
 
+# v0.1.0b4 - Jan 27, 2026
+
+**Status:** Beta (pre-release - TestPyPI only)
+
+DataLab **v0.1.0b4** is a pre-release version with improvements in **documentation**, **CI/CD**, **badges**, and **preprocessing workflows**, focusing on **better usability**, **consistency**, and **API clarity**.
+
+⚠️ **Pre-release note:** APIs may change as the library evolves, especially around backend handling.
+
+### 🚀 Major Changes
+
+#### 1. **CSV Data Loading**:
+
+**``load_tabular()``** method now loads all columns of a **CSV** file as **"string"** type by default to improve handling of dirty or mixed-type datasets.
+
+- For full API reference, see [DataLab API Docs](https://theducky-2.github.io/DataLab/)
+
+#### 2. **CI/CD Workflows**:
+
+Triggers, environment setup, and documentation generation with pdoc.
+
+#### 3. **README**:
+
+README updated with **Python version**, **license**, **TestPyPI**, **status**, and **API documentation badges**.
+
+#### 4. **Python-version Requirement**:
+
+Python version requirement updated to **>=3.12**.
+
+#### 5. **Preprocessing**
+
+Core preprocessing modules refactored for **API consistency** and **readability**.
+
+### ✨ New Features & Improvements
+
+- Logging throughout key modules to track workflow steps and operations.
+
+- New methods for categorical preprocessing and distribution analysis:
+
+  - ``label_encoding()``
+
+  - ``ordinal_encoding()``
+
+  - ``skewness()``
+
+- ``NumericalCleaner`` now supports **array type** and **conversion thresholds** functionality.
+
+- Refactored code for **consistency**, **readability**, and **API stability**.
+
+- Enhanced preprocessing methods with **better validation** and **error handling**.
+
+- Reformatted documentation for better clarity and **GitHub Pages** integration.
+
+- Backend flexibility planning extended to other Polars-based classes.
+
+- Docstrings refactored from ``__init__.py`` to ``class-level`` across multiple packages for **cleaner documentation** and better **API reference generation**.
+
+### 🐛 Fixed
+
+- Various bugs in ``Normalization``, ``Distribution``, and ``preprocessing`` modules.
+
+- Docstring formatting and API documentation visibility issues.
+
+- Code consistency issues and output type mismatches across modules.
+
+- Removed ``DtypeConverter`` class and its methods.
+
+- Removed base classes like ``DataPreprocessor`` and ``DataVisualizer`` from ``__init__.py`` of their respective packages.
+
+---
+
 ## v0.1.0b2 - Jan 22, 2026
 **Status:** Beta (pre-release - TestPyPI only)
 
