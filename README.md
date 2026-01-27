@@ -2,7 +2,7 @@
 
 # 📊 DataLab - Pre-Release
 [![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://theducky-2.github.io/DataLab)
-![TestPyPI version](https://img.shields.io/badge/TestPyPI-0.1.0b3-orange)
+![TestPyPI version](https://img.shields.io/badge/TestPyPI-0.1.0b4-orange)
 ![Status](https://img.shields.io/badge/Status-Beta-yellow)
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![License](https://img.shields.io/github/license/TheDucky-2/DataLab)
