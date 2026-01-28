@@ -81,6 +81,8 @@ class ColumnConverter:
             raise TypeError(f'keyword arguments must be a dict, got {type(kwargs).__name__}')
 
         for column in self.df[self.columns]:
+
+            self.df[column] = self.df[column].astype('object')
             
             if dayfirst:
                 # apply datetime conversion to all columns passed
