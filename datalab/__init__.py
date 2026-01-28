@@ -1,4 +1,6 @@
 """
+<img src="assets/logo.png" alt="DataLab" style="height: 24px;">
+
 "DataLab v0.1.0b4 - Beta Pre-release: Structured dirty data diagnosis, Polars + Backend optimization, and Enhanced data visualization."
 """
 __version__ = '0.1.0b4'
