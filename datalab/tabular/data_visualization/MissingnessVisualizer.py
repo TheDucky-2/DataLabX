@@ -132,6 +132,9 @@ class MissingnessVisualizer():
         elif viz_type == 'dendrogram':
             ax = msno.dendrogram(visualization_df)
 
+        else:
+            raise ValueError(f"Available viz types are 'heatmap', 'bar', 'matrix' and 'dendrogram', got {viz_type}")
+
         # if user passes a title, it would be user selected title.abs
         # However, if user does not pass a title, it would default back to viz_type of plot as the title
 
