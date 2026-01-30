@@ -158,7 +158,7 @@ class Distribution(Computation):
 
         raw_kurtosis = fourth_central_moment / ((std_dev)**4)
 
-        return raw_kurtosis.to_frame(name='raw_kurtosis')
+        return raw_kurtosis.to_frame().T
 
     def excess_kurtosis(self) -> pd.DataFrame :
         """
@@ -195,9 +195,9 @@ class Distribution(Computation):
 
         raw_kurtosis = Distribution(self.df).raw_kurtosis()
 
-        excess_kurtosis = raw_kurtosis['raw_kurtosis'] - 3
+        excess_kurtosis = raw_kurtosis - 3
 
-        return excess_kurtosis.to_frame(name='excess_kurtosis')
+        return excess_kurtosis
 
     def compute_kde(self, bandwidth_method:str ='silverman',n_bins: int =30, density: bool =False)-> pd.DataFrame:
 
@@ -319,3 +319,28 @@ class Distribution(Computation):
             KDE_dict[column] = KDE
 
         return pd.DataFrame(KDE_dict)
+
+    def skewness(self)-> pd.DataFrame:
+        """
+        Computes the skewness for each numerical column of your DataFrame.
+
+        Skewness shows whether data is pulled more to the left or right.
+
+        - Positive skew (> 0): Long tail on the right side (more high-end outliers)
+        - Negative skew (< 0): Long tail on the left side (more low-end outliers)
+        - Zero skew (≈ 0): Data is roughly symmetric
+
+        Returns
+        --------
+        pd.DataFrame
+
+        Usage Recommendation
+        ---------------------
+            1. Use this function when you want to see whether your data is being pulled towards left or right.
+
+        Example
+        ---------
+        >>> Distribution(df).skewness()
+        """ 
+
+        return self.df[self.columns].skew().to_frame().T

@@ -256,6 +256,9 @@ class NumericalDiagnosis:
         ------- 
         >>> NumericalDiagnosis(df).check_distribution()
         """ 
+
+        import numpy as np
+
         if not isinstance(skewness_threshold, (int, float)):
             raise TypeError(f'skewness threshold must be an int or float, got {type(skewness_threshold).__name__}')
 
@@ -266,14 +269,12 @@ class NumericalDiagnosis:
 
         distribution_dict = {}
         
-        skewness = Distribution(self.df).skewness()
-        kurtosis = Distribution(self.df).excess_kurtosis()
+        skewness = Distribution(self.df[self.columns]).skewness().abs()
+        kurtosis = Distribution(self.df[self.columns]).excess_kurtosis().abs()
 
-        for col in self.df[self.columns]:
-            if (skewness.abs()[col] > skewness_threshold) & (kurtosis.abs()[col] > kurtosis_threshold):
-                distribution_dict[col] = 'Non-Normal Distribution'
-            else:
-                distribution_dict[col] = 'Normal Distribution'
+        distribution_mask = ((skewness > skewness_threshold) & (kurtosis > kurtosis_threshold)).fillna(False)
+
+        distribution_dict = pd.Series(np.where(distribution_mask.iloc[0], "Non-Normal Distribution", 'Normal Distribution'), index = skewness.columns).to_dict()
 
         return distribution_dict
 
