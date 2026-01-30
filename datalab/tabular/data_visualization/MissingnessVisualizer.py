@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import missingno as msno
 
+from ..utils.Logger import datalab_logger
+
+logger = datalab_logger(name = __name__.split('.')[-1])
+
 class MissingnessVisualizer():
     """
     Initializing Missingness Visualizer.
@@ -28,6 +32,8 @@ class MissingnessVisualizer():
         else:
             self.columns = [column for column in columns if column in self.df.columns]
 
+        logger.info('Missingness Visualizer initialized.')
+
     def plot_missing(self,
                 viz_type: str = 'bar',
                 extra_placeholders: list | None =None,
@@ -39,7 +45,7 @@ class MissingnessVisualizer():
                 xlabel_fontsize: int = 15,
                 xlabel_padding: int = 15,
                 ylabel_fontsize: int = 15,
-                ylabel_padding: int = 15):
+                ylabel_padding: int = 15)-> None:
         """
         Visualize missing values in one or multiple columns of the DataFrame.
 
@@ -148,6 +154,8 @@ class MissingnessVisualizer():
         
         if ylabel:
             ax.set_ylabel(ylabel, fontsize = ylabel_fontsize, labelpad = ylabel_padding)
+
+        logger.info(f'Plotting missing data using {viz_type} plot...')
 
         # this function does not return anything anymore.
         plt.show()
