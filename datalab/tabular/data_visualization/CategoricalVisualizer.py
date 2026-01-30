@@ -19,7 +19,7 @@ class CategoricalVisualizer():
 
     def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
     
-        self.df.select_dtypes(include = ['string', 'object', 'category'])
+        self.df = df.select_dtypes(include = ['string', 'object', 'category'])
         
         if columns is None:
             self.columns = df.columns
@@ -33,7 +33,7 @@ class CategoricalVisualizer():
                             title: str=None,
                             xlabel: str=None,
                             ylabel: str=None,
-                            figsize: tuple =(6, 4)):
+                            figsize: tuple =(6, 4))-> type(None):
         """
         Visualize frequency for each column of Categorical DataFrame.
 
