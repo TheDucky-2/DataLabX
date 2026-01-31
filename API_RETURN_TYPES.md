@@ -55,6 +55,14 @@ This helps users know what to expect when calling functions and methods.
 
 ---
 
+## 📂 datalab.tabular.utils
+
+| Module / Method | Return Type | Notes | Import |
+|-----------------|------------|-------|----------|
+| BackendConverter | ``pandas.DataFrame`` or ``polars.DataFrame`` | Converts pandas <-> polars | ``from datalab import BackendConverter``
+
+---
+
 ## 📂 datalab.tabular.data_diagnosis
 
 | Module / Method | Return Type | Notes | Import |
