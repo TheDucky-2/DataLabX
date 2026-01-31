@@ -7,15 +7,17 @@
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![License](https://img.shields.io/github/license/TheDucky-2/DataLab)
 
-A Python library for understanding, diagnosing, and preparing real-world data.
+A diagnosis-first **data quality and preparation framework**, implemented as a Python library.
+
+It is designed for working with messy, **real-world datasets**where most failures occur before modeling - during data understanding, cleaning, and unsafe transformations.
 
 ## What is DataLab?
 
-DataLab is a **Python** library designed for **serious, real-world data analysis**.
+DataLab is a **Python framework** exposed as a library designed for **serious, real-world data analysis**.
 
-It handles extremely messy datasets **(≈77–90% dirty)** and can scale to millions of rows, yet its API is **intuitive**, **well-documented**, and **beginner-friendly**.
+It is designed for extremely messy datasets **(≈77–90% invalid or inconsistent values)** and scales to millions of rows, while providing a **structured, well-documented, and beginner-safe API**.
 
-It's been built to give **clarity and control over data**, not just automation.
+The focus is on **clarity and control over data behavior**, not blind automation.
 
 It is built for:
 
