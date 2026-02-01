@@ -161,7 +161,7 @@ DataLab is available on **TestPyPI** for early testing and feedback.
 
 You can now Install DataLab pre-release using **pip**:
 
-``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0b4``
+``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0b5``
 
 ### Why this long command? 
 
