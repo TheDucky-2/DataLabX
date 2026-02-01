@@ -142,9 +142,9 @@ class NumericalDiagnosis:
         """
         from ..computations.Distribution import Distribution
 
-        skewness = Distribution(self.df).skewness()
+        skewness = Distribution(self.df[self.columns]).skewness()
 
-        skewness_dict = {col: round(float(skewness[col].iloc[0]), 4)for col in self.df[self.columns]}
+        skewness_dict = {col: (round(float(skewness[col].iloc[0]), 4) if pd.notna(skewness[col].iloc[0]) else None) for col in self.df[self.columns]}
 
         return skewness_dict
 
@@ -185,14 +185,14 @@ class NumericalDiagnosis:
 
         from ..computations import Distribution
 
-        raw_kurtosis = Distribution(self.df).raw_kurtosis()
-        excess_kurtosis = Distribution(self.df).excess_kurtosis()
+        raw_kurtosis = Distribution(self.df[self.columns]).raw_kurtosis()
+        excess_kurtosis = Distribution(self.df[self.columns]).excess_kurtosis()
 
         if kurtosis_type == 'raw':
-            kurtosis_dict = {col: round(float(raw_kurtosis[col].iloc[0]), 4)for col in self.df[self.columns]}
+            kurtosis_dict = {col: ((round(float(raw_kurtosis[col].iloc[0]), 4)) if pd.notna(raw_kurtosis[col].iloc[0]) else None) for col in self.df[self.columns]}
 
         if kurtosis_type == 'excess':
-            kurtosis_dict = {col: round(float(excess_kurtosis[col].iloc[0]), 4)for col in self.df[self.columns]}
+            kurtosis_dict = {col: ((round(float(excess_kurtosis[col].iloc[0]), 4)) if pd.notna(excess_kurtosis[col].iloc[0]) else None) for col in self.df[self.columns]}
 
         return kurtosis_dict
 
