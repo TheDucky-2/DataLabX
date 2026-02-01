@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 [project] 
 
 name = "datalab_pre_release"             
-version = "0.1.0b5"
-description = "DataLab v0.1.0b5 - A stabilization release focused on API reliability, type safety, improved tests, and clearer documentation."
+version = "0.1.0b6"
+description = "DataLab v0.1.0b6 - A stabilization release focused on API reliability, type safety, improved tests, and clearer documentation."
 
 authors = [
     {name = "Kshitij Sharma"}

@@ -1,11 +1,11 @@
 """
 <img src="assets/DataLab_logo.png" alt="DataLab logo" height: "80" style="display:block; margin: 20px auto;">
 
-"DataLab v0.1.0b5 - Beta Pre-release
+"DataLab v0.1.0b6 - Beta Pre-release
 
 A stabilization release focused on API reliability, type safety, improved tests, and clearer documentation."
 """
-__version__ = '0.1.0b5'
+__version__ = '0.1.0b6'
 
 import importlib
 
