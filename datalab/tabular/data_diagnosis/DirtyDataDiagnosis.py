@@ -61,6 +61,7 @@ class DirtyDataDiagnosis:
         - is_dirty:                Values that are not strictly numeric (e.g: approx 1000, $100,00CD#44)
         - is_missing:              Values that are null or missing values (pandas missing types- NA or NaN)
         - is_scientific_notation:  Numbers expressed in scientific notation (e.g: 1.06E+1)
+        - is_symbol:               Values containng only the symbols. (e.g: '/', ',', '?')
         - has_commas:              Numbers that contain commas (e.g: 10,000 or 1,000,000)
         - has_decimals:            Numbers that contain decimal points (e.g: -1.62, 1000.44)
         - has_units:               Numbers that are suffixed with alphabetical units (e.g: '10kg', '100cm')
@@ -69,6 +70,7 @@ class DirtyDataDiagnosis:
         - has_spaces:              Numbers that contain leading or trailing spaces (e.g: '  missing', '1.066 ', '1.34    ')
         - has_multiple_decimals:     Numbers that contain double decimals (e.g: 1.34.567, 1.4444.0000)
         - has_multiple_commas:     Numbers that contain more than one commas (e.g: '9,628,62' or '1234,56')
+
 
         Parameters
         -----------
