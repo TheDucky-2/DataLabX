@@ -6,7 +6,7 @@ That already means you care about **data quality, correctness, and understanding
 
 This document is intentionally **opinionated**.
 
-DataLab is not a generic data utility library. It is a **diagnosis-first framework** built to handle **extremely messy, real-world data** safely and transparently.
+DataLab is a **diagnosis-first framework** built to handle **extremely messy, real-world data** safely and transparently.
 
 Contributions are welcome, but they must respect that philosophy.
 
