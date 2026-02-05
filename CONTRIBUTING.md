@@ -6,11 +6,17 @@ That already means you care about **data quality, correctness, and understanding
 
 This document is intentionally **opinionated**.
 
-DataLab is not a generic data utility library. It is a **diagnosis-first framework** built to handle **extremely messy, real-world data** safely and transparently.
+DataLab is a **diagnosis-first framework** built to handle **extremely messy, real-world data** safely and transparently.
 
-Contributions are welcome, but they must respect that philosophy.
+Contributions are absolutely welcome, but they must respect that philosophy.
 
-If you are looking to quickly add features, automate everything, or silently coerce data “to just make it work,” this project may not be a good fit - and that is completely okay.
+If you are looking to:
+
+- Quickly add features without understanding the core intent of DataLab
+- Automate every existing process
+- Silently coerce data “to just make it work”
+
+This project may not be a good fit - and that is completely okay.
 
 ---
 
@@ -65,19 +71,34 @@ DataLab is intentionally modular and **type-aware**.
 
 | Sub-Package | Responsibility | Data Mutation Rules |
 |------------|----------------|---------------------|
-| `data_loader` | Load data without premature type assumptions and preserve dirty values | Normalizes representations (e.g., loading as strings) to avoid silent coercion |
+| `data_loader` | Load data without premature type assumptions and preserve dirty values | Normalizes data representation **(Loads all data with string datatype)** to avoid silent coercion |
 | `data_diagnosis` | Diagnose structure, dirtiness, missingness, and distributions | **Must not modify data** (observational only) |
-| `data_cleaning` | Apply explicit, documented cleaning steps | May transform DataFrames, but changes must be visible, explainable, and non-silent |
-| `data_preprocessing` | Transform data for downstream analysis | May change datatypes or structure, but must be intentional, auditable, and reproducible |
+| `data_cleaning` | Apply explicit, documented cleaning steps | **May transform DataFrames**, but changes must be visible, explainable, and non-silent |
+| `data_preprocessing` | Transform data for downstream analysis | **May change datatypes or structure**, but must be intentional, auditable, and reproducible |
 | `computations` | Compute descriptive statistics and summaries | **Must not mutate data** |
 | `data_visualization` | Produce visualizations only | **Must not mutate data** and must return `None` |
 
 ### Important boundaries
 
-- Diagnosis modules **must not** modify data  
-- Visualization modules **must return `None`** (side-effect only)  
-- Cleaning and preprocessing must be **explicit and reversible** where possible  
-- Public APIs must return **documented, stable types**
+1. **Diagnosis modules must never modify data**
+
+- Diagnosis is observational only. 
+- These modules may inspect, analyze, and report issues, but they must not change values, dtypes, or structure.
+
+2. **Visualization modules must return None**
+
+- Visualizations are side-effect only (they render plots).
+- Visualization modules should not modify data except where **explicitly documented** and required by **third-party visualization constraints** (e.g., ``missingness viz via missingno``).
+
+3. **Cleaning and preprocessing must be explicit and reversible where possible**
+
+- All transformations must be intentional, documented, and inspectable.
+- Cleaning functions should avoid silent coercion and allow users to understand, reproduce, or change decisions without losing context.
+
+4. **Public APIs must return documented, stable types**
+
+- Public methods must adhere to the documented return-type contract.
+- Any change in return types requires updating documentation and tests.
 
 Breaking these boundaries is considered a **design issue**, not just a bug.
 
@@ -103,7 +124,7 @@ Testing in DataLab focuses on **correctness, edge cases, and safety** - not just
 
 Contributions should:
 
-- Include tests for messy and adversarial inputs  
+- Include tests for messy and adversarial inputs
 - Avoid relying on idealized clean data  
 - Explicitly test failure modes and warnings  
 - Prefer clarity over clever test setups  
@@ -123,7 +144,7 @@ Any change that affects:
 - defaults  
 - return types  
 
-**must** update:
+**Must** update:
 
 - docstrings  
 - relevant workflow guides  
@@ -241,7 +262,7 @@ PRs without context or rationale are unlikely to be merged.
 
 ---
 
-## 🚦 Maintainer Review Notes
+## Maintainer Review Notes
 
 DataLab is in **pre-release** and prioritizes:
 
@@ -261,7 +282,7 @@ DataLab values thoughtful discussion, careful disagreement, and shared learning.
 
 ---
 
-## ❤️ Final Note
+## 🚦Final Note
 
 DataLab exists because messy data silently breaks real systems.
 
