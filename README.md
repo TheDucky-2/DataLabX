@@ -256,12 +256,19 @@ datalab/
 
 DataLab is built to feel like:
 
-> Someone sitting next to you, explaining what your data is doing — and why.
+> Someone sitting next to you, explaining what your data is doing and why.
 
 ## 🤝 Contributions
 
-DataLab is in early development.
-Ideas, feedback, and contributions are absolutely welcome!
+DataLab is in early development. Ideas, feedback, and contributions are absolutely welcome!
+
+If you’d like to contribute, please follow our contribution guidelines:
+
+- **Read the contributing guide:** [CONTRIBUTING.md](CONTRIBUTING.md) - explains DataLab's philosophy, workflow, and how to make meaningful contributions.  
+- **Report a bug:** Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) to submit any issues or unexpected behavior.  
+- **Request a feature:** Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md) to propose new functionality.  
+
+Following these steps helps ensure your contributions align with DataLab’s diagnosis-first philosophy and saves time for both - you and the maintainers.
 
 ## ✉️ Contact & Support
 
