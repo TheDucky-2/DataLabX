@@ -4,10 +4,9 @@ about: Report an unexpected behavior you observed in DataLab (pre-release)
 title: "[BUG]"
 labels: bug
 assignees: 
-
 ---
 
-![DataLab Logo](..assets/DataLab_logo.png)
+![DataLab Logo](../../assets/DataLab_logo.png)
 
 # 🐞 Bug Report
 

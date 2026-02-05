@@ -6,7 +6,7 @@ labels: enhancement
 assignees: 
 ---
 
-![DataLab Logo](../assets/DataLab_logo.png)
+![DataLab Logo](../../assets/DataLab_logo.png)
 
 # ✨ Feature Request
 
