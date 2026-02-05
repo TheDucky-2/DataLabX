@@ -39,7 +39,7 @@ If you have an idea of how this could be implemented, describe it here.
 
 **Example:**  
  
-- Add a new visualization class `DiagnosisGraph`  
+- Add a new diagnosis class `DiagnosisGraph`  
 - Input: output dictionary from `DirtyDataDiagnosis`  
 - Output: network graph showing relationships between inconsistent values across columns  
 - Integrate with `data_diagnosis` and `data_visualization` workflow  
