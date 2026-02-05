@@ -1,3 +1,5 @@
+![DataLab logo](assets/DataLab_logo.png)
+
 # Contributing to DataLab
 
 First of all: **Thank you so much for considering contributing to DataLab.**
