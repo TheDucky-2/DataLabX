@@ -207,7 +207,7 @@ datalab/
 │   │
 │   └── graph/              # (To be added in v0.3)
 │
-├── docs/                 API documentation
+├── docs/                 # API documentation
 ├── foundations/          # Beginner-friendly documentation (Foundational concepts)
 ├── guides/               # API Usage & Workflow Guide notebooks for each step
 ├── assets/               # Images, logos, diagrams
@@ -265,7 +265,7 @@ DataLab is in early development. Ideas, feedback, and contributions are absolute
 
 If you’d like to contribute, please follow our contribution guidelines:
 
-- **Read the contributing guide:** [CONTRIBUTING.md](CONTRIBUTING.md) - explains DataLab's philosophy, workflow, and how to make meaningful contributions.  
+- **Read the contributing guide:** [CONTRIBUTING.md](CONTRIBUTING.md) ->  explains DataLab's philosophy, workflow, and how to make meaningful contributions.  
 - **Report a bug:** Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) to submit any issues or unexpected behavior.  
 - **Request a feature:** Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md) to propose new functionality.  
 
