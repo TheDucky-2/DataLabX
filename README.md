@@ -1,6 +1,5 @@
 ![DataLab logo](assets/DataLab_logo.png)
 
-# 📊 DataLab
 [![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://theducky-2.github.io/DataLab)
 ![TestPyPI version](https://img.shields.io/badge/TestPyPI-0.1.0b6-orange)
 ![Status](https://img.shields.io/badge/Status-Beta-yellow)
