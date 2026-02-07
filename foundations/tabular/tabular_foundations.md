@@ -1,6 +1,8 @@
-# 🗃️ Tabular Foundations
+# ▦ Tabular Foundations
 
-Tabular data is the core of most real-world datasets. Understanding it thoroughly is critical before any cleaning, analysis, or modeling.
+Tabular data is the core of most real-world datasets. 
+
+Understanding it thoroughly is critical before any cleaning, analysis, or modeling.
 
 This section of **Foundations** explains how to reason about tabular data - **not just how to use the API.**
 
@@ -23,7 +25,7 @@ tabular/
 ├── data-loading/       # How data enters DataLab and is interpreted
 ├── data-diagnosis/     # Understanding columns, types, duplicates, and dirty data
 └── missingness/        # Diagnosis, visualization, and handling of missing values
-    ├── overview        # Key concepts and terminology
+    ├── What_is_Missingness.md        # Key concepts and terminology
     ├── diagnosis       # Detecting missing data and patterns
     ├── visualization   # Interpreting plots and annotated examples
     └── handling        # Safe strategies to handle missing values
