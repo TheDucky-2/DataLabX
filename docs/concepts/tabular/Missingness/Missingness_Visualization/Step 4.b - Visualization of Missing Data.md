@@ -35,7 +35,7 @@ We can create a matrix plot of missing data by passing **'matrix'** as **viz_typ
 
 > Here is an annotated image of **Matrix plot** used for better understanding of the plot:
 
-![Matrix Plot of Missing Data](example_images/Matrix_Plot_of_Missing_Data.png)
+![Matrix Plot of Missing Data](/assets/docs/tabular/Missingness/Missingness_Viz/Matrix_Plot_of_Missing_Data.png)
 
 We can see:
 
@@ -73,7 +73,7 @@ We can create a matrix plot of missing data including placeholders by passing **
 
 > Below is the annotated image of **Matrix plot with placeholders** used for better understanding of the plot:
 
-![Matrix Plot of Missing Data with Placeholders](example_images/Matrix_Plot_of_Missing_Data_with_Placeholders.png)
+![Matrix Plot of Missing Data with Placeholders](/assets/docs/tabular/Missingness/Missingness_Viz/Matrix_Plot_of_Missing_Data_with_Placeholders.png)
 
 We can see:
 
@@ -129,7 +129,7 @@ Output:
 
 > Below is the annotated image of **Heatmap** used for better understanding of the plot:
 
-![Heatmap Of Missing Data](example_images/Heatmap_of_Missing_Data.png)
+![Heatmap Of Missing Data](/assets/docs/tabular/Missingness/Missingness_Viz/Heatmap_of_Missing_Data.png)
 
 We can see:
 
@@ -213,7 +213,7 @@ Output:
 
 > Below is the annotated image of **Heatmap - With Placeholders** used for better understanding of the plot.
 
-![Heatmap Of Missing Data with Placeholders](example_images/Heatmap_of_Missing_Data_with_Placeholders.png)
+![Heatmap Of Missing Data with Placeholders](/assets/docs/tabular/Missingness/Missingness_Viz/Heatmap_of_Missing_Data_with_Placeholders.png)
 
 We can see:
 

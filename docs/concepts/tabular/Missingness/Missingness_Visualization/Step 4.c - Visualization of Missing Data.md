@@ -39,7 +39,7 @@ Output:
 
 > Below is the annotated image of **Dendrogram** used for better understanding of the plot.
 
-![Dendrogram of Missing Data](example_images/Dendrogram_of_missing_data.png)
+![Dendrogram of Missing Data](/assets/docs/tabular/Missingness/Missingness_Viz/Dendrogram_of_missing_data.png)
 
 We can see:
 
@@ -83,7 +83,7 @@ Output:
 
 > Here is an annotated image of **Dendrogram** used for better understanding of the plot:
 
-![Dendrogram of Missing Data with Placeholders](example_images/Dendrogram_of_Missing_Data_with_Placeholders.png)
+![Dendrogram of Missing Data with Placeholders](/assets/docs/tabular/Missingness/Missingness_Viz/Dendrogram_of_Missing_Data_with_Placeholders.png)
 
 We can see:
 

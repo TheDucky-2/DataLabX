@@ -118,7 +118,7 @@ This method does not return anything and is meant for **visualization only**.
 
 > Here is an annotated image of **bar plot** used for better understanding of the plot:
 
-![Bar Plot of Missing Data](example_images/Bar_Plot_of_Missing_Data.png)
+![Bar Plot of Missing Data](/assets/docs/tabular/Missingness/Missingness_Viz/Bar_Plot_of_Missing_Data.png)
 
 We can see:
 
@@ -143,7 +143,7 @@ We can create a bar plot of missing data with placeholders using ``plot_missing(
 
 > Below is an annotated image of **bar plot with placeholders** used for better understanding of the plot:
 
-![Bar Plot of Missing Data with Placeholders](example_images/Bar_Plot_of_Missing_Data_with_Placeholders.png)
+![Bar Plot of Missing Data with Placeholders](/assets/docs/tabular/Missingness/Missingness_Viz/Bar_Plot_of_Missing_Data_with_Placeholders.png)
 
 We can see:
 
@@ -169,7 +169,7 @@ Before we know why we even need this useful stuff, let us explore what we miss w
 
 > Here is a plot of missing data without good stuff:
 
-![Blank Bar Plot](example_images/Blank_Bar_plot.png) 
+![Blank Bar Plot](/assets/docs/tabular/Missingness/Missingness_Viz/Blank_Bar_plot.png) 
 
 We can see:
 
