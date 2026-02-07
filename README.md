@@ -208,7 +208,7 @@ datalab/
 │   └── graph/              # (To be added in v0.3)
 │
 ├── docs/                 # API documentation
-├── foundations/          # Beginner-friendly documentation (Foundational concepts)
+├── foundations/          # DataLab Foundational concepts
 ├── guides/               # API Usage & Workflow Guide notebooks for each step
 ├── assets/               # Images, logos, diagrams
 │   └── DataLab_logo.png
@@ -227,7 +227,7 @@ datalab/
 
 **✔️ 1. Data Loading** : CSV, Excel, JSON and Parquet, Automatic file type detection.
 
-**✔️ 2. Data Diagnosis** : shape, columns, dtypes, memory usage, duplicates, cardinality, Numerical & Categorical diagnosis, Dirty data diagnosis.
+**✔️ 2. Data Diagnosis** : Shape, columns, dtypes, memory usage, duplicates, cardinality, Numerical & Categorical diagnosis, Dirty data diagnosis.
 
 **✔️ 3. Missingness Diagnosis and Visualization** : Missing data stats, Pattern analysis, Missing data plots (via **missingno**).
 
