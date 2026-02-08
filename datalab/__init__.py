@@ -1,11 +1,12 @@
 """
 <img src="assets/DataLab_logo.png" alt="DataLab logo" height: "80" style="display:block; margin: 20px auto;">
 
-"DataLab v0.1.0b6 - Beta Pre-release
+"DataLab v0.1.0b7
 
-A stabilization release focused on API reliability, type safety, improved tests, and clearer documentation."
+Beta release with critical bug fixes for non-Jupyter environments, improved documentation, contributions workflow, and enhanced stability for data diagnosis and visualization workflows."
+
 """
-__version__ = '0.1.0b6'
+__version__ = '0.1.0b7'
 
 import importlib
 
