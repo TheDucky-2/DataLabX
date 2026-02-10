@@ -1,6 +1,5 @@
 """Provides a diagnosis of overall dataframe."""
 
-from ..data_loader import load_tabular
 from ..computations import Statistics
 from ..computations import Distribution
 from ..utils.Logger import datalab_logger
@@ -12,7 +11,8 @@ import numpy as np
 logger = datalab_logger(name = __name__.split('.')[-1])
 
 class Diagnosis:
-    """Initializing the Diagnosis.
+    """
+    Initializing the Diagnosis.
 
     Parameters
     -----------
@@ -41,47 +41,58 @@ class Diagnosis:
 
         logger.info(f'Data Diagnosis initialized with columns: {self.columns}')
 
-    def data_preview(self, number_of_rows=10)-> pd.DataFrame:
+    def data_preview(self, number_of_rows:int=10)-> pd.DataFrame:
         """Shows a preview of N rows of your DataFrame.
 
         Parameters
         ----------
         number_of_rows : int (default is 10)
+
             N numbers of rows you would like to see 
 
         Returns
         --------
-            pd.DataFrame
-                A pandas DataFrame of N number of rows. 
+        pd.DataFrame
+
+            A pandas DataFrame of N number of rows. 
         
         Usage Recommendation
         ---------------------
+
             1. Use this function when you want a preview of your data during diagnosis 
 
         Considerations
         ---------------
-            1. This function uses df.head() under the hood.
+
+            This function uses df.head() under the hood.
 
         Example
         --------
+
         >>>     Diagnosis(df).data_preview(5)
         """
+        if not isinstance(number_of_rows, int):
+            raise TypeError(f'number_of_rows must be an int, got {type(number_of_rows).__name__}')
         return self.df.head(number_of_rows)
 
     def data_summary(self)-> dict[str]:
-        """Shows a summary of your DataFrame.
+        """
+        Shows a summary of your DataFrame.
 
         Returns
         --------
-            dict
-                A dictionary of summary types
+        dict
+
+            A dictionary of summary types
         
         Usage Recommendation
         ---------------------
-            1. Use this function when you want to see shape, columns, dtypes and index of your DataFrame
+
+            Use this function when you want to see shape, columns, dtypes and index of your DataFrame
 
         Example
         --------
+
         >>>     Diagnosis(df).data_summary()
         """
         summary = {
@@ -93,40 +104,48 @@ class Diagnosis:
 
         return summary
 
-    def show_memory_usage(self, usage_by='total')-> pd.Series:
-        """Shows memory being used by your DataFrame.
+    def show_memory_usage(self, usage_by:str='total')-> pd.Series:
+        """
+        Shows memory being used by your DataFrame.
 
         Parameters
         ----------
         usage_by: str (default is 'total')
-            Shows memory usage of a DataFrame
 
+            Shows memory usage of a DataFrame
             Supported methods:
 
             - 'total': Shows memory usage by whole DataFrame
             - 'separate' : Shows memory usage per column
+
+        Return 
         """
+        if not isinstance(usage_by, str):
+            raise TypeError(f'usage_by must be a string, got {type(usage_by).__name__}')
+
         if usage_by == 'total':
 
             total_usage = self.df.memory_usage(deep=True).sum()/(1024**2)
-            print(f'Total Memory Usage: {self.df.memory_usage(deep=True).sum()/(1024**2):.2f} MB')
-            return total_usage
+            logger.info(f'Showing total memory usage in MB')
+
+            return pd.Series(float(total_usage))
         
         elif usage_by == 'separate':
 
             separate_usage = self.df.memory_usage(deep=True)/(1024**2)
-            print('Data Usage in MB:\n')
+            logger.info(f'Showing column-wise memory usage in MB')
+
             return separate_usage
 
+
     def detect_column_types(self) -> dict [str, list[str]]:
-        """Detect the column types (Categorical, Numerical, Datetime) for one
-        or multiple columns of a DataFrame.
+        """Detect the column types (Categorical, Numerical, Datetime) for one or multiple columns of a DataFrame.
 
         Returns
         --------
         dict
-            Return a dictionary with list of column types.
 
+            Return a dictionary with list of column types.
             Supported column datatypes:
 
             - Numerical  : List of Numerical type columns
@@ -135,6 +154,7 @@ class Diagnosis:
 
         Usage Recommendation
         ---------------------
+
             1. Use this function to check whether a column is categorized as 'Categorical or text', 'Numerical', or Datetime.
             2. Use 'ColumnConverter' to change column types if column type is not detected correctly.
         """
@@ -153,16 +173,18 @@ class Diagnosis:
         return column_types 
 
     def show_unique_values(self) -> dict[list[str]]:
-        """Shows a list of unique values present in each column of the
-        DataFrame.
+        """
+        Shows a list of unique values present in each column of the DataFrame.
 
         Returns
         --------
-            dict
-                A dictionary of key, value pairs of column and unique values present in that column
+        dict
+
+            A dictionary of key, value pairs of column and unique values present in that column
 
         Usage Recommendation
-        ----------------------
+        --------------------
+
             Use this function when you want to see what unique values are present in a column.
 
         Example
@@ -191,21 +213,23 @@ class Diagnosis:
         return unique_values  
 
     def show_cardinality(self)-> dict[str, int]:
-        """Shows the number of unique values that exist in one or multiple
-        columns of the DataFrame.
+        """Shows the number of unique values that exist in one or multiple columns of the DataFrame.
 
         Returns
         --------
         dict
+
             A python dictionary of column names and cardinality values
 
         Usage Recommendation
         ---------------------
+
             1. Use this function when you want to see how many unique values exist before using encoding your Categorical data.
 
         Example
         --------
-            Diagnosis(df).show_cardinality()
+
+        >>>    Diagnosis(df).show_cardinality()
         """
         # using a dictionary to store values for each column
         cardinality={}
@@ -216,26 +240,57 @@ class Diagnosis:
 
         return cardinality
 
-    def show_duplicates(self, in_columns=None) -> pd.DataFrame:
-        """Shows duplicate values in one or multiple columns of the DataFrame.
+    def show_duplicates(self, in_columns:list|None=None) -> pd.DataFrame:
+        """
+        Shows duplicate values in one or multiple columns of the DataFrame.
+
+        Parameters
+        ----------
+        in_columns: list or None, optional
+
+            A list of columns you wish to see duplicates in, default is None
 
         Returns
         -------
         pd.DataFrame
-            A pandas DataFrame of duplicate values
+
+            A pandas DataFrame
+
+        Example
+        --------
+        >>>   Diagnosis(df).show_duplicates()
+        >>>   Diagnosis(df).show_duplicates(in_columns = ['age', 'income', 'debt'])
+
         """
+        if not isinstance(in_columns, list):
+            raise TypeError(f'in_columns must be a list of strings or None, got {type(in_columns).__name__}')
 
         return self.df[self.df[self.columns].duplicated(subset=in_columns)]
 
-    def count_duplicates(self, in_columns=None)-> int:
+    def count_duplicates(self, in_columns: list|None=None)-> int:
         """Counts duplicate values in one or multiple columns of the DataFrame.
+
+        Parameters
+        ----------
+        in_columns: list or None, optional
+
+            A list of columns you wish to count duplicates in, default is None
 
         Returns
         -------
         int
+
             Number of duplicate values
+
+        Example
+        --------
+        >>>   Diagnosis(df).count_duplicates()
+        >>>    Diagnosis(df).count_duplicates(in_columns = ['age', 'income', 'debt'])
         """
-        return self.df[self.columns].duplicated(subset=in_columns).sum()
+        if not isinstance(in_columns, (list, type(None))):
+            raise TypeError(f'in_columns must be a list of strings or None, got {type(in_columns).__name__}')
+
+        return len(self.df[self.df[self.columns].duplicated(subset=in_columns)])
     
     def get_numerical_columns(self)-> pd.DataFrame:
         """Separates Numerical (numbers) columns from rest of the DataFrame.
@@ -243,10 +298,12 @@ class Diagnosis:
         Returns
         -------
         pd.DataFrame
+
             A pandas DataFrame of Numerical columns.
         
         Usage Recommendation
         ---------------------
+
             1. Use this function when you want to work specifically on Numerical data, not overall DataFrame (including Categorical, Datetime).
             2. Use this function if you wish to follow DataLab guided workflow for diagnosis, cleaning and preprocessing of Numerical data.
 
@@ -264,10 +321,12 @@ class Diagnosis:
         Returns
         -------
         pd.DataFrame
+
             A pandas DataFrame of Categorical columns.
         
         Usage Recommendation
         ---------------------
+
             1. Use this function when you want to work specifically on Categorical data, not overall DataFrame (including Numerical, Datetime).
             2. Use this function if you wish to follow DataLab guided workflow for diagnosis, cleaning and preprocessing of Categorical data.
 
@@ -285,10 +344,12 @@ class Diagnosis:
         Returns
         -------
         pd.DataFrame
+
             A pandas DataFrame of Datetime columns.
         
         Usage Recommendation
         ---------------------
+
             1. Use this function when you want to work specifically on Date and Time columns, not overall DataFrame (including Numerical, Datetime).
             2. Use this function if you wish to follow DataLab guided workflow for diagnosis, cleaning and preprocessing of Datetime data.
 
