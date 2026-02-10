@@ -105,7 +105,7 @@ class NumericalDiagnosis:
         -------- 
         >>> NumericalDiagnosis(df).detect_outliers()
         """
-        from datalab import Outliers
+        from ..computations.Outliers import Outliers
 
         outliers_dict  = {}
 
