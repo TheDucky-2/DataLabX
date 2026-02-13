@@ -137,12 +137,14 @@ class MissingHandler():
             # ensuring to filter only values that are true.
             columns_to_drop = total_missing.any(axis=0)[total_missing.any(axis=0)].index.tolist()
 
-        if how == 'all':
+        elif how == 'all':
             columns_to_drop = total_missing.any(axis=0)[total_missing.any(axis=0)].index.tolist()
 
+        else:
+            raise ValueError(f"how must be 'any' or 'all', got {how}")
+            
         if columns_to_drop:
             logger.info(f'Dropping columns: {columns_to_drop}')
-
             return self.df.drop(columns = columns_to_drop)
 
         else:
