@@ -1,7 +1,8 @@
 """Class and methods for visualizing Missing Data."""
 
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.figure as Figure
+import matplotlib.axes as Axes
 import numpy as np
 import missingno as msno
 
@@ -48,12 +49,13 @@ class MissingnessVisualizer():
                 title: str = None,
                 xlabel: str = None,
                 ylabel: str = None,
+                figsize:tuple = (6,4),
                 title_fontsize: int = 24,
                 title_padding: int = 20,
                 xlabel_fontsize: int = 15,
                 xlabel_padding: int = 15,
                 ylabel_fontsize: int = 15,
-                ylabel_padding: int = 15)-> None:
+                ylabel_padding: int = 15)-> tuple[Figure, Axes]:
         """
         Visualize missing values in one or multiple columns of the DataFrame.
 
@@ -146,8 +148,8 @@ class MissingnessVisualizer():
         else:
             raise ValueError(f"Available viz types are 'heatmap', 'bar', 'matrix' and 'dendrogram', got {viz_type}")
 
-        # if user passes a title, it would be user selected title.abs
-        # However, if user does not pass a title, it would default back to viz_type of plot as the title
+        #  If user passes a title, it would be user selected title.
+        ## However, if user does not pass a title, it would default back to viz_type of plot as the title
 
         if title:
             ax.set_title(title, fontsize = title_fontsize, pad=title_padding)
@@ -159,8 +161,9 @@ class MissingnessVisualizer():
         
         if ylabel:
             ax.set_ylabel(ylabel, fontsize = ylabel_fontsize, labelpad = ylabel_padding)
-
+        
+        fig = ax.figure
+        
         logger.info(f'Plotting missing data using {viz_type} plot...')
 
-        # this function does not return anything anymore.
-        plt.show()
+        return fig, ax
