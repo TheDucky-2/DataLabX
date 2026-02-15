@@ -3,6 +3,8 @@
 from ..computations import Distribution
 import pandas as pd
 from ..utils.Logger import datalab_logger
+import matplotlib.figure as Figure
+import matplotlib.axes as Axes
 
 logger = datalab_logger(name=__name__.split('.')[-1])
 
@@ -45,7 +47,7 @@ class NumericalVisualizer():
                   xlabel: str=None,
                   ylabel: str=None,
                   figsize: tuple =(6, 4),
-                  **kwargs)-> None:
+                  **kwargs)-> tuple[Figure, Axes]:
         """
         Visualize histogram for one or multiple columns of Numerical DataFrame.
 
@@ -81,7 +83,7 @@ class NumericalVisualizer():
         Example
         -------
         >>> NumericalVisualizer(df).plot_box()
-        """
+        """ 
         import matplotlib.pyplot as plt
 
         for column in self.df[self.columns]:
@@ -105,7 +107,7 @@ class NumericalVisualizer():
             else:
                 ax.set_ylabel(f'Number of values')
 
-            plt.show()
+            return fig, ax
 
     def plot_box(self, 
                 orientation : str = 'vertical',
@@ -113,9 +115,8 @@ class NumericalVisualizer():
                 ylabel:str|type(None) = None,
                 title:str|type(None) = None,
                 figsize:tuple = (6, 4),
-                **kwargs)-> None:
+                **kwargs)-> tuple[Figure, Axes]:
 
-        import matplotlib.pyplot as plt
         """
         Visualize box plot for one or multiple columns of Numerical DataFrame.
 
@@ -157,8 +158,9 @@ class NumericalVisualizer():
         -------
         >>> NumericalVisualizer(df).plot_box()
         """
+        import matplotlib.pyplot as plt
 
-        if orientation not in ('horizontal', 'vertical', 'h', 'v'):
+        if orientation not in ['horizontal', 'vertical', 'h', 'v']:
             raise ValueError(f"orientation must be horizontal or 'h' OR vertical or 'v', got {orientation}")
 
         # making sure that the orientation starts with vertical or 'v' by default.
@@ -197,16 +199,14 @@ class NumericalVisualizer():
                 if ylabel:
                     ax.set_ylabel(ylabel)
 
-                
-
-            plt.show()
+            return fig,ax
 
     def plot_kde(self, bandwidth_method: str ='robust',
                   title: str=None,
                   xlabel: str=None,
                   ylabel: str=None,
                   figsize: tuple =(6, 4),
-                  **kwargs)-> None:
+                  **kwargs)-> tuple[Figure, Axes]:
         """
         Visualize Kernel Density Estimation plot (curves, including bell curve) for one or multiple columns of DataFrame.
 
@@ -291,9 +291,9 @@ class NumericalVisualizer():
 
             ax.legend()
 
-            plt.show()
+            return fig, ax
 
-    def plot_qq(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green')-> None:
+    def plot_qq(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green')-> tuple[Figure, Axes]:
         """
         Visualize Quantile-Quantile plot (QQ plot) for one or multiple columns of Numerical DataFrame.
 
@@ -322,8 +322,9 @@ class NumericalVisualizer():
         --------
         >>> NumericalVisualizer(df).plot_qq()
         """
-        from scipy import stats
         import matplotlib.pyplot as plt
+        
+        from scipy import stats
 
         if distribution_type is None:
             raise ValueError(f'Unknown distribution: {distribution_type}')
@@ -345,8 +346,8 @@ class NumericalVisualizer():
             # setting color of data points
 
             ax.get_lines()[0].set_color(points_color)   # points
-            
-            plt.show()
+
+            return fig, ax
         
 
 
