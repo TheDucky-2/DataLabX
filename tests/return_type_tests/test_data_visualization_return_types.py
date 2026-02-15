@@ -2,6 +2,8 @@
 
 """A test ensuring that NumericalVisualizer module returns None."""
 
+import matplotlib
+
 def test_numerical_visualizer_return_types():
 
     import pandas as pd
@@ -31,13 +33,28 @@ def test_numerical_visualizer_return_types():
     qq = viz.plot_qq()
     box = viz.plot_box()
 
-    assert isinstance(histogram, type(None))
-    assert isinstance(kde, type(None))
-    assert isinstance(qq, type(None))
-    assert isinstance(box, type(None))
+    # ensuring that the output of the method is a tuple
+    assert isinstance(histogram, tuple)
+    assert isinstance(kde, tuple)
+    assert isinstance(qq, tuple)
+    assert isinstance(box, tuple)
+    
+    # the first element in the tuple must be a matplotlib figure object
+    assert isinstance(histogram[0], matplotlib.figure.Figure)
+    assert isinstance(kde[0], matplotlib.figure.Figure)
+    assert isinstance(qq[0], matplotlib.figure.Figure)
+    assert isinstance(box[0], matplotlib.figure.Figure)
+
+    # the second element in the tuple must be a matplotlib axes object
+    assert isinstance(histogram[1], matplotlib.axes.Axes)
+    assert isinstance(kde[1], matplotlib.axes.Axes)
+    assert isinstance(qq[1], matplotlib.axes.Axes)
+    assert isinstance(box[1], matplotlib.axes.Axes)
+
 
 """A test ensuring that Missingness Visualizer module returns None."""
 
+    # the second element in the tuple must be a matplotlib axes o
 def test_missingness_visualizer_return_types():
     import pandas as pd
     from datalab import MissingnessVisualizer, ColumnConverter
@@ -83,9 +100,15 @@ def test_missingness_visualizer_return_types():
 
     df = ColumnConverter(df).to_numerical_forced()
 
-    missingness_viz = MissingnessVisualizer(df)
+    missingness_viz = MissingnessVisualizer(df).plot_missing()
 
-    assert isinstance(missingness_viz.plot_missing(), type(None))
+    assert isinstance(missingness_viz, tuple)
+
+    # the first element in the tuple must be a matplotlib figure object
+    assert isinstance(missingness_viz[0], matplotlib.figure.Figure)
+
+    # the second element in the tuple must be a matplotlib axes object
+    assert isinstance(missingness_viz[1], matplotlib.axes.Axes)
 
 """A test ensuring that Categorical Visualizer module returns None."""
 
@@ -116,6 +139,19 @@ def test_categorical_visualizer_return_types():
     ]
     })
 
-    cat_vis = CategoricalVisualizer(df).visualize_frequency()
+    categorical_viz = CategoricalVisualizer(df).plot_frequency()
 
-    assert isinstance(cat_vis, type(None))
+    # ensuring that the output of the method is a tuple
+    assert isinstance(categorical_viz, tuple)
+
+    # the first element in the tuple must be a matplotlib figure object
+    assert isinstance(categorical_viz[0], matplotlib.figure.Figure)
+
+    # the second element in the tuple must be a matplotlib axes object
+    assert isinstance(categorical_viz[1], matplotlib.axes.Axes)
+
+
+
+
+
+
