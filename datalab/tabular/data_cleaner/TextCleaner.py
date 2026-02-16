@@ -253,33 +253,3 @@ class TextCleaner(DataCleaner):
         self.df = BackendConverter(polars_df).polars_to_pandas()
 
         return self.df
-
-    def get_element_from_split_text(self, splitter:str = None, element: int=None):
-
-        if not isinstance(splitter, str):
-            raise TypeError(f'splitter must be a str, got {type(splitter).__name__}')
-        
-        if not isinstance(element, int):
-            raise TypeError(f'element must be a int, got {type(element).__name__}')
-
-        if splitter is None:
-            logger.info('no splitter passed, hence no changes made.')
-            return self.df[self.columns]
-
-        if element is None:
-            logger.info('no element passed, hence no changes made.')
-            return self.df[self.columns]
-
-        from ..utils.BackendConverter import BackendConverter
-
-        pol_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
-
-        for col in pol_df.columns:
-            pol_df = pol_df.with_columns(
-            pl.when(pl.col(col).str.split(splitter).list.len()>1)
-            .then(pl.col(col).str.split(splitter).list.get(element, null_on_oob=True))
-            .otherwise(pl.col(col))
-            )
-        
-        return BackendConverter(pol_df).polars_to_pandas()
-
