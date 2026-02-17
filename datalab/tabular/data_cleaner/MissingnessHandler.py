@@ -6,9 +6,9 @@ from ..utils.Logger import datalab_logger
 
 logger = datalab_logger(__name__.split('.')[-1])
 
-class MissingHandler():
+class MissingnessHandler():
     """
-    Initializing Missing Handler.
+    Initializing Missingness Handler.
 
     Parameters
     -----------
@@ -63,10 +63,17 @@ class MissingHandler():
 
 
         Example:
-        >>>    MissingHandler(df).replace_missing(replacement = np.nan) 
+        >>>    MissingnessHandler(df).replace_missing(replacement = np.nan) 
 
-        >>>    MissingHandler(df).replace_missing(replacement = 'MISSING') 
+        >>>    MissingnessHandler(df).replace_missing(replacement = 'MISSING') 
         """
+        if replacement is None:
+            logger.info('No replacement value received, hence, no changes made.')
+            return self.df
+            
+        if replacement == "":
+            logger.info("Missing values will be replaced with empty strings.")
+
         if not isinstance(replacement, (pd.Series, str, type(None), float, int)):
             raise TypeError(f'replace_with must be a string, None, float or int, got {type(replacement).__name__}')
 
@@ -75,7 +82,7 @@ class MissingHandler():
 
         total_missing = pandas_missing | placeholder_missing
 
-        logger.info(f"Replacing missing data with {replacement}")
+        logger.info(f"Replaced missing data with {replacement}")
 
         return self.df.mask(total_missing, replacement)
 
@@ -111,7 +118,7 @@ class MissingHandler():
 
         Example
         --------
-        >>> MissingHandler(df, columns=['credit_score']).drop_missing_columns()
+        >>> MissingnessHandler(df, columns=['credit_score']).drop_missing_columns()
 
         """
         if not isinstance(how, str):
@@ -173,7 +180,7 @@ class MissingHandler():
 
         Example
         --------
-        >>> MissingHandler(df, columns=['credit_score']).drop_missing_rows()
+        >>> MissingnessHandler(df, columns=['credit_score']).drop_missing_rows()
         """
 
         if not isinstance(how, str):
@@ -231,7 +238,7 @@ class MissingHandler():
         --------
         >>> df['credit_score'] = [734.97, 734.78, np.nan, 712.21, 686.13]
 
-        >>> MissingHandler(df, columns=['credit_score']).fill_with_mean()
+        >>> MissingnessHandler(df, columns=['credit_score']).fill_with_mean()
 
         >>> df['credit_score'] = [734.97, 734.78, 717.02, 712.21, 686.13]
         """
@@ -269,7 +276,7 @@ class MissingHandler():
 
         >>> df['savings'] = [14173.3,37970.2,24008.95,np.nan,17063.67,57161.76,np.nan,5927.63,28954.98,5553.7]
 
-        >>> MissingHandler(df, columns=['savings']).fill_with_median()
+        >>> MissingnessHandler(df, columns=['savings']).fill_with_median()
 
         >>> df['savings'] = [14173.3, 37970.2, 24008.95, 20536.30, 17063.67, 57161.76, 20536.30, 5927.63, 28954.98, 5553.7]
         """
