@@ -41,14 +41,13 @@ DataLab **v0.1.0b8** enhances **missing data handling**, finalizes the **visuali
     - **API Return Types Reference** updated to reflect these changes. (see [DataLab API Return Types Reference](DataLab_API_RETURN_TYPES.md))
 
     - Visualization return-type tests rewritten to match the new tuple outputs.
-<br>
-2. **Missing Data Handling Improvements**
 
+2. **Missing Data Handling Improvements**
     - ``MissingHandler`` class updated so **all methods accept extra placeholder values**.
     - All missing handling methods refactored for **better consistency and logging.**
     - Logging added for extra placeholders in ``MissingnessDiagnosis``.
-    - Enhanced error handling for the how parameter in ``drop_missing_columns()`` and ``drop_missing_rows()`` methods.
-<br>
+    - Enhanced error handling for the how parameter in ``drop_missing_columns()`` and ``drop_missing_rows()`` methods
+
 3. **Python Compatibility**
 
     - Minimum supported Python version updated to **3.10+**``(previously >=3.12)``.
