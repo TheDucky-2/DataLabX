@@ -35,25 +35,16 @@ class MissingHandler():
             self.extra_placeholders = extra_placeholders
             logger.info((f'Extra Placeholders received for missing data: {self.extra_placeholders}'))
 
-        logger.info('Missing Handler Initialized...')
-
-    
-
-    def replace_missing(self, to_replace: list[str| float| type(np.nan)], replace_with: str|float|int, **kwargs: dict) -> pd.DataFrame:
+    def replace_missing(self, replacement: str|float|int|None = None) -> pd.DataFrame:
 
         """Replace missing values like 'ERROR','MISSING', 'UNKNOWN' etc. with any value of choice.
 
         Parameters
         ----------
+ 
+        replacement: str, float, int or None, optional
+            Value you wish to replace missing values with
 
-        to_replace  :list[str, float]
-            List of values you wish to replace. Example: ['NA', 'ERROR', 'MISSING', np.nan]
-
-        replace_with: str, float or int
-            Value you wish to replace with
-
-        kwargs: dict, optional
-            A dictionary of extra keyword arguments you wish to pass in pandas ``df.replace()`` method, like regex=True
 
         Returns
         -------
@@ -72,19 +63,19 @@ class MissingHandler():
 
 
         Example:
-        >>>    MissingHandler(df).replace_missing(to_replace=['UNKNOWN', 'MISSING', None], replace_with = np.nan) 
+        >>>    MissingHandler(df).replace_missing(replacement = np.nan) 
 
-        >>>    MissingHandler(df).replace_missing(to_replace=['UNKNOWN', 'MISSING', np.nan], replace_with = 'MISSING') 
+        >>>    MissingHandler(df).replace_missing(replacement = 'MISSING') 
         """
-        if not isinstance(to_replace, (list, (float, int, str))):
-            raise TypeError(f'to_replace must be a list of strings or np.nan, got {type(to_replace).__name__}')
+        if not isinstance(replacement, (pd.Series, str, type(None), float, int)):
+            raise TypeError(f'replace_with must be a string, None, float or int, got {type(replacement).__name__}')
 
-        if not isinstance(replace_with, (pd.Series, str, type(None), float, int)):
-            raise TypeError(f'replace_with must be a string, None, float or int, got {type(replace_with).__name__}')
+        pandas_missing = self.df.isna()
+        placeholder_missing = self.df.isin(self.extra_placeholders)
 
-        self.df[self.columns] = self.df[self.columns].replace(to_replace, replace_with, **kwargs)
+        total_missing = pandas_missing | placeholder_missing
 
-        return self.df
+        return self.df.mask(total_missing, replacement)
 
     def drop_missing_columns(self, how:str='any')-> pd.DataFrame:
         
