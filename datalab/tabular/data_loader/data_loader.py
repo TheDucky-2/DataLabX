@@ -4,7 +4,13 @@ import pandas as pd
 from pathlib import Path
 import polars as pl
 
-def load_tabular(file_path: str, file_type: str|None = None, array_type: str ='auto', conversion_threshold:int|None = None, **kwargs:dict) -> pd.DataFrame:
+def load_tabular(file_path: str, 
+                 file_type: str|None = None,
+                 array_type: str ='auto',
+                 conversion_threshold:int|None = None,
+                 load_as_string = False,
+                 **kwargs:dict) -> pd.DataFrame:
+
     """
     Use this function for loading your tabular data as a pandas DataFrame.
 
@@ -23,7 +29,11 @@ def load_tabular(file_path: str, file_type: str|None = None, array_type: str ='a
         - 'parquet'
         - 'JSON'
 
-    array_type: str 
+    load_as_strings: bool, optional 
+    
+        Whether you would like to load your data as strings, instead of original datatypes, default is False
+
+    array_type: str, optional
 
         Determines the array/backend type used in pandas operations, by default 'auto'.
 
@@ -33,12 +43,12 @@ def load_tabular(file_path: str, file_type: str|None = None, array_type: str ='a
         - 'pyarrow' -> PyArrow backend for better performance on large datasets
         - 'auto' -> automatically selects backend based on input and dataset size 
             
-    conversion_threshold: int
+    conversion_threshold: int, optional
 
         The number of rows at which the conversion from Polars to pandas switches to Arrow-backed pandas arrays for performance, default is 100000.
         Users can increase or decrease this threshold depending on their dataset size and memory availability.
        
-    kwargs: dict
+    kwargs: dict, optional
 
         Extra arguments you want to pass into pandas file readers (for excel files only).
      
@@ -77,6 +87,7 @@ def load_tabular(file_path: str, file_type: str|None = None, array_type: str ='a
     >>> # Load a JSON file from a subdirectory with auto array backend
         df5 = load_tabular('some/path/to/data.json')
     """
+
     if not isinstance(file_path, (str, Path)):
         raise TypeError(f'file path must be a string or a file path, got {type(file_path).__name__}')
 
@@ -98,7 +109,11 @@ def load_tabular(file_path: str, file_type: str|None = None, array_type: str ='a
         conversion_threshold = 100_000 
 
     if file_type == 'csv':
-        polars_df = pl.read_csv(file_path, infer_schema_length=0)
+        if load_as_string:
+            polars_df = pl.read_csv(file_path, infer_schema_length=0)
+        else:
+            polars_df = pl.read_csv(file_path)
+
     elif file_type == 'parquet':
         polars_df = pl.read_parquet(file_path)
     elif file_type == 'json':
