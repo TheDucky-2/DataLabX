@@ -8,7 +8,7 @@ def load_tabular(file_path: str,
                  file_type: str|None = None,
                  array_type: str ='auto',
                  conversion_threshold:int|None = None,
-                 load_as_string = False,
+                 load_as_string:bool = False,
                  **kwargs:dict) -> pd.DataFrame:
 
     """
