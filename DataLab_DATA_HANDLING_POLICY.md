@@ -1,6 +1,6 @@
 ![DataLab logo](/assets/DataLab_logo.png)
 
-# How DataLab Thinks About Data Changes
+# DataLab Data Handling Policy
 
 This document exists to communicate how DataLab thinks about **data, changes, and safety**.
 
