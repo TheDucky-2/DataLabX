@@ -1,5 +1,4 @@
-# Tabular Data Loader:
--------------------
+# 📥 Tabular Data Loader
 
 ## Welcome to the first step of DataLab!
 
@@ -12,15 +11,15 @@ Tabular data means data arranged in rows and columns of a table like this:
 | 38  | 17182.443452| 3621.209282    | 3,752.960      | 60    | 0.789249      |
 | NaN | 23497.048535| 16516.059771   | NaN            | NaN   | 0.297101      |
 
-Examples:
+**Examples:**
 
 - Excel Spreadsheets
-- Pandas DataFrame
+- Pandas DataFrames
 - csv files, etc.
 
-DataLab works mainly with pandas DataFrames, so almost all functions in datalab will return a pandas DataFrame.
+> DataLab works mainly with pandas DataFrames.
 
-### Tabular Data File Types Supported:
+### Supported Tabular Data File Types
 
 DataLab can automatically detect and load:
 
@@ -29,44 +28,54 @@ DataLab can automatically detect and load:
 - JSON
 - Parquet
 
-You don’t need to specify the file type — DataLab figures it out for you.
+We don’t need to specify the file type - DataLab figures it out for us.
 
 ### DataLab Usage:
 
-You can load tabular data using the load_tabular() function from the data loader package of datalab.
+We can load tabular data using the ``load_tabular()`` function from ``DataLoader`` class of ``datalab``.
 
-### **Examples:**
+This function returns a **pandas DataFrame**.
 
-    from DataLab import load_tabular
+```python
+from datalab import DataLoader
 
-    >>>   
-        df = load_tabular('random_csv_file.csv')
+df = DataLoader('example.csv').load_tabular()
+```
 
-    >>>   
-        df = load_tabular_data('example.xlsx')
+### Data Loading Examples
 
-    >>>   
-        df = load_tabular_data('some/path/to/my/csv/file.parquet')
+#### --- Without Any Extra Parameters ---
 
-    >>>   
-        df = load_tabular_data('example.json')
+```python
+from DataLab import DataLoader
 
+# Loading a CSV file
+df = DataLoader('some_random_file.csv').load_tabular()
 
-**OR you can use an alias like:**
+# Loading an Excel file 
+df = DataLoader('some_random_file.excel').load_tabular()
 
-    import DataLab as dl
+# Loading a Parquet file
+df = DataLoader('some_random_file.parquet').load_tabular()
 
-    >>>     
-        df = dl.load_tabular('random_csv_file.csv')
+# Loading a JSON object 
+df = DataLoader('some_random_file.json').load_tabular()
+```
 
-    >>>   
-        df = dl.load_tabular_data('example.xlsx')
+#### --- Using Extra Parameters ---
 
-    >>>   
-        df = dl.load_tabular_data('some/path/to/my/csv/file.parquet')
+```python
+df = DataLoader('some_random_file.csv').load_tabular(load_csv_as_string = True)
 
-    >>>   
-        df = dl.load_tabular_data('example.json')
+df = DataLoader('some_random_file.csv').load_tabular(array_type='numpy')
+
+df = DataLoader('some_random_file.csv').load_tabular(conversion_threshold=3000000)
+
+df = DataLoader('some_random_file.excel').load_tabular(array_type='pyarrow', conversion_threshold=1000000)
+```
+
+---
+
 
 
 
