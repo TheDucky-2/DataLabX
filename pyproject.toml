@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 
 [project] 
 
-name = "datalab_pre_release"             
+name = "datalabx_pre_release"             
 version = "0.1.0b9"
-description = "DataLab v0.1.0b9 - Flexible Data Loading & Refined Missing Data Handling."
+description = "datalabx v0.1.0b9 - Flexible Data Loading & Refined Missing Data Handling."
 
 authors = [
     {name = "Kshitij Sharma"}
@@ -52,7 +52,7 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["datalab*"]
+include = ["datalabx*"]
 
 [tool.setuptools.exclude-package-data]
 "*" = [
@@ -65,11 +65,11 @@ include = ["datalab*"]
 
 [project.urls]
 
-Homepage = "https://github.com/TheDucky-2/DataLab"
-Source = "https://github.com/TheDucky-2/DataLab"
-Documentation = "https://github.com/TheDucky-2/DataLab/tree/main/docs"
-Guides = "https://github.com/TheDucky-2/DataLab/tree/main/guides"
-Issues = "https://github.com/TheDucky-2/DataLab/issues"
+Homepage = "https://github.com/TheDucky-2/datalabx"
+Source = "https://github.com/TheDucky-2/datalabx"
+Documentation = "https://github.com/TheDucky-2/datalabx/tree/main/docs"
+Guides = "https://github.com/TheDucky-2/datalabx/tree/main/guides"
+Issues = "https://github.com/TheDucky-2/datalabx/issues"
 
 [tool.ruff]
 # Only checking for missing docstrings

@@ -1,0 +1,9 @@
+loader:
+  type: python
+  search_path: ["./"]
+  packages: ["datalabx"]
+
+renderer:
+  type: markdown
+  directory: "mintlify-docs"
+  split_by: "module"

@@ -1,8 +1,8 @@
-![DataLab logo](/assets/DataLab_logo.png)
+![datalabx logo](/assets/datalabx_logo.png)
 
-# DataLab Data Handling Policy
+# datalabx Data Handling Policy
 
-This document exists to communicate how DataLab thinks about **data, changes, and safety**.
+This document exists to communicate how datalabx thinks about **data, changes, and safety**.
 
 It is written in **plain language** and is meant to be readable even if you are new to data work.
 
@@ -20,7 +20,7 @@ This makes it really hard to know when the data is safe to trust.
 
 This document exists to make one thing very clear:
 
-> **DataLab is designed to preserve what your data means.**
+> **datalabx is designed to preserve what your data means.**
 
 Everything else follows from that idea.
 
@@ -63,16 +63,16 @@ These two things are related, but they are **not the same**.
 
 ---
 
-## What DataLab cares about the most
+## What datalabx cares about the most
 
-DataLab always prioritizes **data meaning** over representation.
+datalabx always prioritizes **data meaning** over representation.
 
 This means:
 
-- DataLab may change *how* data is stored internally
+- datalabx may change *how* data is stored internally
 - but **it should not change what the data represents**
 
-Unless a step is clearly labeled as **cleaning** or **preprocessing**, DataLab treats your data as **observational**.
+Unless a step is clearly labeled as **cleaning** or **preprocessing**, datalabx treats your data as **observational**.
 
 Observational means:
 
@@ -82,7 +82,7 @@ Observational means:
 
 ---
 
-## What DataLab guarantees
+## What datalabx guarantees
 
 Unless a transformation is **explicitly documented** as cleaning or preprocessing:
 
@@ -92,7 +92,7 @@ Unless a transformation is **explicitly documented** as cleaning or preprocessin
 
 In simple terms:
 
-> If DataLab changes what your data *means*, it will tell you.
+> If datalabx changes what your data *means*, it will tell you.
 
 ---
 
@@ -106,7 +106,7 @@ These include:
 - Converting types on purpose
 - Preparing data for analysis or modeling
 
-When DataLab does this:
+When datalabx does this:
 
 - The step is explicit
 - The behavior is documented
@@ -127,13 +127,13 @@ When this distinction is unclear:
 - Diagnostics become hard to trust
 - Small misunderstandings grow into serious errors
 
-DataLab makes this distinction clear so you can reason about your data with confidence.
+datalabx makes this distinction clear so you can reason about your data with confidence.
 
 ---
 
-## How this connects back to DataLab’s philosophy
+## How this connects back to datalabx’s philosophy
 
-DataLab follows a **diagnosis-first** approach.
+datalabx follows a **diagnosis-first** approach.
 
 This means:
 

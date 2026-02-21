@@ -1,22 +1,22 @@
 ---
 name: Feature Request
-about: Suggest a new feature or improvement for DataLab
+about: Suggest a new feature or improvement for datalabx
 title: "[FEATURE]"
 labels: enhancement
 assignees: 
 ---
 
-![DataLab Logo](../../assets/DataLab_logo.png)
+![datalabx Logo](../../assets/datalabx_logo.png)
 
 # ✨ Feature Request
 
-Please fill out the sections below to suggest a new feature or improvement for DataLab.
+Please fill out the sections below to suggest a new feature or improvement for datalabx.
 
 ---
 
 ## Describe the Feature
 
-A clear description of the feature or improvement you’d like to see in DataLab.
+A clear description of the feature or improvement you’d like to see in datalabx.
 
 **Example:**  
 > Add a graph-based workflow that links `DirtyDataDiagnosis` outputs to data visualization for text or categorical patterns.
@@ -57,6 +57,6 @@ Any other context, examples, references, or mockups that may help us understand 
 
 ---
 
-**Note:** DataLab is currently in **pre-release (v0.1)**. 
+**Note:** datalabx is currently in **pre-release (v0.1)**. 
 
 Feature suggestions are encouraged. Your input and feedback helps guide the roadmap!

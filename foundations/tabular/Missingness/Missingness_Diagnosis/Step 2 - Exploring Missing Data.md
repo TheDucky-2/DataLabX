@@ -8,7 +8,7 @@ In **Step 1**, we learned what values are identified as missing in our data.
 
 This step is simply about ``finding missing information in your data``.
 
-Now that DataLab knows what **missing** means for your dataset, we can move ahead and explore:
+Now that datalabx knows what **missing** means for your dataset, we can move ahead and explore:
 
 - How much data is missing
 
@@ -32,9 +32,9 @@ If we skipped detection and looked at rows directly, we might miss important mis
 
 That’s why detection comes first, and exploration comes next.
 
-## What does DataLab explore in this step?
+## What does datalabx explore in this step?
 
-Using the missing value definitions from **Step 1**, DataLab explores missing data in three simple ways:
+Using the missing value definitions from **Step 1**, datalabx explores missing data in three simple ways:
 
 - How much data is missing
 
@@ -44,7 +44,7 @@ Using the missing value definitions from **Step 1**, DataLab explores missing da
 
 ### Missing Data Summary
 
-The first thing DataLab shows is a summary of missing data.
+The first thing datalabx shows is a summary of missing data.
 
 This summary answers simple but important questions like:
 
@@ -52,7 +52,7 @@ This summary answers simple but important questions like:
 
 - What percentage of each column is missing?
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
 We can check missing data summary by using ``missing_data_summary()`` method from ``MissignessDiagnosis`` class.
 
@@ -134,7 +134,7 @@ Output:
 
 ### Viewing rows with missing data
 
-After seeing the summary, DataLab lets us look at the actual rows where data is missing.
+After seeing the summary, datalabx lets us look at the actual rows where data is missing.
 
 This is done separately for:
 

@@ -1,16 +1,16 @@
 ---
 name: Bug Report
-about: Report an unexpected behavior you observed in DataLab (pre-release)
+about: Report an unexpected behavior you observed in datalabx (pre-release)
 title: "[BUG]"
 labels: bug
 assignees: 
 ---
 
-![DataLab Logo](../../assets/DataLab_logo.png)
+![datalabx Logo](../../assets/datalabx_logo.png)
 
 # 🐞 Bug Report
 
-Please fill out the sections below to help us reproduce and fix the issues related to DataLab.
+Please fill out the sections below to help us reproduce and fix the issues related to datalabx.
 
 ---
 
@@ -20,19 +20,19 @@ A clear and concise description of what the bug is.
 
 **Example:**
 
-> DataLab is throwing an error while converting cleaned numerical data into numerical datatypes.
+> datalabx is throwing an error while converting cleaned numerical data into numerical datatypes.
 
 ## To Reproduce
 
 Steps to reproduce the behavior (minimal reproducible example preferred):
 
-1. Import datalab
+1. import datalabx
 2. Run specific code
 3. Observe unexpected output
 
 ```python
 # Example code that triggers the bug
-import datalab
+import datalabx
 
 # Your code here
 ```
@@ -43,7 +43,7 @@ What you expected will happen.
 
 **Example:**
 
-> DataLab should return a pandas DataFrame with all columns having **string** datatype while loading data from CSV files.
+> datalabx should return a pandas DataFrame with all columns having **string** datatype while loading data from CSV files.
 
 ## Screenshots / Output:
 
@@ -52,7 +52,7 @@ If possible, copy and paste the full Python error traceback.
 
 ## Environment
 
-- DataLab version: (run ``python -c "import datalab; print(datalab.__version__)"``)
+- datalabx version: (run ``python -c "import datalabx; print(datalabx.__version__)"``)
 - Python version: 
 - OS:
 - Additional packages / versions (if relevant):

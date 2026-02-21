@@ -1,6 +1,6 @@
 # 📥 Tabular Data Loader
 
-## Welcome to the first step of DataLab!
+## Welcome to the first step of datalabx!
 
 Tabular data means data arranged in rows and columns of a table like this:
 
@@ -17,27 +17,27 @@ Tabular data means data arranged in rows and columns of a table like this:
 - Pandas DataFrames
 - csv files, etc.
 
-> DataLab works mainly with pandas DataFrames.
+> datalabx works mainly with pandas DataFrames.
 
 ### Supported Tabular Data File Types
 
-DataLab can automatically detect and load:
+datalabx can automatically detect and load:
 
 - CSV
 - Excel (.xlsx, .xls)
 - JSON
 - Parquet
 
-We don’t need to specify the file type - DataLab figures it out for us.
+We don’t need to specify the file type - datalabx figures it out for us.
 
-### DataLab Usage:
+### datalabx Usage:
 
-We can load tabular data using the ``load_tabular()`` function from ``DataLoader`` class of ``datalab``.
+We can load tabular data using the ``load_tabular()`` function from ``DataLoader`` class of ``datalabx``.
 
 This function returns a **pandas DataFrame**.
 
 ```python
-from datalab import DataLoader
+from datalabx import DataLoader
 
 df = DataLoader('example.csv').load_tabular()
 ```
@@ -47,7 +47,7 @@ df = DataLoader('example.csv').load_tabular()
 #### --- Without Any Extra Parameters ---
 
 ```python
-from datalab import DataLoader
+from datalabx import DataLoader
 
 # Loading a CSV file
 df = DataLoader('some_random_file.csv').load_tabular()

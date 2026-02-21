@@ -7,7 +7,7 @@ import matplotlib
 def test_numerical_visualizer_return_types():
 
     import pandas as pd
-    from datalab import NumericalVisualizer, ColumnConverter
+    from datalabx import NumericalVisualizer, ColumnConverter
 
     df = pd.DataFrame({
         "age": [23, 25, 29, 31, 35, 38, 42, 45, 47, 50, 120, 3],  
@@ -57,7 +57,7 @@ def test_numerical_visualizer_return_types():
     # the second element in the tuple must be a matplotlib axes o
 def test_missingness_visualizer_return_types():
     import pandas as pd
-    from datalab import MissingnessVisualizer, ColumnConverter
+    from datalabx import MissingnessVisualizer, ColumnConverter
 
     df = pd.DataFrame({
         "age": [
@@ -114,7 +114,7 @@ def test_missingness_visualizer_return_types():
 
 def test_categorical_visualizer_return_types():
     import pandas as pd
-    from datalab import CategoricalVisualizer, ColumnConverter
+    from datalabx import CategoricalVisualizer, ColumnConverter
 
     df = pd.DataFrame({
     "gender": [

@@ -30,7 +30,7 @@ Once, we identify the problems that exist in our data, it would be easier to kno
 
 ##  Dirty Data Diagnosis Overview
 
-**DirtyDataDiagnosis** in DataLab refers to the check-up of dirt or issues present in numbers, text or date-time data.
+**DirtyDataDiagnosis** in datalabx refers to the check-up of dirt or issues present in numbers, text or date-time data.
 
 It helps us detect:
 
@@ -38,22 +38,22 @@ It helps us detect:
 - Issues with Text data (like numbers, symbols, spaces present in text).
 - Issues with Datetime data (like symbols, incorrect dates)
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
-We can explore dirty data by importing ``DirtyDataDiagnosis`` class from DataLab.
+We can explore dirty data by importing ``DirtyDataDiagnosis`` class from datalabx.
 ```python
-from datalab import DirtyDataDiagnosis
+from datalabx import DirtyDataDiagnosis
 
 diagnosis = DirtyDataDiagnosis(df)
 ```
 
 ## Before We Explore Dirty Data
 
-Before running any Dirty Data Diagnosis in DataLab, we will learn about a few considerations:
+Before running any Dirty Data Diagnosis in datalabx, we will learn about a few considerations:
 
 ### Index
 
-``DataLab temporarily modifies your DataFrame by adding an index to track original row positions.``
+``datalabx temporarily modifies your DataFrame by adding an index to track original row positions.``
 
 This allows all diagnostics to reference the correct rows reliably.
 
@@ -79,7 +79,7 @@ df.head(5)
 
 ### Large Datasets
 
-DataLab automatically uses Arrow-backed pandas types for large datasets **(anything > 100000 rows, adjustable)**.
+datalabx automatically uses Arrow-backed pandas types for large datasets **(anything > 100000 rows, adjustable)**.
 
 This ensures:
 

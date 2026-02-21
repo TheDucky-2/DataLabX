@@ -1,7 +1,7 @@
 # STEP 3: Exploring Missing Data - Row Level Checks
 ### **(Missingness Diagnosis continued)....**
 
-In the previous steps, we used DataLab to learn:
+In the previous steps, we used datalabx to learn:
 
 **Step 1:** What really counts as missing in our dataset (built-in or placeholders).
 
@@ -43,14 +43,14 @@ This step helps in:
 
 ## Types of Row-Level Checks
 
-DataLab supports two main types of row-level checks:
+datalabx supports two main types of row-level checks:
 
 1. Rows with all columns having missing data
 2. Rows with only specific columns having missing data
 
 Let us now move to exploring these checks:
 
-## **DataLab Usage**
+## **datalabx Usage**
 
 Let us use an example dataset of all missing values to understand that.
 

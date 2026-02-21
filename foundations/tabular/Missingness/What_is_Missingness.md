@@ -20,9 +20,9 @@ And because of that, your results turned out to be misleading.
 
 This is a very common situation in the field of data, and this is why missing data deserves its own section.
 
-## But, What does Missing Data mean in DataLab?
+## But, What does Missing Data mean in datalabx?
 
-In DataLab, missingness does not only mean absence of values.
+In datalabx, missingness does not only mean absence of values.
 
 Missingness means:
 
@@ -38,7 +38,7 @@ Missingness means:
 
 Because missingness is often context-dependent, there is no single universal definition that works for every dataset.
 
-That’s why DataLab treats missingness as something to be understood and handled separately, not guessed or auto-detected.
+That’s why datalabx treats missingness as something to be understood and handled separately, not guessed or auto-detected.
 
 ## ⚠️ **Important Note:** Missingness Can Be Meaningful
 
@@ -62,13 +62,13 @@ In this case, missing income values may indicate:
 
 Automatically removing or filling these values may hide important patterns.
 
-That’s why DataLab follows a simple principle:
+That’s why datalabx follows a simple principle:
 
 > **Always understand what missingness represents before deciding how to handle it.**
 
-## How DataLab Handles Missingness
+## How datalabx Handles Missingness
 
-DataLab does not treat all missing values as the same.
+datalabx does not treat all missing values as the same.
 
 Instead, it looks at missing values step by step, based on the type of data:
 
@@ -88,11 +88,11 @@ Missing data is not something you fix in one step.
 
 It should be handled step by step.
 
-In DataLab, missing data is handled in three simple stages:
+In datalabx, missing data is handled in three simple stages:
 
 **1.** **Understand**
 
-Before fixing anything, DataLab helps you look at your data:
+Before fixing anything, datalabx helps you look at your data:
 
 - First, it shows which values are missing
 
@@ -106,7 +106,7 @@ This step is just about looking and learning about your data, not fixing.
 
 **2. See**
 
-Next, DataLab shows missing data using simple pictures (like **missingno** charts):
+Next, datalabx shows missing data using simple pictures (like **missingno** charts):
 
 - You can see where data is missing in each row and column
 

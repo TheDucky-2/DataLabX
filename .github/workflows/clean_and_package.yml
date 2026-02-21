@@ -1,0 +1,6 @@
+name: Clean and Release Package
+
+on:
+  push:
+    tags:
+      - 'v*'

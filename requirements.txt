@@ -1,4 +1,4 @@
-# Core datalab dependencies
+# Core datalabx dependencies
 
 pandas>=2.0
 numpy>=1.24

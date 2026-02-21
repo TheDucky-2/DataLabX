@@ -1,23 +1,23 @@
-![DataLab logo](assets/DataLab_logo.png)
+![datalabx logo](assets/datalabx_logo.png)
 
-[![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://theducky-2.github.io/DataLab)
+[![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://theducky-2.github.io/datalabx)
 ![TestPyPI version](https://img.shields.io/badge/TestPyPI-0.1.0b9-orange)
 ![Status](https://img.shields.io/badge/Status-Beta-yellow)
 ![Python](https://img.shields.io/badge/python-3.10+-blue)
-![License](https://img.shields.io/github/license/TheDucky-2/DataLab)
+![License](https://img.shields.io/github/license/TheDucky-2/datalabx)
 
 **A diagnosis-first data quality and preparation framework for real-world data.**
 
-DataLab is a Python library designed to help you understand, diagnose, and safely prepare messy datasets - before analysis or modeling.
+datalabx is a Python library designed to help you understand, diagnose, and safely prepare messy datasets - before analysis or modeling.
 
 Most data failures don’t happen during modeling.
 They happen earlier: **during data understanding, cleaning, and unsafe transformations.**
 
-DataLab exists to fix that.
+datalabx exists to fix that.
 
-## What is DataLab?
+## What is datalabx?
 
-**DataLab is a structured framework for working with messy, real-world data.**
+**datalabx is a structured framework for working with messy, real-world data.**
 
 It is designed for datasets where:
 
@@ -29,7 +29,7 @@ It is designed for datasets where:
 
 - Blind automation is risky
 
-Instead of guessing or silently coercing data, DataLab focuses on:
+Instead of guessing or silently coercing data, datalabx focuses on:
 
 - **Clarity**
 
@@ -37,11 +37,11 @@ Instead of guessing or silently coercing data, DataLab focuses on:
 
 - **Explainability**
 
-DataLab helps you understand what your data is doing before deciding what to do with it.
+datalabx helps you understand what your data is doing before deciding what to do with it.
 
-## Who is DataLab for?
+## Who is datalabx for?
 
-DataLab is built for:
+datalabx is built for:
 
 - Analysts & Data Scientists working with messy, real-world datasets
 
@@ -51,13 +51,13 @@ DataLab is built for:
 
 - Advanced users who want transparency instead of black boxes
 
-**If you care about well-understood data, DataLab is for you.**
+**If you care about well-understood data, datalabx is for you.**
 
 ## Core Philosophy
 
 **Diagnosis-first, not automation-first.**
 
-``DataLab assumes that your data is dirty by default.``
+``datalabx assumes that your data is dirty by default.``
 
 Instead of hiding problems, it:
 
@@ -67,11 +67,11 @@ Instead of hiding problems, it:
 
 - lets you decide what to do
 
-DataLab is built around a simple idea: 
+datalabx is built around a simple idea: 
 
 > Different data types need different thinking
 
-DataLab separates workflows by data type:
+datalabx separates workflows by data type:
 
 - Numerical
 
@@ -91,7 +91,7 @@ This keeps workflows:
 
 - **reproducible**
 
-## What makes DataLab different?
+## What makes datalabx different?
 
 - Designed for extremely messy datasets **(≈77–90% invalid or inconsistent values)**
 
@@ -105,15 +105,15 @@ This keeps workflows:
 
 - Human-friendly documentation
 
-DataLab combines:
+datalabx combines:
 
 - **power for advanced users**
 
 - **safety and clarity for beginners**
 
-## How DataLab Works
+## How datalabx Works
 
-With DataLab, you typically:
+With datalabx, you typically:
 
 - Load data
 
@@ -156,19 +156,19 @@ Tabular data workflows, including:
 
 ## Installation (v0.1 Pre-Release)
 
-DataLab is available on **TestPyPI** for early testing and feedback.
+datalabx is available on **TestPyPI** for early testing and feedback.
 
-You can now Install DataLab pre-release using **pip**:
+You can now Install datalabx pre-release using **pip**:
 
-``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0b9``
+``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalabx-pre-release==0.1.0b9``
 
 ### Why this long command? 
 
-That is because DataLab itself is downloaded from TestPyPI, while required dependencies (such as pandas) are downloaded from **PyPI**.
+That is because datalabx itself is downloaded from TestPyPI, while required dependencies (such as pandas) are downloaded from **PyPI**.
 
-### Importing DataLab
+### Importing datalabx
 ```python
-import datalab
+import datalabx
 ```
 
 ### Installation Video
@@ -179,9 +179,9 @@ import datalab
 
 ### Updating to the Latest TestPyPI Version
 
-If you already installed an earlier pre-release version of DataLab from TestPyPI, you can upgrade to the latest test version using:
+If you already installed an earlier pre-release version of datalabx from TestPyPI, you can upgrade to the latest test version using:
 
-``pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release``
+``pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalabx-pre-release``
 
 This ensures you always get the most recent pre-release version available on TestPyPI.
 
@@ -192,9 +192,9 @@ This is a pre-release version and is not yet intended for production use.
 ## Project Structure:
 
 ```
-datalab/
+datalabx/
 │
-├── datalab/                # Main Python package
+├── datalabx/                # Main Python package
 │   ├── tabular/
 │   │   ├── data_loader/
 │   │   ├── data_diagnosis/
@@ -208,13 +208,13 @@ datalab/
 │   └── graph/              # (To be added in v0.3)
 │
 ├── docs/                 # API documentation
-├── foundations/          # DataLab Foundational concepts
+├── foundations/          # datalabx Foundational concepts
 ├── guides/               # API Usage & Workflow Guide notebooks for each step
 ├── assets/               # Images, logos, diagrams
-│   └── DataLab_logo.png
-├── DataLab_API_RETURN_TYPES.md     # Public API Return Types Reference
-├── DataLab_DATA_HANDLING_POLICY.md # DataLab's policy on data handling
-├── DataLab_DATA_HANDLING_REPORT.md # DataLab's current report on data handling
+│   └── datalabx_logo.png
+├── datalabx_API_RETURN_TYPES.md     # Public API Return Types Reference
+├── datalabx_DATA_HANDLING_POLICY.md # datalabx's policy on data handling
+├── datalabx_DATA_HANDLING_REPORT.md # datalabx's current report on data handling
 ├── CHANGELOG.md                     
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
@@ -253,31 +253,31 @@ datalab/
 
 **v0.5** - API review & stabilization
 
-## Why would I even use DataLab?
+## Why would I even use datalabx?
 
 **Because most data problems don’t come from bad models - they come from poor data understanding.**
 
-DataLab is built to feel like:
+datalabx is built to feel like:
 
 > Someone sitting next to you, explaining what your data is doing and why.
 
 ## 🤝 Contributions
 
-DataLab is in early development. Ideas, feedback, and contributions are absolutely welcome!
+datalabx is in early development. Ideas, feedback, and contributions are absolutely welcome!
 
 If you’d like to contribute, please follow our contribution guidelines:
 
-- **Read the contributing guide:** [CONTRIBUTING.md](CONTRIBUTING.md) ->  explains DataLab's philosophy, workflow, and how to make meaningful contributions.  
+- **Read the contributing guide:** [CONTRIBUTING.md](CONTRIBUTING.md) ->  explains datalabx's philosophy, workflow, and how to make meaningful contributions.  
 - **Report a bug:** Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) to submit any issues or unexpected behavior.  
 - **Request a feature:** Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md) to propose new functionality.  
 
-Following these steps helps ensure your contributions align with DataLab’s diagnosis-first philosophy and saves time for both - you and the maintainers.
+Following these steps helps ensure your contributions align with datalabx’s diagnosis-first philosophy and saves time for both - you and the maintainers.
 
 ## ✉️ Contact & Support
 
-For questions, suggestions, feedbacks or issues related to **DataLab**, you can reach us at:
+For questions, suggestions, feedbacks or issues related to **datalabx**, you can reach us at:
 
-**Email:** [datalab.project@protonmail.com](mailto:datalab.project@protonmail.com)
+**Email:** [datalabx.project@protonmail.com](mailto:datalabx.project@protonmail.com)
 
 We aim to respond within 72 hours.
 

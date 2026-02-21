@@ -22,7 +22,7 @@ And this understanding will later help us decide how to safely handle missing va
 
 ## Why check how our data looks before Handling Missing Data?
 
-DataLab understands that missing values do not exist by themselves.
+datalabx understands that missing values do not exist by themselves.
 
 They exist inside real data that may be:
 
@@ -211,7 +211,7 @@ We can usually get a good idea by:
 
 Even without math doing, we can already see that if we try to get average number of candies, it will definitely be more than 1, **even when 1 is the most common value.**
 
-We are only building intuition right now and we will explore how to check all these using datalab while handling missing data.
+We are only building intuition right now and we will explore how to check all these using datalabx while handling missing data.
 
 ## How is Kurtosis related to missing data?
 
@@ -261,7 +261,7 @@ In the next step, we will:
 
 - Use 'Easy to Understand' visuals like Histograms (we have been looking at these), QQ plots and KDE plots.
 
-- Use DataLab’s methods to verify whether data distribution is following a normal or non-normal pattern.
+- Use datalabx’s methods to verify whether data distribution is following a normal or non-normal pattern.
 
 - Connect these observations directly to missing value handling decisions
 

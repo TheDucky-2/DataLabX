@@ -235,7 +235,7 @@ We now know:
 
 - What kind of relationships we can explore and how they represent patterns of missing data.
 
-- How we can create and understand **Heatmaps** for missing data, using datalab.
+- How we can create and understand **Heatmaps** for missing data, using datalabx.
 
 Okay!
 

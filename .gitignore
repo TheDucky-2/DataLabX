@@ -36,7 +36,7 @@ env/
 # --------------------------
 # BUILD ARTIFACTS
 # --------------------------
-DataLab.egg-info/
+datalabx.egg-info/
 build/
 dist/
 

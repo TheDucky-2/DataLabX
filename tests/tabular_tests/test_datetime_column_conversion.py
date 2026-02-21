@@ -1,6 +1,6 @@
 def test_datetime_column_conversion():
-    import datalab
-    from datalab import ColumnConverter
+    import datalabx
+    from datalabx import ColumnConverter
     import pandas as pd
 
     test_df = pd.DataFrame({

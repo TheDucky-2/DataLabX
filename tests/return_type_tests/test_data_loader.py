@@ -4,7 +4,7 @@ def test_data_loader():
     from datetime import datetime
     import pandas as pd
 
-    from datalab import DataLoader
+    from datalabx import DataLoader
 
     data = {
         "ID": [101, '102A', 103, 104, 105, 'Unknown'],

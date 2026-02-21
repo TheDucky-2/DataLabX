@@ -1,10 +1,10 @@
-![DataLab logo](/assets/DataLab_logo.png)
+![datalabx logo](/assets/datalabx_logo.png)
 
 # 🌱 Foundations
 
-**Foundations are the thinking layer of DataLab.**
+**Foundations are the thinking layer of datalabx.**
 
-They explain ``how DataLab reasons about messy, real-world data - not just how to call functions or run workflows``.
+They explain ``how datalabx reasons about messy, real-world data - not just how to call functions or run workflows``.
 
 While API documentation tells you what you can do,
 Foundations explain **why things behave the way they do**, **what patterns to look for**, and **how to interpret what you see**.
@@ -13,9 +13,9 @@ If you want to understand your data deeply, not just process it - this is where 
 
 ---
 
-## What are DataLab Foundations?
+## What are datalabx Foundations?
 
-*DataLab Foundations are hand-written, concept-driven documents that helps you explore **data understanding and diagnosis**.*
+*datalabx Foundations are hand-written, concept-driven documents that helps you explore **data understanding and diagnosis**.*
 
 They focus on:
 
@@ -78,7 +78,7 @@ These problems do not occur due to incorrect API usage - **They come from incorr
 
 > Foundations exist to make those assumptions visible.
 
-DataLab’s Foundations cover how to reason about tabular data before, during, and after diagnosis, including:
+datalabx’s Foundations cover how to reason about tabular data before, during, and after diagnosis, including:
 
 - how data is loaded and interpreted
 
@@ -130,7 +130,7 @@ You are encouraged to **read linearly**, not skim.
 
 ---
 
-## How Foundations relate to other DataLab materials
+## How Foundations relate to other datalabx materials
 
 | Section              | Purpose                                      | Focus / Examples                                  |
 |----------------------|----------------------------------------------|---------------------------------------------------|
@@ -167,7 +167,7 @@ Foundations are intentionally:
 
 This is deliberate.
 
-DataLab is built to feel like:
+datalabx is built to feel like:
 
 > Someone sitting next to you, explaining what your data is doing and why.
 
@@ -177,21 +177,21 @@ Foundations are where that voice lives.
 
 ## Versioning & scope
 
-Foundations evolve alongside DataLab, but they are **not tightly coupled to specific APIs**.
+Foundations evolve alongside datalabx, but they are **not tightly coupled to specific APIs**.
 
-As DataLab grows (text data, graph data, ML workflows),
+As datalabx grows (text data, graph data, ML workflows),
 Foundations will grow too - without rewriting how existing data concepts work.
 
 ---
 
 ## Where to go next
 
-If you are new to DataLab:
+If you are new to datalabx:
 
 - Start with **Foundations -> Tabular -> Tabular Foundations** (see [Tabular Foundations](tabular/tabular_foundations.md))
 - Then move into data loading, diagnosis and missingness
 
-If you already use DataLab:
+If you already use datalabx:
 
 - Use Foundations to **interpret results**
 - Revisit sections when something feels unclear or suspicious
@@ -200,5 +200,5 @@ If you already use DataLab:
 
 ---
 
-**Foundations are not optional reading. They are the reason DataLab exists.**
+**Foundations are not optional reading. They are the reason datalabx exists.**
 

@@ -39,7 +39,7 @@ Example:
 
 These questions actually help us understand the shape and behavior of our data.
 
-In DataLab, this understanding comes from ``Data Diagnosis`` and ``Data Visualization``.
+In datalabx, this understanding comes from ``Data Diagnosis`` and ``Data Visualization``.
 
 Behind the scenes, this involves mathematical computations like counts, summaries, and statistics - but as a user, you don’t need to think about those yet.
 
@@ -105,7 +105,7 @@ In this section, we will be exploring very simple concepts like:
 
 - How often values appear
 
-We will be working with **Diagnosis** and **Visualization** modules from DataLab to help us answer these questions. 
+We will be working with **Diagnosis** and **Visualization** modules from datalabx to help us answer these questions. 
 
 We will be learning and understanding these ideas using:
 
@@ -115,6 +115,6 @@ We will be learning and understanding these ideas using:
 
 - Annotated plots 
 
-- DataLab Usage examples
+- datalabx Usage examples
 
 After we finish this section, we will return to Missing Data Handling and complete the workflow with confidence.

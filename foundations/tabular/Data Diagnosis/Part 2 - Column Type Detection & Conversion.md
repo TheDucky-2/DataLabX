@@ -42,7 +42,7 @@ Let us explore what is this very important thing with an example Dataset:
 
 Let us begin by detecting column types in this dataset.
 
-    from datalab import Diagnosis
+    from datalabx import Diagnosis
 
     Diagnosis(df).detect_column_types()
 

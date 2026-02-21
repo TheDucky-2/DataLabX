@@ -25,7 +25,7 @@ It means checking your data to see:
 
 ## What Can I Diagnose?
 
-DataLab allows you to diagnose your data by dividing Diagnosis into 5 different categories:
+datalabx allows you to diagnose your data by dividing Diagnosis into 5 different categories:
 
 | Category            | Class Name             | What it Diagnoses                                                                 |
 |---------------------|------------------------|------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ This section focuses specifically on the **Diagnosis** class.
 
 ## Diagnosis Overview:
 
-Diagnosis in DataLab refers to the diagnosis(check-up) of overall DataFrame.
+Diagnosis in datalabx refers to the diagnosis(check-up) of overall DataFrame.
 
 Diagnosis helps you to see:
 
@@ -54,11 +54,11 @@ Diagnosis helps you to see:
 - Cardinality (How many unique values are present in a column of your DataFrame).
 - Separation of Column Types
 
-### **DataLab Usage**:
+### **datalabx Usage**:
 
-You can import Diagnosis class directly from DataLab:
+You can import Diagnosis class directly from datalabx:
 
-    from dataLab import Diagnosis
+    from datalabx import Diagnosis
 
     diagnosis = Diagnosis(df)
 
@@ -76,9 +76,9 @@ It helps you verify:
 
 - Obvious issues (strange values, wrong data types, missing values, formatting issues, dirty text data)
 
-### **DataLab Usage**:
+### **datalabx Usage**:
 
-You can look at N number of rows of your data by using the ``data_preview()`` method from the Diagnosis class of DataLab.
+You can look at N number of rows of your data by using the ``data_preview()`` method from the Diagnosis class of datalabx.
 
 This method by default shows first 10 rows of your DataFrame.
 
@@ -93,16 +93,16 @@ Example:
 
 ## 2. Data Summary:
 
-Summary of data in DataLab refers to:
+Summary of data in datalabx refers to:
 
 1. Shape of Data (number of rows and columns)
 2. Column Names
 3. Data Types (whether int, float, str, bool, datetime or category)
 4. Index (like house no. of each row of your DataFrame)
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
-You can check the summary of your data by using the ``data_summary()`` method from the Diagnosis class of DataLab.
+You can check the summary of your data by using the ``data_summary()`` method from the Diagnosis class of datalabx.
 
 Example:
 
@@ -138,7 +138,7 @@ This function returns a dictionary.
 
 ## 3. Detecting Column Types
 
-DataLab can automatically detect:
+datalabx can automatically detect:
 
 - Numerical columns
 - Categorical columns
@@ -146,9 +146,9 @@ DataLab can automatically detect:
 
 This helps you identify incorrect types (User ID 12345 detected as Numerical column (numbers)).
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
-You can detect column types by using the ``detect_column_types()`` method from the Diagnosis class of DataLab.
+You can detect column types by using the ``detect_column_types()`` method from the Diagnosis class of datalabx.
 
     diagnosis.detect_column_types()
 
@@ -162,9 +162,9 @@ This function returns a dictionary of column names and their detected column typ
 
 Memory Usage refers to how much RAM the DataFrame uses.
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
-You can check the memory usage by using the ``memory_usage()`` method from the Diagnosis class of DataLab.
+You can check the memory usage by using the ``memory_usage()`` method from the Diagnosis class of datalabx.
 
 Example:
 
@@ -225,9 +225,9 @@ Example:
 
 If a column has high cardinality, the Machine Learning model may get confused or learn incorrect patterns, since each value is different.
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
-You can check the cardinality by using the ``show_cardinality()`` method from the Diagnosis class of DataLab.
+You can check the cardinality by using the ``show_cardinality()`` method from the Diagnosis class of datalabx.
 
 Example:
 
@@ -251,11 +251,11 @@ Sepration of column types refers to separating specific type of columns - Numeri
 
 This leads to easy exploration and understanding of your data, one type at a time.
 
-You can read more about why it is important in **Column Type Detection & Conversion** docs under **Workflow Docs** section of DataLab.
+You can read more about why it is important in **Column Type Detection & Conversion** docs under **Workflow Docs** section of datalabx.
 
-Let us now explore how we can do that using datalab:
+Let us now explore how we can do that using datalabx:
 
-### **DataLab Usage:**
+### **datalabx Usage:**
 
 #### Numerical Column Types (Numbers):
 

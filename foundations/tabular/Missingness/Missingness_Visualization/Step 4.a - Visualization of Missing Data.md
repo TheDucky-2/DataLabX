@@ -28,9 +28,9 @@ This step does not clean or modify your original data.
 
 ## Why are my placeholder values converted to Pandas built-in missing values?
 
-DataLab converts your placeholder values like **MISSING, ERROR, UNKNOWN** or anything else into **NaN** (Not a Number) automatically, for **visualization purposes only**.
+datalabx converts your placeholder values like **MISSING, ERROR, UNKNOWN** or anything else into **NaN** (Not a Number) automatically, for **visualization purposes only**.
 
-This is done because DataLab uses ``missingno`` library under the hood for creating intuitive and widely-used missing data visualizations.
+This is done because datalabx uses ``missingno`` library under the hood for creating intuitive and widely-used missing data visualizations.
 
 However, **missingo** only supports pandas built-in missing values, and does not consider placeholder values as missing data.
 
@@ -50,17 +50,17 @@ Missing data visualization only makes sense after we know:
 
 If we jumped directly to visualization without those steps, the plots could be misleading (we will explore this too!).
 
-That’s why DataLab follows this order:
+That’s why datalabx follows this order:
 
     Understand → Explore → Visualize → Decide
 
-## Visualizing Missing Data in DataLab
+## Visualizing Missing Data in datalabx
 
-DataLab allows us to explore our missing data by creating easy to understand plots.
+datalabx allows us to explore our missing data by creating easy to understand plots.
 
 These plots are simple, fast, and very effective for real-world datasets.
 
-DataLab also allows us to:
+datalabx also allows us to:
 
 - Include both pandas missing values (NaN, NaT)
 
@@ -70,7 +70,7 @@ However, placeholders are converted only and only for visualization (**original 
 
 ## But, what are these 'Easy to Understand' plots?
 
-DataLab supports the most commonly used plots for visualizing missing data.
+datalabx supports the most commonly used plots for visualizing missing data.
 
 These are:
 
@@ -98,11 +98,11 @@ This looks like **matchsticks lying on a table - you keep adding the most simila
 
 This shows which columns have missing values in similar places.
 
-## **DataLab Usage**
+## **datalabx Usage**
 
-We can begin visualizing our missing data by importing ``MissingnessVisualizer`` class from datalab.
+We can begin visualizing our missing data by importing ``MissingnessVisualizer`` class from datalabx.
 
-    from datalab import MissingnessVisualizer
+    from datalabx import MissingnessVisualizer
 
 ## Bar Plot
 
@@ -179,7 +179,7 @@ We can see:
 
 - This cannot be shared with others yet because it does not communicate the whole story of this figure.
 
-Which is why DataLab allows us to use some optional, however, very **helpful parameters** (just some extra information we can give a method):
+Which is why datalabx allows us to use some optional, however, very **helpful parameters** (just some extra information we can give a method):
 
 ### HELPFUL PARAMETERS:
 

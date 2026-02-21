@@ -1,15 +1,15 @@
-## Basic tests to check whether datalab modules are importing.
-def test_datalab_imports():
+## Basic tests to check whether datalabx modules are importing.
+def test_datalabx_imports():
     import pytest
 
-    modules = ['datalab',
-               'datalab.tabular.data_loader',
-               'datalab.tabular.data_diagnosis',
-               'datalab.tabular.data_cleaner',
-               'datalab.tabular.data_preprocessor',
-               'datalab.tabular.data_visualization',
-               'datalab.tabular.computations',
-               'datalab.tabular.utils']
+    modules = ['datalabx',
+               'datalabx.tabular.data_loader',
+               'datalabx.tabular.data_diagnosis',
+               'datalabx.tabular.data_cleaner',
+               'datalabx.tabular.data_preprocessor',
+               'datalabx.tabular.data_visualization',
+               'datalabx.tabular.computations',
+               'datalabx.tabular.utils']
 
     modules_not_found = []
     

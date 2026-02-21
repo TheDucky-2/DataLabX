@@ -1,8 +1,8 @@
-![DataLab logo](/assets/DataLab_logo.png)
+![datalabx logo](/assets/datalabx_logo.png)
 
 # Data Handling Report
 
-This document explains how **DataLab handles data** in different modules and functions specifying whether a step **mutates data or only changes representation**. 
+This document explains how **datalabx handles data** in different modules and functions specifying whether a step **mutates data or only changes representation**. 
 
 ---
 
@@ -12,11 +12,11 @@ Real-world data is **messy**, **inconsistent**, and often **ambiguous**.
 
 Even small mistakes in handling can lead to **incorrect conclusions**, **broken workflows**, or **silent data corruption**.
 
-This document exists to make DataLab’s data handling **explicit and transparent**. It is intended to serve several purposes:
+This document exists to make datalabx’s data handling **explicit and transparent**. It is intended to serve several purposes:
 
 #### For Users:
 
-- Understand how DataLab treats data at each step.
+- Understand how datalabx treats data at each step.
 
 - Distinguish between representation changes **(format, type, placeholders)** and meaningful data changes **(cleaning, preprocessing)**.
 
@@ -28,7 +28,7 @@ This document exists to make DataLab’s data handling **explicit and transparen
 
 - Ensure that new features, bug fixes, or refactors **do not accidentally alter data meaning.**
 
-- Aligns with DataLab’s philosophy of **safety, transparency, and diagnosis-first workflows.**
+- Aligns with datalabx’s philosophy of **safety, transparency, and diagnosis-first workflows.**
 
 #### For Audit and Reproducibility:
 
@@ -40,15 +40,15 @@ This document exists to make DataLab’s data handling **explicit and transparen
 
 In short, this document is about **trust and clarity**.
 
-> It is for making sure anyone interacting with DataLab - whether a user, a contributor or a reviewer, knows what happens to the data at each step, and can reason about it with confidence.
+> It is for making sure anyone interacting with datalabx - whether a user, a contributor or a reviewer, knows what happens to the data at each step, and can reason about it with confidence.
 
 ---
 
 ## 📈 TABULAR DATA
 
-DataLab currently focuses on **tabular data**, so this report covers modules for tabular workflows. 
+datalabx currently focuses on **tabular data**, so this report covers modules for tabular workflows. 
 
-As DataLab evolves, additional modules and data types will be included.
+As datalabx evolves, additional modules and data types will be included.
 
 ### 1. Data Loading
 
@@ -56,7 +56,7 @@ As DataLab evolves, additional modules and data types will be included.
 
 | Module Name | Action           | Data Mutation?                                                      | Notes                                                 |
 |-------------| ---------------- | --------------------------------------------------------------------- | ----------------------------------------------------- |
-|``data_loader``| Load all columns of the dataset and converts them to ``string`` datatype|    ``❌`` **Only representation changes**     | Avoids silent coercion; preserves dirty/mixed data    |
+|``DataLoader``| Load all columns of the dataset and converts them to ``string`` datatype|    ``❌`` **Only representation changes**     | Avoids silent coercion; preserves dirty/mixed data    |
 |             | Pandas missing types (`NA`, `np.nan`, `None`, `Null`, `NAT`) --> `None`   | ``❌`` **Only representation changes**  | Ensures that meaning of missing data is preserved.
 
 > Loading is observational; it standardizes representation but does not alter what the data represents.
@@ -134,4 +134,4 @@ Module Name | Action                           | Action                        |
 
 3. **Explicit cleaning or preprocessing** is the only time meaning changes intentionally.
 
-4. All modules **follow** DataLab’s diagnosis-first philosophy: understand data before changing it.
+4. All modules **follow** datalabx’s diagnosis-first philosophy: understand data before changing it.

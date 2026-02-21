@@ -6,13 +6,13 @@ We are now at the first step of understanding our missing data.
 
 This step is simply about ``finding missing types in your data``.
 
-Before fixing or filling missing values, DataLab first checks what data is missing and how it is represented.
+Before fixing or filling missing values, datalabx first checks what data is missing and how it is represented.
 
 Think of this as a **health check-up** of your dataset.
 
-## Why does DataLab check column by column?
+## Why does datalabx check column by column?
 
-DataLab looks for missing values column by column because not all data is the same:
+datalabx looks for missing values column by column because not all data is the same:
 
 - Numbers (like age or income)
 - Text / categories (like gender or country)
@@ -20,13 +20,13 @@ DataLab looks for missing values column by column because not all data is the sa
 
 Each type shows missing values differently. 
 
-Because of this, DataLab checks **each column based on its type**, instead of checking the whole table at once.
+Because of this, datalabx checks **each column based on its type**, instead of checking the whole table at once.
 
 This makes the results more accurate and easier to understand.
 
-## How DataLab finds missing values
+## How datalabx finds missing values
 
-DataLab looks for missing values in three simple steps:
+datalabx looks for missing values in three simple steps:
 
 1. Look at the raw data
 2. Identify the type of each column (number, text, or date)
@@ -40,7 +40,7 @@ The results are grouped into:
 
 ## Two kinds of missing values
 
-DataLab finds **two kinds of missing data** in every column:
+datalabx finds **two kinds of missing data** in every column:
 
 ### 1. Built‑in missing values (automatic)
 
@@ -60,13 +60,13 @@ Examples:
 - Text **->**  `"UNKNOWN"`, `"?"`, `"MISSING"`
 - Dates **->** `"00-00-0000"`
 
-Pandas does NOT treat these as missing by default - so DataLab lets you tell it what to look for.
+Pandas does NOT treat these as missing by default - so datalabx lets you tell it what to look for.
 
-## **DataLab Usage:**
+## **datalabx Usage:**
 
-You can begin diagnosing your missing data by importing the ``MissingnessDiagnosis`` class from DataLab:
+You can begin diagnosing your missing data by importing the ``MissingnessDiagnosis`` class from datalabx:
 
-       from datalab import MissingnessDiagnosis
+       from datalabx import MissingnessDiagnosis
 
 
 ## Numerical Missing Data (Numbers)

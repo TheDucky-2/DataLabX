@@ -1,0 +1,45 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=1.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+% Font (change if you want)
+\setmainfont{Inter}
+
+% Colors
+\definecolor{heading}{HTML}{2E4057}
+
+% Section formatting
+\titleformat{\section}
+  {\Large\bfseries\color{heading}}
+  {}
+  {0em}
+  {}
+  [\titlerule]
+
+% Bullet spacing
+\setlist[itemize]{noitemsep, topsep=2pt}
+
+% Disable page numbers
+\pagenumbering{gobble}
+
+\begin{document}
+
+% Header
+{\Huge\textbf{$name$}}\\
+\vspace{2pt}
+{\small $title$}\\
+\vspace{4pt}
+{\small
+$email$ \,|\, \href{https://$github$}{$github$} \,|\, \href{https://$linkedin$}{$linkedin$}
+}
+
+\vspace{10pt}
+
+$body$
+
+\end{document}

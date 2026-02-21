@@ -11,7 +11,7 @@ This is important because incorrectly identified columns lead to:
 - Date operations fail if dates are not correctly identified as they are usually written in a specific format.
 - Conversion of values into missing data
 
-## **DataLab Usage:**
+## **datalabx Usage:**
 
 **Example:**
 
@@ -72,13 +72,13 @@ Following are the correct types of columns in the DataFrame:
 
 ## Column Type Conversion
 
-We can convert the incorrectly identified column types to correct ones, by importing the ``ColumnConverter`` class from datalab.
+We can convert the incorrectly identified column types to correct ones, by importing the ``ColumnConverter`` class from datalabx.
 
-    from datalab import ColumnConverter
+    from datalabx import ColumnConverter
 
 #### **IMPORTANT:**
 
-All classes in datalab, whether they are the Column Converters, Backend Converters, Data Visualizers, Cleaners, Preprocessors, or Diagnosis etc..
+All classes in datalabx, whether they are the Column Converters, Backend Converters, Data Visualizers, Cleaners, Preprocessors, or Diagnosis etc..
 
 All of them accept specific columns you wish to work with, otherwise, they apply operations to all columns of the DataFrame.
 
@@ -88,7 +88,7 @@ That is why we will be directly mentioning the list of columns we wish to conver
 
 ### Numerical Type Conversion:
 
-To convert incorrectly identified columns into numerical columns, we will be using ``to_numerical()`` method, from ``ColumnConverter`` class of datalab.
+To convert incorrectly identified columns into numerical columns, we will be using ``to_numerical()`` method, from ``ColumnConverter`` class of datalabx.
 
 This returns a pandas DataFrame with the selected columns converted to numeric. Non-numeric values are left as it is.
     
@@ -117,7 +117,7 @@ We have been able to successfully perform numerical type conversion.
 
 ### Categorical Type Conversion:
 
-To convert incorrectly identified columns into categorical columns, we will be using ``to_categorical()`` method, from ``ColumnConverter`` class of datalab.
+To convert incorrectly identified columns into categorical columns, we will be using ``to_categorical()`` method, from ``ColumnConverter`` class of datalabx.
 
 This returns a pandas DataFrame with the selected columns converted to categorical. Non-categorical values are left as it is.
 
@@ -192,7 +192,7 @@ Let us move onto how we can do that...
 
 ### Datetime Type Conversion:
 
-To convert incorrectly identified columns into date-time columns, we will be using ``to_datetime()`` method, from ``ColumnConverter`` class of datalab.
+To convert incorrectly identified columns into date-time columns, we will be using ``to_datetime()`` method, from ``ColumnConverter`` class of datalabx.
 
 This returns a pandas DataFrame with the selected columns converted to date-time. Non-datetime values are left as it is.
     

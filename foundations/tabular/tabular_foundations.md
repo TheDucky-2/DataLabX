@@ -22,7 +22,7 @@ It helps us answer questions like:
 
 ```
 tabular/
-├── data-loading/       # How data enters DataLab and is interpreted
+├── data-loading/       # How data enters datalabx and is interpreted
 ├── data-diagnosis/     # Understanding columns, types, duplicates, and dirty data
 └── missingness/        # Diagnosis, visualization, and handling of missing values
     ├── What_is_Missingness.md        # Key concepts and terminology
@@ -33,13 +33,13 @@ tabular/
 
 Each topic builds intuition for real-world tabular data.
 
-**DataLab provides examples, annotated visualizations, and reasoning guidance to help you make safe, informed decisions.**
+**datalabx provides examples, annotated visualizations, and reasoning guidance to help you make safe, informed decisions.**
 
 ## How do I get started?
 
 This is how you can get started with **Tabular Foundations**:
 
-- Start with **Data Loading** to understand how data enters DataLab.
+- Start with **Data Loading** to understand how data enters datalabx.
 
 - Explore **Data Diagnosis** to see how types, duplicates, and structure are detected.
 
@@ -52,7 +52,7 @@ This is how you can get started with **Tabular Foundations**:
 - Choose **Cleaning and Handling** strategies depending on the type of data, the patterns detected, and the insights from diagnosis and visualization.
 
 Other topics such as computations, cleaning, and visualization will be added in future versions of Foundations.  
-For the full API reference in the meantime, see [DataLab API Docs](https://theducky-2.github.io/DataLab).
+For the full API reference in the meantime, see [datalabx API Docs](https://theducky-2.github.io/datalabx).
 
 
 **Reading Tabular Foundations is not about memorizing functions - it’s about learning to see your data clearly.**

@@ -1,7 +1,7 @@
 def test_dirty_data_diagnosis_output_type():
     
     import pandas as pd
-    from datalab import DirtyDataDiagnosis
+    from datalabx import DirtyDataDiagnosis
 
     df = pd.DataFrame(
         {'Age': ['five', '20.673408544550288', '33.56', 'missing'],

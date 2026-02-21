@@ -107,7 +107,7 @@ We now know:
 
 - That dendrogram looks like a leafless tree.
 
-- How we can create and understand **Dendrograms** for missing data, using datalab.
+- How we can create and understand **Dendrograms** for missing data, using datalabx.
 
 - It helps us see groups of that are similar to each other and different from each other.
 

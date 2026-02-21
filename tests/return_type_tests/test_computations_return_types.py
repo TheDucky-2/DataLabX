@@ -5,7 +5,7 @@
 def test_outliers_output_type():
 
     import pandas as pd
-    from datalab import Outliers, ColumnConverter
+    from datalabx import Outliers, ColumnConverter
 
     df = pd.DataFrame({
         "age": [23, 25, 29, 31, 35, 38, 42, 45, 47, 50, 120, 3],  
@@ -36,7 +36,7 @@ def test_outliers_output_type():
 def test_statistics_output_type():
 
     import pandas as pd
-    from datalab import Statistics, ColumnConverter
+    from datalabx import Statistics, ColumnConverter
 
     df = pd.DataFrame(
         {'age': [56.0, 69.0, 46.0, pd.NA, 60.0],
@@ -71,7 +71,7 @@ def test_statistics_output_type():
 def test_correlation_output_type():
 
     import pandas as pd
-    from datalab import Correlation, ColumnConverter
+    from datalabx import Correlation, ColumnConverter
 
     df = pd.DataFrame(
         {'age': [56.0, 69.0, 46.0, pd.NA, 60.0],
@@ -104,7 +104,7 @@ def test_correlation_output_type():
 def test_distribution_output_type():
 
     import pandas as pd
-    from datalab import Distribution, ColumnConverter
+    from datalabx import Distribution, ColumnConverter
 
     df = pd.DataFrame(
         {"age": [23, 25, 29, 31, 35, 38, 42, 45, 47, 50, 120, 3],  

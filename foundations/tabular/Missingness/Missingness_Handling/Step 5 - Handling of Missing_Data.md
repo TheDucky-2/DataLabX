@@ -90,7 +90,7 @@ Once we do that, handling missing values becomes a clear intentional decision, n
 
 ## What Happens Next?
 
-Instead of guessing or applying fixed rules, DataLab follows this order:
+Instead of guessing or applying fixed rules, datalabx follows this order:
 
 - Detect and explore missing data **(DONE)**
 
