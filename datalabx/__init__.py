@@ -1,10 +1,10 @@
 """
 <img src="assets/datalabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
 
-"datalabx v0.1.0b9 : Flexible Data Loading & Refined Missing Data Handling"
+"DataLabX v0.1.0b10 : First Public Release with Class-Based API & Flexible Data Loading"
 
 """
-__version__ = '0.1.0b9'
+__version__ = '0.1.0b10'
 
 import importlib
 
