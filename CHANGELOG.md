@@ -2,13 +2,23 @@
 
 # Change-Log
 
-All versions listed below `0.1.0` are **pre-releases published to TestPyPI only**.
+All versions listed below `0.1.b10` are **pre-releases published to TestPyPI only**.
 
 The first stable public release on PyPI will be **0.1.0**.
 
 ---
 
-## DataLabX Versions
+## 🔁 Versions
+
+### DataLabX
+
+##### PyPI Versions
+
+- [v0.1.0b10](#v010b10---feb-22-2026)
+
+### DataLab (TestPyPI Only)
+
+##### TestPyPI Versions
 
 - [v0.1.0b9](#v010b9---feb-17-2026)
 - [v0.1.0b8](#v010b8---feb-17-2026)
@@ -20,11 +30,150 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ---
 
+## v0.1.0b10 - Feb 22, 2026
+
+### DataLabX & First PyPI Release
+
+**Status:** Beta
+**Distribution:** PyPI (First Official Distribution)
+
+>This is the first publicly installable version via PyPI.
+
+This release marks the renaming of **DataLab** to **DataLabX** and introduces a **permanent architectural overhaul** that defines the long-term structure of the project.
+
+It introduces:
+
+  - A **fully class-based framework**
+  - A **redesigned data loading engine**
+  - **Standardized API naming**
+  - **Logging expansion**
+  - **Improved error handling**.
+
+### 🔁 Project Rename
+
+Renamed **DataLab** --> **DataLabX**.
+
+- Establishes the long-term identity of the framework.
+
+- All future development continues under the DataLabX name
+
+### ⬇️ Installation
+
+DataLabX can now be installed directly from PyPI:
+
+```bash
+pip install datalabx_pre_release
+```
+
+### 🚀 Major Changes
+
+#### 1. Full Class-Based Framework
+
+- Transitioned entire framework to **class-based design** (except utils).
+
+- Standardized naming conventions across modules.
+
+- Improved internal consistency and maintainability.
+
+#### 2. DataLoader Redesign
+
+- Renamed ``data_loader`` module **-->** ``DataLoader``.
+
+- Converted from **single-function module** to **structured class**.
+
+- DataLoader accepts:
+    - **file path**
+    - optional **file type** ``(automatically detected)``
+    - optional **array type**
+    - optional **conversion threshold** ``(NumPy <--> Pyarrow)``.
+
+###### Example:
+
+```python
+from datalabx import DataLoader
+
+df = DataLoader('example.csv').load_tabular()
+df = DataLoader('example.excel', array_type = 'numpy', conversion_threshold = 500000).load_tabular()
+```
+
+#### ⚙️ Polars-Based Internal Engine
+
+- All files - CSV, Excel, JSON and Parquet, are now internally loaded using **Polars**.
+
+- DataFrames are converted to Pandas for the **user-facing API**.
+
+- Ensures performance internally while preserving Pandas compatibility.
+
+### 💡 Improved
+
+- Improved **error handling** for CSV and Excel loading.
+
+- More informative exceptions for:
+
+    - Invalid file paths
+
+    - Unsupported file types
+
+    - Loading failures
+
+- General internal refactoring for **stability** and **readability**.
+
+- Codebase cleaned up during loader refactor.
+ 
+### 🔄 Renamed
+
+- Project renamed from ``DataLab`` --> ``DataLabX``
+
+- ``load_as_string`` parameter in ``DataLoader`` class renamed to ``load_csv_as_string``
+
+###### Example:
+
+```python
+DataLoader('example.csv').load_tabular(load_csv_as_string = True)
+```
+
+### 🐛 Fixed
+
+- Fixed bugs in ``show_duplicates()`` method of ``Diagnosis`` class.
+
+
+### ⚠️ Breaking Changes
+
+- ``load_tabular()`` function removed. 
+
+**❌ This no longer works** 
+
+```python
+from datalab import load_tabular
+
+df = load_tabular('example.csv')
+```
+
+**✅ Use ``DataLoader`` class instead.**
+
+```python
+from datalabx import DataLoader
+
+df = DataLoader('example.csv').load_tabular()
+```
+
+### 📦 Distribution Milestone
+
+- First PyPI release.
+
+- First release under the **DataLabX** name.
+
+- Intended for installation validation and early feedback.
+
+This release establishes the architectural foundation for a future stable v0.1.0.
+
+---
+
 ##  v0.1.0b9 - Feb 17, 2026
 
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b9** introduces **optional string-only data loading** and a **refined missing data handler API**, providing more flexibility and consistency for users.
+DataLab **v0.1.0b9** introduces **optional string-only data loading** and a **refined missing data handler API**, providing more flexibility and consistency for users.
 
 #### ⚠️ Important Updates
 
@@ -47,7 +196,7 @@ DataLabX **v0.1.0b9** introduces **optional string-only data loading** and a **r
 **Example:**
 
 ```python
-from datalabx import load_tabular
+from datalab import load_tabular
 
 df = load_tabular('example.csv')  # keeps original datatypes
 df = load_tabular('example.csv', load_as_string = True)   # loads all data with string datatype
@@ -81,7 +230,7 @@ from datalabx import MissingnessHandler
 
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b8** enhances **missing data handling**, finalizes the **visualization API refactor**, and continues to **improve documentation**, **type hints**, and **stability**.
+DataLab **v0.1.0b8** enhances **missing data handling**, finalizes the **visualization API refactor**, and continues to **improve documentation**, **type hints**, and **stability**.
 
 #### ⚠️ Important Updates
 
@@ -107,7 +256,7 @@ DataLabX **v0.1.0b8** enhances **missing data handling**, finalizes the **visual
 
     - ``plot_missing()`` behavior updated for improved flexibility.
 
-    - **API Return Types Reference** updated to reflect these changes. (see [DataLabX API Return Types Reference](DataLabX_API_RETURN_TYPES.md))
+    - **API Return Types Reference** updated to reflect these changes. (see [DataLab API Return Types Reference](DataLabX_API_RETURN_TYPES.md))
 
     - Visualization return-type tests rewritten to match the new tuple outputs.
 
@@ -124,9 +273,9 @@ DataLabX **v0.1.0b8** enhances **missing data handling**, finalizes the **visual
 
 ### ✨ Added
 
-- **DataLabX Data Handling Policy** explaining how DataLabX perceives and manages data mutations (see [DataLabX Data Handling Policy](DataLabX_DATA_HANDLING_POLICY.md)).
+- **DataLab Data Handling Policy** explaining how DataLab perceives and manages data mutations (see [DataLab Data Handling Policy](DataLabX_DATA_HANDLING_POLICY.md)).
 
-- **DataLabX Data Handling Report** explaining how DataLabX currently handles data in modules and functions (see [DataLabX Data Handling Report](DataLabX_DATA_HANDLING_REPORT.md)).
+- **DataLab Data Handling Report** explaining how DataLab currently handles data in modules and functions (see [DataLab Data Handling Report](DataLabX_DATA_HANDLING_REPORT.md)).
 
 - Type hints and logger added/refined across diagnosis and visualization classes.
 
@@ -158,7 +307,7 @@ DataLabX **v0.1.0b8** enhances **missing data handling**, finalizes the **visual
 - ``loader`` module renamed to ``data_loader`` for clarity and consistency during imports, to ensure users can still do:
 
     ```python
-    from datalabx import load_tabular
+    from datalab import load_tabular
     ```
 
 ### 💡 Key Notes for Users
@@ -188,11 +337,11 @@ This release stabilizes visualization, diagnosis, and missing data workflows ahe
 
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b7** focuses on **critical bug fixes, improved documentation, contributions workflow, and stability**.
+DataLab **v0.1.0b7** focuses on **critical bug fixes, improved documentation, contributions workflow, and stability**.
 
 #### ⚠️ Major fix:
 
-This release **resolves a blocking import issue** that prevented DataLabX from running in environments without ipykernel, making the library usable in both **Jupyter Notebooks** and **Non-Jupyter** setups.
+This release **resolves a blocking import issue** that prevented DataLab from running in environments without ipykernel, making the library usable in both **Jupyter Notebooks** and **Non-Jupyter** setups.
 
 ### 🚀 Major Changes
 
@@ -200,7 +349,7 @@ This release **resolves a blocking import issue** that prevented DataLabX from r
 
 - Consolidated and polished foundations content, moving concepts to foundations markdown files.
 
-- Added DataLabX contribution guides and templates: 
+- Added DataLab contribution guides and templates: 
 
   - ``CONTRIBUTING.md`` (see [Contributing to DataLabX](CONTRIBUTING.md))
 
@@ -212,13 +361,13 @@ This release **resolves a blocking import issue** that prevented DataLabX from r
 
 - Maintainer review notes for contributions workflow.
 
-- Added ``DataLabX Foundations`` (see [DataLabX Foundations](foundations/foundations.md))
+- Added ``DataLab Foundations`` (see [DataLabX Foundations](foundations/foundations.md))
 
 ### ✨ Added
 
 - ``get_element_from_split_text()`` method in ``TextCleaner``.
 
-- **Exploring Dirty Numerical Data Guide** (see [Exploring Dirty Numerical Data Workflow Guide](guides/DataLabX_Workflow_Guides/Dirty_Data_Diagnosis/Exploring_Dirty_Numerical_Data.ipynb))
+- **Exploring Dirty Numerical Data Guide** (see [Exploring Dirty Numerical Data Workflow Guide](guides/DataLab_Workflow_Guides/Dirty_Data_Diagnosis/Exploring_Dirty_Numerical_Data.ipynb))
 
 - Return type tests for **visualizations, computations, and statistics**.
 
@@ -243,7 +392,7 @@ This release **resolves a blocking import issue** that prevented DataLabX from r
 
 - Separate ``API`` and ``Foundational`` docs.
 
-- Removed ``concepts`` from ``docs`` and renamed to ``foundations``, which are the thinking layer of DataLabX.
+- Removed ``concepts`` from ``docs`` and renamed to ``foundations``, which are the thinking layer of DataLab.
 
 ### 🐛 Fixed
 
@@ -271,7 +420,7 @@ This release **resolves a blocking import issue** that prevented DataLabX from r
 
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b6** is a **stabilization and correctness release** that fixes issues introduced in v0.1.0b4, with a strong focus on **API reliability, type-safety, testing, and documentation clarity**.
+DataLab **v0.1.0b6** is a **stabilization and correctness release** that fixes issues introduced in v0.1.0b4, with a strong focus on **API reliability, type-safety, testing, and documentation clarity**.
 
 **⚠️ Pre-release note:** This release primarily fixes bugs and documentation inconsistencies; no major new features are introduced.
 
@@ -279,7 +428,7 @@ DataLabX **v0.1.0b6** is a **stabilization and correctness release** that fixes 
 
 - Stabilized APIs and behaviors affected in v0.1.0b4.
 
-- Introduced a dedicated **DataLabX API Return Types Reference (DataLabX_API_RETURN_TYPES.md)** documenting expected return types for all public APIs.
+- Introduced a dedicated **DataLab API Return Types Reference (DataLab_API_RETURN_TYPES.md)** documenting expected return types for all public APIs.
 
 ### ✨ Added
 
@@ -329,7 +478,7 @@ DataLabX **v0.1.0b6** is a **stabilization and correctness release** that fixes 
 
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b4** is a pre-release version with improvements in **documentation**, **CI/CD**, **badges**, and **preprocessing workflows**, focusing on **better usability**, **consistency**, and **API clarity**.
+DataLab **v0.1.0b4** is a pre-release version with improvements in **documentation**, **CI/CD**, **badges**, and **preprocessing workflows**, focusing on **better usability**, **consistency**, and **API clarity**.
 
 ⚠️ **Pre-release note:** APIs may change as the library evolves, especially around backend handling.
 
@@ -339,7 +488,7 @@ DataLabX **v0.1.0b4** is a pre-release version with improvements in **documentat
 
 **``load_tabular()``** method now loads all columns of a **CSV** file as **"string"** type by default to improve handling of dirty or mixed-type datasets.
 
-- For full API reference, see [DataLabX API Docs](https://theducky-2.github.io/DataLabX/)
+- For full API reference, see [DataLab API Docs](https://theducky-2.github.io/DataLab/)
 
 #### 2. **CI/CD Workflows**:
 
@@ -398,7 +547,7 @@ Core preprocessing modules refactored for **API consistency** and **readability*
 ## v0.1.0b2 - Jan 22, 2026
 **Status:** Beta (pre-release - TestPyPI only)
 
-DataLabX **v0.1.0b2** is a pre-release version with improvements in **performance, dirty data diagnosis, visualizations, and usability**.
+DataLab **v0.1.0b2** is a pre-release version with improvements in **performance, dirty data diagnosis, visualizations, and usability**.
 
 It provides a **Pandas-facing API**, so users always work with familiar Pandas DataFrames, while internally using **Polars** for performance and memory-efficient computations.  
 
@@ -426,7 +575,7 @@ Datasets **≥ 100,000 rows** are automatically converted to PyArrow types for f
 
 #### 4. **DirtyDataDiagnosis performance & backend options:**
 
-**DirtyDataDiagnosis** is the first class in DataLabX that **fully supports backend switching between NumPy and PyArrow.**
+**DirtyDataDiagnosis** is the first class in DataLab that **fully supports backend switching between NumPy and PyArrow.**
 
 - **Performance note:** Regex-based checks on dirty data are inherently slow on any tool.
 
