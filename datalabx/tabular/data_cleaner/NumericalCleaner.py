@@ -264,7 +264,7 @@ class NumericalCleaner(DataCleaner):
             logger.info(f'Removed currency symbols.')
             return df
 
-    def replace_commas(self, replacement: str=None)-> pd.DataFrame:
+    def replace_commas(self, replacement: str|None=None)-> pd.DataFrame:
         """
         Replaces commas (,) that are used as decimal replacements, with decimals (.) or any other value.
 
@@ -299,7 +299,8 @@ class NumericalCleaner(DataCleaner):
             raise TypeError(f'replacement must be a string, got {type(replacement).__name__}')
 
         if replacement is None:
-            replacement = ','
+            logger.info('No replacement received, hence, no changes made.')
+            return self.df
 
         PATTERN = r'^\d*,\d*$'
 
