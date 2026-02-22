@@ -160,7 +160,7 @@ DataLabX is available on **TestPyPI** for early testing and feedback.
 
 You can now Install datalabx pre-release using **pip**:
 
-``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalabx-pre-release==0.1.0b9``
+``pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release==0.1.0b9``
 
 ### Why this long command? 
 
@@ -168,7 +168,7 @@ That is because DataLabX itself is downloaded from TestPyPI, while required depe
 
 ### Importing DataLabX
 ```python
-import datalabx
+import datalab
 ```
 
 ### Installation Video
@@ -181,7 +181,7 @@ import datalabx
 
 If you already installed an earlier pre-release version of datalabx from TestPyPI, you can upgrade to the latest test version using:
 
-``pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalabx-pre-release``
+``pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple datalab-pre-release``
 
 This ensures you always get the most recent pre-release version available on TestPyPI.
 
