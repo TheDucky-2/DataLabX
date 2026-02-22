@@ -99,13 +99,13 @@ class CategoricalPreprocessor(DataPreprocessor):
 
         return pd.DataFrame(encodings)
 
-    def ordinal_encoding(self, order_map: dict)-> pd.DataFrame:
+    def ordinal_encoding(self, order_map: dict|None=None)-> pd.DataFrame:
         """
         Applies Ordinal Encoding (converts each category to a unique integer with an order).
 
         Parameters
         -----------
-        order_map : dict
+        order_map : dict or type None
 
             A dictionary specifying the desired order for each categorical column.
 
@@ -141,6 +141,10 @@ class CategoricalPreprocessor(DataPreprocessor):
         --------
         >>> CategoricalPreprocessor(df, ['size']).ordinal_encoding(order_map={'size':['Small','Medium','Large']})
         """
+
+        if order_map is None:
+            logger.info('No order mapping received, hence, no changes made.')
+            return self.df
 
         from sklearn.preprocessing import OrdinalEncoder
 
