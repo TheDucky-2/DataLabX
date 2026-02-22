@@ -277,7 +277,7 @@ Following these steps helps ensure your contributions align with datalabx’s di
 
 For questions, suggestions, feedbacks or issues related to **DataLabX**, you can reach us at:
 
-**Email:** [datalabx.project@protonmail.com](mailto:datalabx.project@protonmail.com)
+**Email:** [DataLabX@protonmail.com](mailto:DataLabX@protonmail.com)
 
 We aim to respond within 72 hours.
 
