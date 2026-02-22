@@ -1,5 +1,5 @@
 """
-<img src="assets/DataLabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
+<img src="assets/datalabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
 
 "datalabx v0.1.0b9 : Flexible Data Loading & Refined Missing Data Handling"
 
