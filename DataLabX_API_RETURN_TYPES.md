@@ -70,6 +70,17 @@ This helps users know what to expect when calling functions and methods.
 
 | Module / Method | Return Type | Notes | Import |
 |-----------------|------------|-------|---------|
+| Diagnosis.data_preview | ``pandas.DataFrame`` | Shows N number of rows from start or end of a DataFrame | ``from datalabx import Diagnosis``|
+| Diagnosis.data_summary | ``dict[str, Any]`` | Shows shape, index, columns and datatypes | |
+| Diagnosis.memory_usage | ``float`` | Shows memory used by the DataFrame in MB | |
+| Diagnosis.detect_column_types | ``dict[str, list[str]]`` | Detects whether the column is Numerical, Categorical or Datetime | |
+| Diagnosis.show_unique_values | ``dict[str, list[str]]`` | Shows unique values present in each column of the DataFrame | |
+| Diagnosis.show_cardinality | ``dict[str, int]`` | Shows the number of unique values present in each column of the DataFrame | |
+| Diagnosis.show_duplicates | ``pandas.DataFrame`` | Shows duplicate values present in one or multiple columns of the DataFrame | |
+| Diagnosis.count_duplicates | ``int`` | Shows the count of duplicate values present in one or multiple columns of the DataFrame | |
+| Diagnosis.get_numerical_columns | ``pandas.DataFrame`` | Separates columns identified as Numerical type from rest of the DataFrame | |
+| Diagnosis.get_categorical_columns | ``pandas.DataFrame`` | Separates columns identified as Categorical type from rest of the DataFrame | |
+| Diagnosis.get_datetime_columns | ``pandas.DataFrame`` | Separates columns identified as Datetime type from rest of the DataFrame | |
 | DirtyDataDiagnosis | `dict[str, dict[str, pandas.DataFrame]]` | Column-level diagnostics for messy data | ``from datalabx import DirtyDataDiagnosis``
 | TextDiagnosis | `dict[str, pandas.DataFrame]` | Text column diagnostics (lengths, patterns, invalid values) | ``from datalabx import TextDiagnosis``
 | CategoricalDiagnosis.count_unique_categories | `dict[str, float]` | Number of unique values per column | ``from datalabx import CategoricalDiagnosis``
@@ -87,3 +98,5 @@ This helps users know what to expect when calling functions and methods.
 | MissingnessDiagnosis.show_missing_rows_in_categorical_columns | `dict[str, pandas.DataFrame]` | Missing rows by categorical column |
 | MissingnessDiagnosis.show_missing_rows_in_datetime_columns | `dict[str, pandas.DataFrame]` | Missing rows by datetime column |
 | MissingnessDiagnosis.show_missing_rows_in_numerical_columns | `dict[str, pandas.DataFrame]` | Missing rows by numeric column |
+
+
