@@ -7,6 +7,8 @@ from ..utils.Logger import datalabx_logger
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from typing import Any
+
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
@@ -41,7 +43,7 @@ class Diagnosis:
 
         logger.info(f'Data Diagnosis initialized with columns: {self.columns}')
 
-    def data_preview(self, preview_type = 'head', number_of_rows:int=10)-> pd.DataFrame:
+    def data_preview(self, preview_type: str = 'head', number_of_rows:int=10)-> pd.DataFrame:
         """Shows a preview of N rows of your DataFrame.
 
         Parameters
@@ -77,7 +79,6 @@ class Diagnosis:
 
         Example
         --------
-
         >>>     Diagnosis(df).data_preview('head', 5)
         >>>     Diagnosis(df).data_preview('tail', 5)
         """
@@ -95,7 +96,7 @@ class Diagnosis:
         elif preview_type == 'tail':
             return self.df.tail(number_of_rows)
 
-    def data_summary(self)-> dict[str]:
+    def data_summary(self)-> dict[str, Any]:
         """
         Shows a summary of your DataFrame.
 
@@ -121,10 +122,9 @@ class Diagnosis:
             'dtypes'       : self.df.dtypes,
             'index'        : self.df.index
         }
-
         return summary
 
-    def show_memory_usage(self, usage_by:str='total')-> pd.Series:
+    def memory_usage(self, usage_by:str='total')-> float:
         """
         Shows memory being used by your DataFrame.
 
@@ -143,20 +143,22 @@ class Diagnosis:
         if not isinstance(usage_by, str):
             raise TypeError(f'usage_by must be a string, got {type(usage_by).__name__}')
 
+        if usage_by not in ['total', 'separate']:
+            raise ValueError(f"usage_by must either be 'total' or 'separate', got {usage_by}")
+
         if usage_by == 'total':
 
             total_usage = self.df.memory_usage(deep=True).sum()/(1024**2)
             logger.info(f'Showing total memory usage in MB')
 
-            return pd.Series(float(total_usage))
+            return float(total_usage)
         
         elif usage_by == 'separate':
 
             separate_usage = self.df.memory_usage(deep=True)/(1024**2)
             logger.info(f'Showing column-wise memory usage in MB')
 
-            return separate_usage
-
+            return float(separate_usage)
 
     def detect_column_types(self) -> dict [str, list[str]]:
         """Detect the column types (Categorical, Numerical, Datetime) for one or multiple columns of a DataFrame.
@@ -192,7 +194,7 @@ class Diagnosis:
 
         return column_types 
 
-    def show_unique_values(self) -> dict[list[str]]:
+    def show_unique_values(self) -> dict[str, list[str]]:
         """
         Shows a list of unique values present in each column of the DataFrame.
 
