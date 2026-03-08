@@ -50,9 +50,23 @@ class MissingnessDiagnosis:
 
         else:
             self.extra_placeholders = extra_placeholders
-            logger.info(f'Received {self.extra_placeholders} as placeholders for missing data!')
+            logger.info(f'Received {self.extra_placeholders} as placeholder/s for missing data!')
 
         logger.info(f'Missingness Diagnosis initialized.')
+
+    def validate_missingness(self)-> None:
+    
+        pandas_missing = self.df.isna()
+
+        placeholder_missing = self.df.isin(self.extra_placeholders)
+
+        total_missing = pandas_missing | placeholder_missing
+
+        if not total_missing.any().any():
+            logger.info('Missing data is not present.')
+
+        else:
+            logger.info('Missing data is present')
 
     def detect_missing_types(self)-> dict[str, dict[str, list]]:
         """Detects the types of missing values in each column of the DataFrame.
