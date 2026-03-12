@@ -132,7 +132,7 @@ class TextCleaner(DataCleaner):
         --------
         >>>    TextCleaner(df, columns=['gender']).remove_multiple_spaces()
         """
-        multiple_spaces_pattern = r'\s+'
+        multiple_spaces_pattern = r'\s{2,}'
 
         polars_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
@@ -256,3 +256,30 @@ class TextCleaner(DataCleaner):
         self.df = BackendConverter(polars_df).polars_to_pandas()
 
         return self.df
+
+    def remove_square_brackets_and_content(self,include_columns: bool =False)-> pd.DataFrame:
+
+        import re
+
+        # regex pattern for removing square brackets and everything inside except ']'
+        PATTERN = r'\[[^\]]*\]'
+
+        pol_df = BackendConverter(self.df).pandas_to_polars()
+
+        for col in pol_df.columns:
+            pol_df.with_columns(
+                pl.when(pl.col(col).str.contains(PATTERN))
+                .then((pl.col(col)).str.replace_all(PATTERN, ""))
+                .otherwise(pl.col(col)))
+
+        # renaming column names if columns have to be included
+        if include_columns:
+            pol_df = pol_df.rename(
+                {col: re.sub(PATTERN, "", col) for col in pol_df.columns}
+            )
+        
+        self.df = BackendConverter(pol_df).polars_to_pandas()
+        
+        return self.df
+
+    
