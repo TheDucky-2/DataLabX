@@ -33,7 +33,7 @@ class TextCleaner(DataCleaner):
             raise TypeError(f'columns must be a list of strings or type None, got {type(columns).__name__}')
             
         # ensuring only text based datatypes are selected
-        self.df = df.select_dtypes(include = ['object', 'string', 'category']) 
+        self.df = df
         
         if columns is None: 
             self.columns = self.df.columns.to_list()
