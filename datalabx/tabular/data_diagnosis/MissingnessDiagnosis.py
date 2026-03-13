@@ -55,7 +55,18 @@ class MissingnessDiagnosis:
         logger.info(f'Missingness Diagnosis initialized.')
 
     def validate_missingness(self)-> None:
-    
+        """
+        Shows whether the dataset has missingness present in any column of the DataFrame.
+
+        Returns
+        --------
+        None
+            This method just logs whether the dataset has missingness present and does not return anything.
+            
+        Usage Recommendation
+        ---------------------
+            Use this function to see if your dataset has missing data present (pandas missing or placeholder missing).
+        """
         pandas_missing = self.df.isna()
 
         placeholder_missing = self.df.isin(self.extra_placeholders)
