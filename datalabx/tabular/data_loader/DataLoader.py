@@ -8,7 +8,15 @@ from ..utils.Logger import datalabx_logger
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
-# Inheriting from Exception class
+SUPPORTED_FILE_TYPES = ['csv', 'xlsx', 'xls', 'parquet', 'json']
+
+class _InvalidFileTypeError(Exception):
+
+    def __init__(self, received_type: str):
+        self.received_type = received_type
+        super().__init__(
+            f""" Received Unsupported file type: {self.received_type}. Supported file types are: {", ".join(SUPPORTED_FILE_TYPES)}."""
+        )
 
 class _FileTypeMismatchError(Exception):
 
@@ -16,7 +24,7 @@ class _FileTypeMismatchError(Exception):
 
     def __init__(self, expected_type: str, received_type:str, file_path:str):
 
-        if not isinstance(expected_type, str):
+        if not isinstance(expected_type, str): 
             raise TypeError(f'expected_type must be a string, got {type(expected_type).__name__}')     
             
         if not isinstance(received_type, str):
@@ -90,17 +98,20 @@ class DataLoader:
 
         if array_type not in ['numpy', 'pyarrow', 'auto']:
             raise ValueError(f"array_type must either be 'numpy', 'pyarrow' or 'auto', got '{array_type}'")
-
+        
         self.file_path = file_path   
 
         # ---- DETECTING FILE TYPES------
 
         if file_type is None:
-
             self.file_type = file_path.split('.')[-1].lower()
         else:
-
             self.file_type = file_type.lower()
+
+        if self.file_type not in ["csv", 'xlsx','xls', 'parquet', 'json']:
+            raise _InvalidFileTypeError(
+                received_type=self.file_type
+            )
 
         if self.file_type.lower() != self.file_path.split('.')[-1].lower():
             raise _FileTypeMismatchError(
@@ -221,9 +232,6 @@ class DataLoader:
                     )
 
             polars_df = pl.read_excel(self.file_path, **kwargs)
-
-        else:
-            raise ValueError(f'Unsupported file type: {self.file_type}')
 
         df_size = polars_df.height 
 
