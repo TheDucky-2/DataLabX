@@ -14,6 +14,7 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ##### PyPI Versions
 
+- [v0.1.0b11](#v010b11---mar-16-2026)
 - [v0.1.0b10](#v010b10---feb-22-2026)
 
 ### DataLab (TestPyPI Only)
@@ -27,6 +28,95 @@ The first stable public release on PyPI will be **0.1.0**.
 - [v0.1.0b4](#v010b4---jan-27-2026)
 - [v0.1.0b2](#v010b2---jan-22-2026)
 - [v0.1.0a4](#v010a4-–-dec-26-2025)
+
+---
+
+## v0.1.0b11 - March 16, 2026
+
+**Status**: Beta (fully installable on PyPI)
+
+DataLabX **v0.1.0b11** is the **first version extensively developed and validated on real-world messy datasets**, acquired via **web scraping, REST APIs**, and **raw HTML/Excel sources**.
+This release **emphasizes practical usability, robust diagnostics, and advanced cleaning workflows** for real-world tabular data.
+
+**⚠️ Important Updates**
+
+- DataLabX is now fully installable on PyPI: 
+
+#### Installation
+
+```python
+pip install datalabx
+```
+- Text cleaning now returns the **full DataFrame** for consistent downstream workflows.
+- Added new cleaning methods for removing **bracketed/parenthesized content**.
+- Added ``validate_missingness()`` for explicit missing data validation.
+- DataLoader updated with **robust error handling** and case-insensitive file type support.
+
+### 🚀 Major Changes
+
+#### Real-World Data Focus
+
+- This is the first DataLabX release tested and improved using messy real-world datasets.
+
+- Data was collected via web scraping **(Requests, BeautifulSoup, Playwright)** and **REST APIs**, capturing messy, unstructured tabular data and diverse missingness patterns.
+
+- All improvements to **cleaning, missingness validation, and DataLoader** behavior were informed by these real-world examples.
+
+#### Advanced Cleaning Utilities
+
+- ``remove_square_brackets_and_content()``: Removes square brackets and content inside "[content]" from columns.
+    - Example:
+        DataLabX [Pre-Release] -> DataLabX 
+
+- ``remove_parantheses_and_content()``: Removes (content) from columns.
+    - Example:
+        DataLabX (Pre-Release) -> DataLabX 
+
+- Fixed **remove_multiple_spaces()** to prevent unintended space removal.
+
+#### Missingness Validation
+
+- ``validate_missingness()`` allows checking existence of missing values across columns with custom placeholders.
+
+- Added full docstrings for better documentation and usability.
+
+#### Data Loading Improvements
+
+- Improved error handling for **invalid file types** and **array_type** parameter in DataLoader.
+
+- Case-insensitive file type comparison for CSV and Excel files.
+
+#### API & Usability Refinements
+
+- ``TextCleaner`` now returns the **full DataFrame** post-cleaning.
+
+- ``data_preview()`` now shows both **head** and **tail** of datasets.
+
+- ``show_memory_usage() ``renamed to ``memory_usage()`` with improved error handling.
+
+#### Documentation Updates
+
+- Guides updated to reflect new DataLoader API, cleaning methods, and real-world workflow examples.
+
+- Diagnosis modules updated in API Return Types Reference for consistency.
+
+### 🐛 Bug Fixes
+
+- Fixed multiple spaces removal issue in ``TextCleaner``.
+
+- Fixed case sensitivity in file type comparison for ``DataLoader``.
+
+- Corrected ``data_preview()`` behavior to show both head and tail.
+
+### 💡 Key Notes for Users
+
+- **First real-world validated release:** All cleaning and missingness methods tested with messy scraped and API-collected datasets.
+
+- **New capabilities:** Users can clean bracketed/parenthesized content, validate missingness explicitly, and preview datasets comprehensively.
+
+- **Breaking Changes:** Minimal; mostly bug fixes and new features.
+
+- **Next Steps:** Future releases will add analysis modules, advanced visualization, and workflow automation for messy datasets.
 
 ---
 
