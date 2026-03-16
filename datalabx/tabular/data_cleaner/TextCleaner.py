@@ -25,6 +25,8 @@ class TextCleaner(DataCleaner):
     """
     
     def __init__(self, df:pd.DataFrame, columns:list=None):
+
+        super().__init__(df,columns)
         
         if not isinstance(df, (pd.DataFrame, pd.Series)):
             raise TypeError(f'df must be a pandas DataFrame or pandas Series, got {type(df).__name__}')
@@ -258,28 +260,124 @@ class TextCleaner(DataCleaner):
         return self.df
 
     def remove_square_brackets_and_content(self,include_columns: bool =False)-> pd.DataFrame:
+        """
+        Removes square brackets and content inside, in one or multiple columns of the DataFrame.
 
+        E.g: "United Nations(2024)[7]", "China[n 1]", IMF(2026)[1], etc.
+
+        Parameters
+        -----------
+        include_columns: bool, optional
+            Whether you would like same changes to be applied to columns as well, default is False.
+
+        Returns
+        --------
+        pd.DataFrame
+            A pandas DataFrame
+        
+        Usage Recommendation
+        ---------------------
+            Use this method to remove square brackets and content inside them during cleaning.
+        
+        Considerations
+        ---------------
+            1. This method keeps the converted number as string instead of a numerical datatype like int or float.
+            2. Use this method on numerical data.
+            3. This method keeps a track of values that cannot be cleaned.
+
+        Example
+        --------
+                # Removing from rows except column names row
+        >>>    NumericalCleaner(df).remove_square_brackets_and_content()
+
+                # Removing from rows including column names row
+        >>>    NumericalCleaner(df).remove_square_brackets_and_content(include_columns=True)
+        """
         import re
 
+        if not isinstance(include_columns, bool):
+            raise TypeError(f'include_columns must be a bool, got {type(include_columns).__name__}')
+            
         # regex pattern for removing square brackets and everything inside except ']'
         PATTERN = r'\[[^\]]*\]'
 
-        pol_df = BackendConverter(self.df).pandas_to_polars()
+        pol_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
 
         for col in pol_df.columns:
-            pol_df.with_columns(
-                pl.when(pl.col(col).str.contains(PATTERN))
-                .then((pl.col(col)).str.replace_all(PATTERN, ""))
-                .otherwise(pl.col(col)))
+            # maintaining before, mask, cleaned and after for tracking dirty values after cleaning
+            before = pol_df.get_column(col)
+            mask = before.str.contains(PATTERN)
+
+            pol_df = pol_df.with_columns(
+                pl.col(col).str.replace_all(PATTERN, "").str.strip_chars()
+            )
+            after = pol_df.get_column(col)
+
+            self.track_not_cleaned(
+                col=col,
+                method ="remove_square_brackets_and_content",
+                before = before,
+                mask = mask, 
+                after = after)
 
         # renaming column names if columns have to be included
         if include_columns:
             pol_df = pol_df.rename(
-                {col: re.sub(PATTERN, "", col) for col in pol_df.columns}
+                {col: re.sub(PATTERN, "", col).strip() for col in pol_df.columns}
             )
+            logger.info('Removed square brackets and content in column names of the DataFrame.')
         
-        self.df = BackendConverter(pol_df).polars_to_pandas()
+        if self.inplace:
+            self.df[self.columns] = BackendConverter(pol_df).polars_to_pandas()
+            logger.info(f"Removed square brackets and content in rows of the DataFrame, in place.")
+            return None
         
-        return self.df
+        else:
+            df = BackendConverter(pol_df).polars_to_pandas()
+            logger.info(f"Removed square brackets and content in rows of the DataFrame.")
+            return df
 
+    def remove_parentheses_and_content(self, include_columns:bool = False):
+        import re
+
+        if not isinstance(include_columns, bool):
+            raise TypeError(f'include_columns must be a bool, got {type(include_columns).__name__}')
+            
+        # regex pattern for removing parantheses and everything inside except ')'
+        PATTERN = r'\s*\([^\)].*\)\s*'
+
+        pol_df = BackendConverter(self.df[self.columns]).pandas_to_polars()
+
+        for col in pol_df.columns:
+
+            before = pol_df.get_column(col)
+            mask = before.str.contains(PATTERN)
+
+            pol_df = pol_df.with_columns(
+                pl.col(col).str.replace_all(PATTERN, "").str.strip_chars()
+            )
+            after = pol_df.get_column(col)
+
+            self.track_not_cleaned(
+                col = col,
+                method = 'remove_parentheses_and_content',
+                before = before,
+                mask = mask,
+                after = after
+            )
+        # renaming column names if columns have to be included
+        if include_columns:
+            pol_df = pol_df.rename({col: re.sub(PATTERN, "", col).strip()
+                for col in pol_df.columns})
+            logger.info('Removed parantheses and content in column names of the DataFrame.')
+
+        if self.inplace:
+            self.df[self.columns] = BackendConverter(pol_df).polars_to_pandas()
+            logger.info(f"Removed parantheses and content in rows of the DataFrame, in place.")
+            return None
+
+        else:
+            df = BackendConverter(pol_df).polars_to_pandas()
+            logger.info(f"Removed parantheses and content in rows of the DataFrame.")
+            return df
     
