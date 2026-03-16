@@ -1,9 +1,9 @@
 ![datalabx logo](assets/datalabx_logo.png)
 
 [![API Docs](https://img.shields.io/badge/API-Documentation-3776AB)](https://theducky-2.github.io/DataLabX)
-[![PyPI version](https://img.shields.io/pypi/v/datalabx-pre-release.svg?color=F4B400)](https://pypi.org/project/datalabx-pre-release/)
+[![PyPI version](https://img.shields.io/pypi/v/datalabx.svg?color=F4B400)](https://pypi.org/project/datalabx/)
 ![Status](https://img.shields.io/badge/Status-Beta-F4B400)
-[![Python Versions](https://img.shields.io/pypi/pyversions/datalabx-pre-release.svg?color=306998)](https://pypi.org/project/datalabx-pre-release/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/datalabx-pre-release.svg?color=306998)](https://pypi.org/project/datalabx/)
 ![License](https://img.shields.io/github/license/TheDucky-2/DataLabX)
 
 **A diagnosis-first data quality and preparation framework for real-world data.**
@@ -158,10 +158,10 @@ Tabular data workflows, including:
 
 DataLabX is now available on **PyPI** for testing and user feedback.
 
-You can now Install datalabx pre-release using **pip**:
+You can now Install datalabx using **pip**:
 
 ```bash
-pip install datalabx_pre_release
+pip install datalabx
 ```
 
 ### Importing datalabx
@@ -172,10 +172,10 @@ import datalabx
 
 ### Updating to the Latest PyPI Version
 
-If you already installed an earlier pre-release version of datalabx from PyPI, you can upgrade to the latest version using:
+If you already installed an earlier pre-release version of datalabx from PyPI, you can now upgrade to the latest version using:
 
 ```bash
-pip install --upgrade datalabx_pre_release
+pip install --upgrade datalabx
 ```
 
 This ensures you always get the most recent pre-release version available on PyPI.
