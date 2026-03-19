@@ -38,15 +38,23 @@ The first stable public release on PyPI will be **0.1.0**.
 DataLabX **v0.1.0b11** is the **first version extensively developed and validated on real-world messy datasets**, acquired via **web scraping, REST APIs**, and **raw HTML/Excel sources**.
 This release **emphasizes practical usability, robust diagnostics, and advanced cleaning workflows** for real-world tabular data.
 
-**⚠️ Important Updates**
+### ⚠️ Important Updates
 
 - DataLabX is now fully installable on PyPI: 
 
-#### Installation
+##### Installation
 
-```python
+DataLabX can now be installed with this command:
+
+```bash
 pip install datalabx
 ```
+Instead of:
+
+```bash
+pip install datalabx_pre_release
+```
+
 - Text cleaning now returns the **full DataFrame** for consistent downstream workflows.
 - Added new cleaning methods for removing **bracketed/parenthesized content**.
 - Added ``validate_missingness()`` for explicit missing data validation.
@@ -54,7 +62,7 @@ pip install datalabx
 
 ### 🚀 Major Changes
 
-#### Real-World Data Focus
+#### 1. Real-World Data Focus
 
 - This is the first DataLabX release tested and improved using messy real-world datasets.
 
@@ -62,7 +70,7 @@ pip install datalabx
 
 - All improvements to **cleaning, missingness validation, and DataLoader** behavior were informed by these real-world examples.
 
-#### Advanced Cleaning Utilities
+#### 2. Advanced Cleaning Utilities
 
 - ``remove_square_brackets_and_content()``: Removes square brackets and content inside "[content]" from columns.
     - Example:
@@ -74,19 +82,19 @@ pip install datalabx
 
 - Fixed **remove_multiple_spaces()** to prevent unintended space removal.
 
-#### Missingness Validation
+#### 3. Missingness Validation
 
 - ``validate_missingness()`` allows checking existence of missing values across columns with custom placeholders.
 
 - Added full docstrings for better documentation and usability.
 
-#### Data Loading Improvements
+#### 4. Data Loading Improvements
 
 - Improved error handling for **invalid file types** and **array_type** parameter in DataLoader.
 
 - Case-insensitive file type comparison for CSV and Excel files.
 
-#### API & Usability Refinements
+#### 5. API & Usability Refinements
 
 - ``TextCleaner`` now returns the **full DataFrame** post-cleaning.
 
@@ -94,7 +102,7 @@ pip install datalabx
 
 - ``show_memory_usage() ``renamed to ``memory_usage()`` with improved error handling.
 
-#### Documentation Updates
+#### 6. Documentation Updates
 
 - Guides updated to reflect new DataLoader API, cleaning methods, and real-world workflow examples.
 
