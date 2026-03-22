@@ -19,7 +19,7 @@ Please fill out the sections below to suggest a new feature or improvement for d
 A clear description of the feature or improvement you’d like to see in datalabx.
 
 **Example:**  
-> Add a graph-based workflow that links `DirtyDataDiagnosis` outputs to data visualization for text or categorical patterns.
+> Add support for .txt files or other formats.
 
 ---
 
@@ -29,8 +29,7 @@ Why is this feature important?
 Who will benefit from it?  
 
 **Example:**  
-> Currently, text inconsistencies are detected, but visualizing relationships between inconsistent categories is not straightforward.
-A graph-based summary could help identify patterns across columns.
+> Will help DataLabX cover different formats and file types for better usability.
 
 ---
 
@@ -38,11 +37,9 @@ A graph-based summary could help identify patterns across columns.
 If you have an idea of how this could be implemented, describe it here.
 
 **Example:**  
- 
-- Add a new diagnosis class `DiagnosisGraph`  
-- Input: output dictionary from `DirtyDataDiagnosis`  
-- Output: network graph showing relationships between inconsistent values across columns  
-- Integrate with `data_diagnosis` and `data_visualization` workflow  
+
+- Add a separate txt file parser for reading text files using various separators and delimiters.
+- Or use polars to read txt files and add better support for delimiters and separators.
 
 ---
 
