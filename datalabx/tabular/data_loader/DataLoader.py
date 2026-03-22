@@ -8,7 +8,7 @@ from ..utils.Logger import datalabx_logger
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
-SUPPORTED_FILE_TYPES = ['csv', 'xlsx', 'xls', 'parquet', 'json']
+SUPPORTED_FILE_TYPES = ['txt','csv', 'xlsx', 'xls', 'parquet', 'json']
 
 class _InvalidFileTypeError(Exception):
 
@@ -108,7 +108,7 @@ class DataLoader:
         else:
             self.file_type = file_type.lower()
 
-        if self.file_type not in ["csv", 'xlsx','xls', 'parquet', 'json']:
+        if self.file_type not in SUPPORTED_FILE_TYPES:
             raise _InvalidFileTypeError(
                 received_type=self.file_type
             )
@@ -192,7 +192,7 @@ class DataLoader:
 
         # ----- LOADING POLARS DATAFRAMES DEPENDING ON FILE TYPE ------
 
-        if self.file_type == 'csv':
+        if self.file_type in ['csv','txt']:
 
             if load_csv_as_string:
                 logger.info('Loading csv with string datatype.')
