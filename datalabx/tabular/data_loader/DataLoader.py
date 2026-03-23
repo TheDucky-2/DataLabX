@@ -60,6 +60,7 @@ class DataLoader:
         - 'excel'
         - 'parquet'
         - 'JSON'
+        - 'txt'
 
     array_type: str, optional
 
@@ -174,17 +175,20 @@ class DataLoader:
         >>> # Load a CSV file with string datatype
             df2 = DataLoader('example.csv').load_tabular(load_csv_as_string=True)
 
+        >>> # Load a txt file
+            df3 = DataLoader('example.txt').load_tabular()
+
         >>> # Load an Excel file
-            df3 = DataLoader('example.xlsx').load_tabular()             
+            df4 = DataLoader('example.xlsx').load_tabular()             
 
         >>> # Load a Parquet file using PyArrow backend
-            df4 = DataLoader('example.parquet', array_type='pyarrow').load_tabular()
+            df5 = DataLoader('example.parquet', array_type='pyarrow').load_tabular()
 
         >>> # Load a large CSV file with custom conversion threshold
-            df5 = DataLoader('large_dataset.csv', conversion_threshold=2000000).load_tabular()
+            df6 = DataLoader('large_dataset.csv', conversion_threshold=2000000).load_tabular()
 
         >>> # Load a JSON file from a subdirectory with auto array backend
-            df6 = DataLoader('some/path/to/data.json').load_tabular()
+            df7 = DataLoader('some/path/to/data.json').load_tabular()
         """    
         
         if not isinstance(load_csv_as_string, bool):
@@ -249,5 +253,5 @@ class DataLoader:
             return polars_df.to_pandas(use_pyarrow_extension_array=True)
 
         else:
-            raise ValueError(f'Unsupported array type: {array_type}')
+            raise ValueError(f'Unsupported array type: {self.array_type}')
 
