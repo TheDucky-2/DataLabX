@@ -282,7 +282,7 @@ class ColumnConverter:
         self.df[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
 
         if inplace:
-            self.df[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
+            self.df.loc[:,self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
             return None
         else:
             df_copy = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
