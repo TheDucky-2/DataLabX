@@ -41,7 +41,7 @@ class _FileTypeMismatchError(Exception):
         f"File type mismatch: expected: {self.expected_type}, received: {self.received_type} from file: {self.file_path}"
         )
 
-### ------- DATA LOADER ---------
+### ------- DATA LOADER --------- ###
 
 class DataLoader:
     """
@@ -232,7 +232,7 @@ class DataLoader:
             except:
                 raise ImportError(
                     "Excel file support requires 'fastexcel'. " 
-                    "You can install 'fastexcel' with: pip install datalabx_pre_release[excel]"
+                    "You can install 'fastexcel' with: pip install datalabx[excel]"
                     )
 
             polars_df = pl.read_excel(self.file_path, **kwargs)
