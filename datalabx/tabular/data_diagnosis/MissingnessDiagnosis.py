@@ -9,6 +9,105 @@ import numpy as np
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
+_DEFAULT_PLACEHOLDERS = ['N/A', '?', '-','—', # dashes used as placeholders
+    # --- empty / whitespace ---
+    "", " ", "  ", "   ", "\t", "\n", "\r", "\r\n",
+
+    # --- null-like ---
+    "null", "Null", "NULL",
+    "none", "None", "NONE",
+    "nil", "NIL",
+    "nan", "NaN", "NAN",
+    "na", "NA", "n/a", "N/A", "n.a.", "N.A.",
+    "n.a", "N.a", "not available", "Not Available", "NOT AVAILABLE",
+    "not applicable", "Not Applicable", "NOT APPLICABLE",
+    "not known", "Not Known", "NOT KNOWN",
+    "unknown", "Unknown", "UNKNOWN",
+    "undefined", "Undefined", "UNDEFINED",
+    "missing", "Missing", "MISSING",
+
+    # --- empty words ---
+    "blank", "Blank", "BLANK",
+    "empty", "Empty", "EMPTY",
+    "no data", "No Data", "NO DATA",
+    "no value", "No Value", "NO VALUE",
+    "no info", "No Info", "NO INFO",
+    "no information", "No Information",
+
+    # --- punctuation placeholders ---
+    "-", "--", "---", "----",
+    "_", "__", "___",
+    ".", "..", "...",
+    "*", "**", "***",
+    "?", "??", "???",
+
+    # --- bracketed nulls ---
+    "<null>", "<NULL>", "<nil>",
+    "(null)", "(NULL)", "(nil)",
+    "[null]", "[NULL]", "[nil]",
+    "{null}", "{NULL}", "{nil}",
+
+    # --- excel / system errors ---
+    "#N/A", "#NA", "#N/A N/A",
+    "#NULL!", "#VALUE!", "#DIV/0!", "#REF!", "#NAME?", "#NUM!",
+    "NULL_VALUE", "N/A VALUE",
+
+    # --- ui / form placeholders ---
+    "select", "Select", "SELECT",
+    "select option", "Select Option",
+    "choose", "Choose", "CHOOSE",
+    "choose option", "Choose Option",
+    "-- select --", "--Select--",
+    "please select", "Please Select",
+    "enter value", "Enter value", "enter text",
+    "type here", "Type here",
+    "click here", "Click here",
+    "your name", "your name here",
+    "enter name", "enter email",
+
+    # --- dummy / fake data ---
+    "test", "Test", "TEST",
+    "dummy", "Dummy", "DUMMY",
+    "sample", "Sample", "SAMPLE",
+    "example", "Example", "EXAMPLE",
+    "demo", "Demo", "DEMO",
+    "lorem ipsum", "Lorem Ipsum",
+    "asdf", "ASDF", "qwerty", "QWERTY",
+    "xxx", "XXX", "xxxx", "XXXXX",
+
+    # --- fake structured values ---
+    "0000-00-00",
+    "1900-01-01", "1970-01-01",
+    "9999-12-31",
+    "00/00/0000",
+    "01/01/1900",
+    "01/01/1970",
+
+    # --- fake contact info ---
+    "0000000000", "000-000-0000",
+    "1234567890", "1111111111",
+    "test@test.com", "example@example.com",
+    "user@domain.com", "email@email.com",
+
+    # --- booleans misused ---
+    "false", "False", "FALSE",
+    "true", "True", "TRUE",
+
+    # --- misc junk ---
+    "nill", "Nill", "NILL",
+    "nil.", "null.", "none.",
+    "tbd", "TBD",
+    "to be decided", "To Be Decided",
+    "to be determined", "To Be Determined",
+    "pending", "Pending",
+    "incomplete", "Incomplete",
+
+    # --- scraped missingness artifacts ---
+    "&nbsp;", "nbsp",
+    "|", "||",
+    "/", "//",
+]
+
 class MissingnessDiagnosis:
     """
     Initialize the Missingness Diagnosis.
@@ -25,15 +124,17 @@ class MissingnessDiagnosis:
         A list of extra placeholders considered as missing values depending on the domain, by default None
     """
 
-    def __init__(self, df: pd.DataFrame, columns:list = None, extra_placeholders:list|type(None)=None):
+    def __init__(self, df: pd.DataFrame, columns:list = None, extra_placeholders:list|None=None):
         import pandas as pd
         import numpy as np
 
         # making sure that the passed df is a pandas DataFrame
         if not isinstance(df, pd.DataFrame):
             raise TypeError(f'df must be a pandas DataFrame, got {type(df).__name__}')
+        
         if not isinstance(columns, (list, type(None))):
             raise TypeError(f'columns must be a list of column names, got {type(columns).__name__}')
+        
         if not isinstance(extra_placeholders, (list, type(None))):
             raise TypeError(f'extra_placeholders must be a list of strings, got {type(extra_placeholders).__name__}')
 
@@ -47,10 +148,12 @@ class MissingnessDiagnosis:
         # keeping extra placeholders to be an empty list if None, otherwise creating a mask of placeholders would not be able to find something to iterate over.
         if extra_placeholders is None:
             self.extra_placeholders = []
-
+            logger.info(f"Considering pandas missing types + default placeholders as missing data.")
         else:
             self.extra_placeholders = extra_placeholders
             logger.info(f'Received {self.extra_placeholders} as placeholder/s for missing data!')
+        
+        self.PLACEHOLDERS = set(_DEFAULT_PLACEHOLDERS) | set(self.extra_placeholders)
 
         logger.info(f'Missingness Diagnosis initialized.')
 
@@ -67,17 +170,23 @@ class MissingnessDiagnosis:
         ---------------------
             Use this function to see if your dataset has missing data present (pandas missing or placeholder missing).
         """
+
         pandas_missing = self.df.isna()
 
-        placeholder_missing = self.df.isin(self.extra_placeholders)
+        placeholder_missing = self.df.isin(self.PLACEHOLDERS)
 
         total_missing = pandas_missing | placeholder_missing
 
-        if not total_missing.any().any():
-            logger.info('Missing data is not present.')
+        missingness_per_column = total_missing.sum()
+
+        if missingness_per_column.sum() == 0:
+            logger.info(
+            "No missing data detected using pandas missing types or default placeholders. "
+            "Consider extending placeholder set by passing a list of extra_placeholders.")
 
         else:
-            logger.info('Missing data is present')
+            logger.info('Missing data detected. Columns with missing data: ' 
+                        f'\n{list(missingness_per_column[missingness_per_column>0].to_dict().keys())}')
 
     def detect_missing_types(self)-> dict[str, dict[str, list]]:
         """Detects the types of missing values in each column of the DataFrame.
@@ -98,7 +207,7 @@ class MissingnessDiagnosis:
         pandas_mask = self.df.isna()
 
         # creating a mask for extra placeholders user wants to detect in their missing data
-        placeholders_mask = self.df.isin(self.extra_placeholders)
+        placeholders_mask = self.df.isin(self.PLACEHOLDERS)
 
         for column in self.df[self.columns]:
 
@@ -143,7 +252,7 @@ class MissingnessDiagnosis:
             pandas_mask = self.df[column].isna()
 
             # creating a true false mask of placeholder missing types if missing returns true otherwise false
-            placeholders_mask = self.df[column].isin(self.extra_placeholders)
+            placeholders_mask = self.df[column].isin(self.PLACEHOLDERS)
 
             # if pandas or placeholder missing values exist, show either of the data
             missing_mask = pandas_mask | placeholders_mask
@@ -180,7 +289,7 @@ class MissingnessDiagnosis:
             pandas_mask = self.df[column].isna()
 
             # creating a true false mask of placeholder missing types if missing returns true otherwise false
-            placeholders_mask = self.df[column].isin(self.extra_placeholders)
+            placeholders_mask = self.df[column].isin(self.PLACEHOLDERS)
 
             # if pandas or placeholder missing values exist, show both data (using OR)
             missing_mask = pandas_mask | placeholders_mask
@@ -216,7 +325,7 @@ class MissingnessDiagnosis:
             pandas_mask = self.df[column].isna()
 
             # creating a true false mask of placeholder missing types if missing returns true otherwise false
-            placeholders_mask = self.df[column].isin(self.extra_placeholders)
+            placeholders_mask = self.df[column].isin(self.PLACEHOLDERS)
 
             # if pandas or placeholder missing values exist, show both data (using OR)
             missing_mask = pandas_mask | placeholders_mask
@@ -228,7 +337,8 @@ class MissingnessDiagnosis:
         return missing_datetime_data
 
     def missing_data_summary(self, method='count')-> dict[str, int]:
-        """Shows the number of rows with missing values present in each column, irrespective of column type (Categorical, Numerical or Datetime)
+        """
+        Shows the number of rows with missing values present in each column, irrespective of column type (Categorical, Numerical or Datetime)
 
         Parameters
         -----------
@@ -236,8 +346,8 @@ class MissingnessDiagnosis:
 
             How you would like to show the total of missing values.
 
-                - 'count'    : Shows a count of rows with missing values per column
-                - 'percent': Shows the percentage of rows with missing values per column
+                - 'count'    : Shows count of rows with missing values per column
+                - 'percent'  : Shows the percentage of rows with missing values per column
 
         Returns
         --------
@@ -252,7 +362,7 @@ class MissingnessDiagnosis:
         pandas_mask = self.df.isna()
         
         # a mask of placeholder missing types 
-        placeholders_mask = self.df.isin(self.extra_placeholders)
+        placeholders_mask = self.df.isin(self.PLACEHOLDERS)
 
         # an empty to dictionary of missing_data_summary
         missing_data_summary = {}
@@ -275,7 +385,7 @@ class MissingnessDiagnosis:
 
                     missing_data_summary[col] = (len(self.df.loc[mask[col]])/ len(self.df)) * 100
 
-                # only sum and percent are acceptable types
+                # only count and percent are acceptable types
                 else:
                     raise ValueError(f"method must be 'count' or 'percent', got {method}")
 
@@ -300,7 +410,7 @@ class MissingnessDiagnosis:
         pandas_mask = self.df.isna()
 
         # creating a mask of placeholder missing values
-        placeholder_mask = self.df.isin(self.extra_placeholders)
+        placeholder_mask = self.df.isin(self.PLACEHOLDERS)
 
         # accepting both values
         missing_mask = pandas_mask | placeholder_mask
@@ -329,7 +439,7 @@ class MissingnessDiagnosis:
         pandas_mask = self.df[self.columns].isna()
         
         # creating a mask of placeholder missing values
-        placeholder_mask = self.df[self.columns].isin(self.extra_placeholders)
+        placeholder_mask = self.df[self.columns].isin(self.PLACEHOLDERS)
 
         # accepting both values
         missing_mask = pandas_mask | placeholder_mask
