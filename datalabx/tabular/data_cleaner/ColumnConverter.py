@@ -278,9 +278,6 @@ class ColumnConverter:
         if not isinstance(kwargs, dict):
             raise TypeError(f'keyword arguments must be a dict, got {type(kwargs).__name__}')
 
-        # first converting all data to numerical, and non-numerical get converted to NaN
-        self.df[self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
-
         if inplace:
             self.df.loc[:,self.columns] = self.df[self.columns].apply(pd.to_numeric, errors = 'coerce', **kwargs)
             return None
