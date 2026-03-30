@@ -1,10 +1,10 @@
 """
 <img src="assets/datalabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
 
-"DataLabX v0.1.0b11 : Real-World Data Ready Beta"
+"DataLabX v0.1.0b12 - Improved Missingness Detection, Stability Fixes & Extended Data Loading."
 
 """
-__version__ = '0.1.0b11'
+__version__ = '0.1.0b12'
 
 import importlib
 

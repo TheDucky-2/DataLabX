@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 [project] 
 
 name = "datalabx"             
-version = "0.1.0b11"
-description = "DataLabX v0.1.0b11: Real-World Data Ready Beta."
+version = "0.1.0b12"
+description = "DataLabX v0.1.0b12 – Improved Missingness Detection, Stability Fixes & Extended Data Loading."
 
 authors = [
     {name = "Kshitij Sharma"}
