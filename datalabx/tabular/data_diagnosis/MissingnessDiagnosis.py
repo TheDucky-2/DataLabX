@@ -188,7 +188,7 @@ class MissingnessDiagnosis:
             logger.info('Missing data detected. Columns with missing data: ' 
                         f'\n{list(missingness_per_column[missingness_per_column>0].to_dict().keys())}')
 
-    def detect_missing_types(self)-> dict[str, dict[str, list]]:
+    def detect_missing_types(self)-> dict[str, list]:
         """Detects the types of missing values in each column of the DataFrame.
 
         Returns
@@ -219,10 +219,7 @@ class MissingnessDiagnosis:
             
             # if either of the values exist, show the results
             if pandas_missing or place_holder_missing:
-                missing_values[column] = {
-                    'pandas_missing': pandas_missing,
-                    'placeholder_missing': place_holder_missing
-                }
+                missing_values[column] = pandas_missing+place_holder_missing
 
         return missing_values      
     
