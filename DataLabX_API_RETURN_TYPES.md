@@ -91,7 +91,7 @@ This helps users know what to expect when calling functions and methods.
 | NumericalDiagnosis.check_kurtosis | `dict[str, float]` | Kurtosis per numeric column |
 | NumericalDiagnosis.check_variance | `dict[str, float]` | Variance per numeric column |
 | NumericalDiagnosis.detect_outliers | `dict[str, pandas.Series]` | Rows of detected outliers per column |
-| MissingnessDiagnosis.detect_missing_types | `dict[str, dict[str, list]]` | Shows missing types per column (pandas missing, placeholders, etc.) | ``from datalabx import MissingnessDiagnosis``
+| MissingnessDiagnosis.detect_missing_types | `dict[str, list]` | Shows missing types per column (pandas missing, placeholders, etc.) | ``from datalabx import MissingnessDiagnosis``
 | MissingnessDiagnosis.missing_data_summary | `dict[str, float]` | Fraction of missing data per column |
 | MissingnessDiagnosis.rows_with_all_columns_missing | `pandas.DataFrame` | Rows where all columns are missing |
 | MissingnessDiagnosis.rows_with_specific_columns_missing | `pandas.DataFrame` | Rows where specific columns are missing |
