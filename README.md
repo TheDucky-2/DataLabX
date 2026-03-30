@@ -3,7 +3,7 @@
 [![API Docs](https://img.shields.io/badge/API-Documentation-3776AB)](https://theducky-2.github.io/DataLabX)
 [![PyPI version](https://img.shields.io/pypi/v/datalabx.svg?color=F4B400)](https://pypi.org/project/datalabx/)
 ![Status](https://img.shields.io/badge/Status-Beta-F4B400)
-[![Python Versions](https://img.shields.io/pypi/pyversions/datalabx-pre-release.svg?color=306998)](https://pypi.org/project/datalabx/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/datalabx.svg?color=306998)](https://pypi.org/project/datalabx/)
 ![License](https://img.shields.io/github/license/TheDucky-2/DataLabX)
 
 **A diagnosis-first data quality and preparation framework for real-world data.**
@@ -135,7 +135,7 @@ With DataLabX, you typically:
 
 Tabular data workflows, including:
 
-- Data loading (CSV, Excel, JSON, Parquet)
+- Data loading (CSV, Excel, JSON, Parquet, .txt)
 
 - Data diagnosis & dirty data detection
 
@@ -222,7 +222,7 @@ datalabx/
 
 ## Features in v0.1:
 
-**✔️ 1. Data Loading** : CSV, Excel, JSON and Parquet, Automatic file type detection.
+**✔️ 1. Data Loading** : CSV, Excel,txt, JSON and Parquet, Automatic file type detection.
 
 **✔️ 2. Data Diagnosis** : Shape, columns, dtypes, memory usage, duplicates, cardinality, Numerical & Categorical diagnosis, Dirty data diagnosis.
 
