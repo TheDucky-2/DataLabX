@@ -14,6 +14,7 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ##### PyPI Versions
 
+- [v0.1.0b12](#v010b12---mar-30-2026)
 - [v0.1.0b11](#v010b11---mar-16-2026)
 - [v0.1.0b10](#v010b10---feb-22-2026)
 
@@ -28,6 +29,88 @@ The first stable public release on PyPI will be **0.1.0**.
 - [v0.1.0b4](#v010b4---jan-27-2026)
 - [v0.1.0b2](#v010b2---jan-22-2026)
 - [v0.1.0a4](#v010a4-–-dec-26-2025)
+
+---
+
+## v0.1.0b12 - Mar 30, 2026
+
+**Status**: Beta (PyPI)
+
+DataLabX **v0.1.0b12** focuses on **support for txt files**, **refining missingness detection**, **improving data loading flexibility**, and fixing **critical warnings and stability issues**, based on **real-world usage**.
+
+### ⚠️ Important Updates
+
+- Addition of support for **.txt** files. Users can now load .txt files using ``DataLoader``.
+
+- ``MissingnessDiagnosis().detect_missing_types()`` now returns **total missing types**, simplifying interpretation and removing separation between pandas and placeholder-based missing values.
+- Introduced **DEFAULT_PLACEHOLDERS** for common real-world missing value representations, combined with user-defined placeholders.
+- Excel support improved via optional dependency **fastexcel**.
+
+### 🚀 Major Changes
+
+#### 1. Missingness Detection Improvements
+
+- Added **DEFAULT_PLACEHOLDERS** (e.g., "NA", "N/A", "-", etc.) for commonly used missingness placeholders for more realistic missing data detection.
+
+- ``detect_missing_types()`` redesigned to return a unified missingness view instead of split categories.
+
+```python
+from datalabx import MissingnessDiagnosis
+
+result = MissingnessDiagnosis(df).detect_missing_types()
+
+print(result)
+
+>>> {'total_deaths': [''],
+ 'total_recovered': ['N/A', ''],
+ 'active_cases': ['N/A'],
+ 'total_tests': [''],
+ 'population': [''],
+ 'total_cases_per_1m_pop': [''],
+ 'deaths_per_1m_pop': [''],
+ 'tests_per_1m_pop': ['']}
+```
+
+- Supports user-provided placeholders, making detection flexible for messy datasets.
+
+
+#### 2. Data Loading Enhancements
+
+- DataLoader now supports **.txt** files.
+
+```python
+from datalabx import DataLoader
+
+df = DataLoader('sample_txt_file.txt').load_tabular()
+```
+- Improved Excel loading with optional dependency support **(fastexcel)** which can be installed with:
+
+```bash
+pip install datalabx[excel]
+```
+
+- Fixed issues causing failures during data loading.
+
+#### API & Internal Improvements
+
+- Updated API return types for ``detect_missing_types()`` for consistency. (see [DataLab API Return Types Reference](DataLabX_API_RETURN_TYPES.md))
+- Dependency updates for **scipy** and **pyarrow** for better compatibility with **Python 3.10+.**
+
+#### Developer Experience
+Improved feature request template with clearer examples for contributors and users. (see [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md))
+
+
+### 🐛 Bug Fixes
+
+- Fixed **SettingCopyWarning** in ``ColumnConverter().to_numerical_forced()``.
+- Ensures safer transformations without unintended side effects.
+- Fixed data loading bugs affecting certain file types.
+
+### 💡 Key Notes
+
+- This release continues strengthening **real-world missingness handling**, a core part of DataLabX.
+- Focus is on **correctness, consistency, and usability**, not new high-level features.
+- Prepares the foundation for upcoming **DuckDB integration and performance enhancements.**
 
 ---
 
