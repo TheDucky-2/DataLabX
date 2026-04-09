@@ -147,8 +147,8 @@ class DirtyDataDiagnosis:
             series = polars_df[col]
 
             for method, pattern in PATTERNS.items():
-                
-                pattern_masks[col][method] = series.str.contains(pattern)
+                if pattern is not None:
+                    pattern_masks[col][method] = series.str.contains(pattern)
 
 
             pattern_masks[col]['is_missing'] = series.is_null()
@@ -229,6 +229,8 @@ class DirtyDataDiagnosis:
 
         columns_to_diagnose = [column for column in polars_df.columns if column!= 'index']
 
+        pattern_masks={}
+
         text_diagnosis = {}
 
         PATTERNS = {
@@ -242,30 +244,34 @@ class DirtyDataDiagnosis:
                 'has_numbers': r'\p{N}'
             }
 
+        columns_to_diagnose = [column for column in polars_df.columns if column != 'index']
+
         for col in columns_to_diagnose:
-
-            text_diagnosis[col] = {}
-
+            
+            pattern_masks[col] = {}
             series = polars_df[col]
 
             for method, pattern in PATTERNS.items():
-                
-                if method == 'is_null': 
-                    pattern_mask = series.is_null()
+                if pattern is not None:
+                    pattern_masks[col][method] = series.str.contains(pattern)
 
-                elif method == 'is_dirty':
-                    pattern_mask = series.str.contains(PATTERNS['is_dirty'])
 
-                else:
-                    pattern_mask = series.str.contains(pattern)
+            pattern_masks[col]['is_missing'] = series.is_null()
 
-                # ensuring by default, pyarrow is used for datasets over 100000 rows
-                
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+            pattern_masks[col]['is_dirty'] = ~pattern_masks[col]['is_valid']
+            
+        for column, pattern in pattern_masks.items():
+            text_diagnosis[column]={}
+            for pat, mask in pattern.items():
+                result_df = polars_df.filter(mask)
 
+                # filtering pattern masks out of the polars dataframe 
+                result_df = BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+
+                # setting default index to be 'index'
                 result_df.set_index('index', inplace=True)
 
-                text_diagnosis[col][method] = result_df
+                text_diagnosis[column][pat] = result_df
 
         if show_available_methods:
             logger.info(f'Available diagnostic methods: {list(text_diagnosis[col].keys())}')
@@ -319,6 +325,7 @@ class DirtyDataDiagnosis:
         self.df = self.df.reset_index()
 
         pol_df = BackendConverter(self.df).pandas_to_polars()
+        pattern_masks={}
         datetime_diagnosis = {}
 
         PATTERNS = {
@@ -334,29 +341,32 @@ class DirtyDataDiagnosis:
         cols_to_diagnose = [column for column in pol_df.columns if column!='index']
 
         for col in cols_to_diagnose:
-            datetime_diagnosis[col] = {}
-
+            pattern_masks[col] = {}
             for method, pattern in PATTERNS.items():
 
                 series = pol_df[col]
+                if pattern is not None:
+                    pattern_masks[col][method] = series.str.contains(pattern)
 
-                if method == 'is_missing':
-                    pattern_mask = series.is_null()
-                if method == 'is_dirty':
-                    pattern_mask = (
-                        ~series.str.contains(PATTERNS['is_valid_date'])
-                        & ~series.str.contains(PATTERNS['is_valid_time'])
-                        & ~series.str.contains(PATTERNS['is_valid_datetime'])
+    
+            pattern_masks[col]['is_missing'] = series.is_null()
+            pattern_masks[col]['is_dirty']= (
+                        ~pattern_masks[col]['is_valid_date']
+                        & ~pattern_masks[col]['is_valid_time']
+                        & ~pattern_masks[col]['is_valid_datetime']
                     )
-                else:
-                    pattern_mask = series.str.contains(pattern)
                     
+                        
+        for column, pattern in pattern_masks.items():
+            datetime_diagnosis[column]={}
+            for pat, mask in pattern.items():
+                result_df = pol_df.filter(mask)
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
-                result_df =BackendConverter(pol_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+                result_df =BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
                 result_df.set_index('index', inplace=True)
 
-                datetime_diagnosis[col][method] = result_df
+                datetime_diagnosis[column][pat] = result_df
 
         if show_available_methods:
             logger.info(f'Available diagnostic methods: {list(datetime_diagnosis[col].keys())}')
