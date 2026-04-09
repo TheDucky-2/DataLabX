@@ -113,6 +113,10 @@ class DirtyDataDiagnosis:
         # passing dataframe including the new column 'index'
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
+        ## keeping a cache of masks to store the masks results
+        pattern_masks = {}
+
+        ## to store actual results
         numeric_diagnosis = {}
 
         # patterns is a dictionary of available methods and regex patterns to detect them 
@@ -139,34 +143,36 @@ class DirtyDataDiagnosis:
 
         for col in columns_to_diagnose:
             
-            numeric_diagnosis[col] = {}
+            pattern_masks[col] = {}
             series = polars_df[col]
 
             for method, pattern in PATTERNS.items():
                 
-                if method == 'is_missing':
-                    pattern_mask = series.is_null()
+                pattern_masks[col][method] = series.str.contains(pattern)
 
-                elif method == 'is_dirty':
 
-                    pattern_mask = ~series.str.contains(PATTERNS['is_valid'])
+            pattern_masks[col]['is_missing'] = series.is_null()
 
-                elif method == 'has_text':
-                    # ensuring that only text that is not units or scientific notation is detected
-                    pattern_mask = (series.str.contains(PATTERNS['has_text'])
-                     & ~series.str.contains(PATTERNS['has_units'])
-                     & ~series.str.contains(PATTERNS['is_scientific_notation']))
+            pattern_masks[col]['is_dirty'] = ~pattern_masks[col]['is_valid']
 
-                else:
-                    pattern_mask = series.str.contains(pattern)
-                
+            # ensuring that only text that is not units or scientific notation is detected
+            pattern_masks[col]['has_text'] = (pattern_masks[col]['has_text'] 
+                                            & ~pattern_masks[col]['has_units'] 
+                                            & ~pattern_masks[col]['is_scientific_notation'])
+
+            
+        for column, pattern in pattern_masks.items():
+            numeric_diagnosis[column]={}
+            for pat, mask in pattern.items():
+                result_df = polars_df.filter(mask)
+
                 # filtering pattern masks out of the polars dataframe 
-                result_df = BackendConverter(polars_df.filter(pattern_mask)).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
+                result_df = BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
                 # setting default index to be 'index'
                 result_df.set_index('index', inplace=True)
 
-                numeric_diagnosis[col][method] = result_df
+                numeric_diagnosis[column][pat] = result_df
                 
         if show_available_methods:
             logger.info(f'Available diagnostic methods: {list(numeric_diagnosis[col].keys())}')
