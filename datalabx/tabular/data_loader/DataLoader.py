@@ -82,8 +82,7 @@ class DataLoader:
         file_path:str,
         file_type: str|None = None,
         array_type: str = 'auto',
-        conversion_threshold: int|None = None
-        ):
+        conversion_threshold: int|None = None):
 
         if not isinstance(file_path, (str, Path)):
             raise TypeError(f'file path must be a string or a file path, got {type(file_path).__name__}')
@@ -100,12 +99,20 @@ class DataLoader:
         if array_type not in ['numpy', 'pyarrow', 'auto']:
             raise ValueError(f"array_type must either be 'numpy', 'pyarrow' or 'auto', got '{array_type}'")
         
-        self.file_path = file_path   
+        path = Path(file_path)
+
+        if not path.exists():
+            raise FileNotFoundError(f"File {path} does not exist.")
+     
+        if not path.is_file():
+            raise IsADirectoryError(f"{path} is not a file.")
+
+        self.file_path = path
 
         # ---- DETECTING FILE TYPES------
 
         if file_type is None:
-            self.file_type = file_path.split('.')[-1].lower()
+            self.file_type = path.suffix.split('.')[-1].lower()
         else:
             self.file_type = file_type.lower()
 
@@ -114,10 +121,10 @@ class DataLoader:
                 received_type=self.file_type
             )
 
-        if self.file_type.lower() != self.file_path.split('.')[-1].lower():
+        if self.file_type.lower() != self.file_path.suffix.split('.')[-1].lower():
             raise _FileTypeMismatchError(
 
-                expected_type= self.file_path.split('.')[-1].lower(),
+                expected_type= self.file_path.suffix.split('.')[-1].lower(),
                 received_type= self.file_type.lower(),
                 file_path = self.file_path
                 )
