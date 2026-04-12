@@ -8,15 +8,16 @@ from ..utils.Logger import datalabx_logger
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
+## List of Supported file types
+
 SUPPORTED_FILE_TYPES = ['txt','csv', 'xlsx', 'xls', 'parquet', 'json']
 
+# Error that gets raised when File is Empty.
 class EmptyFileError(Exception):
     
-    def __init__(self, file_size: float):
+    def __init__(self):
 
-        self.file_size = file_size
-
-        super().__init__(f"Received an Empty File of size: {self.file_size} MB")
+        super().__init__(f"Received an Empty File.")
 
 # Error that gets raised when Invalid File Type is received.
 class _InvalidFileTypeError(Exception):
@@ -118,12 +119,14 @@ class DataLoader:
         if not path.is_file():
             raise IsADirectoryError(f"{path} is not a file.")
 
-        file_size = path.stat().st_size/1024/1024
+        file_size_in_bytes = path.stat().st_size
 
-        if file_size == 0:
-            raise EmptyFileError(file_size)
+        if file_size_in_bytes == 0:
+            raise EmptyFileError()
 
-        self.file_size = file_size
+        file_size_in_MB = file_size_in_bytes/1024/1024        
+
+        self.file_size = file_size_in_MB
 
         self.file_path = path
 
@@ -159,7 +162,7 @@ class DataLoader:
         else:
             self.conversion_threshold = conversion_threshold
 
-        logger.info(f'Data Loader initialized with {self.file_type} file of {self.file_size} MB.')
+        logger.info(f'Data Loader initialized with {self.file_type} file of {self.file_size:.2f} MB.')
 
     def load_tabular(
             self,
