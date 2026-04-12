@@ -10,6 +10,15 @@ logger = datalabx_logger(name = __name__.split('.')[-1])
 
 SUPPORTED_FILE_TYPES = ['txt','csv', 'xlsx', 'xls', 'parquet', 'json']
 
+class EmptyFileError(Exception):
+    
+    def __init__(self, file_size: float):
+
+        self.file_size = file_size
+
+        super().__init__(f"Received an Empty File of size: {self.file_size} MB")
+
+# Error that gets raised when Invalid File Type is received.
 class _InvalidFileTypeError(Exception):
 
     def __init__(self, received_type: str):
@@ -18,6 +27,7 @@ class _InvalidFileTypeError(Exception):
             f""" Received Unsupported file type: {self.received_type}. Supported file types are: {", ".join(SUPPORTED_FILE_TYPES)}."""
         )
 
+# Error that gets raised when user passed optional file type does not match auto detected file type
 class _FileTypeMismatchError(Exception):
 
     """Internal exception raised during file type mismatches."""
@@ -99,6 +109,7 @@ class DataLoader:
         if array_type not in ['numpy', 'pyarrow', 'auto']:
             raise ValueError(f"array_type must either be 'numpy', 'pyarrow' or 'auto', got '{array_type}'")
         
+        # reading file path using Path Lib
         path = Path(file_path)
 
         if not path.exists():
@@ -107,11 +118,19 @@ class DataLoader:
         if not path.is_file():
             raise IsADirectoryError(f"{path} is not a file.")
 
+        file_size = path.stat().st_size/1024/1024
+
+        if file_size == 0:
+            raise EmptyFileError(file_size)
+
+        self.file_size = file_size
+
         self.file_path = path
 
         # ---- DETECTING FILE TYPES------
 
         if file_type is None:
+            # removing (.) from file type suffix. E.g: .csv -> csv
             self.file_type = path.suffix.split('.')[-1].lower()
         else:
             self.file_type = file_type.lower()
@@ -120,6 +139,8 @@ class DataLoader:
             raise _InvalidFileTypeError(
                 received_type=self.file_type
             )
+
+        # if user passed file type does not match the auto detected file type, raise File Type Mismatch error
 
         if self.file_type.lower() != self.file_path.suffix.split('.')[-1].lower():
             raise _FileTypeMismatchError(
@@ -138,7 +159,7 @@ class DataLoader:
         else:
             self.conversion_threshold = conversion_threshold
 
-        logger.info(f'Data Loader initialized with {self.file_type} file.')
+        logger.info(f'Data Loader initialized with {self.file_type} file of {self.file_size} MB.')
 
     def load_tabular(
             self,
