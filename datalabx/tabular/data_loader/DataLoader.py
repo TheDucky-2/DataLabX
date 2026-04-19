@@ -3,6 +3,7 @@
 import pandas as pd
 from pathlib import Path
 import polars as pl
+import json5
 
 from ..utils.Logger import datalabx_logger
 
@@ -253,7 +254,22 @@ class DataLoader:
             polars_df = pl.read_parquet(self.file_path, **kwargs)
 
         elif self.file_type == 'json':
-            polars_df = pl.read_json(self.file_path, **kwargs)
+            try:
+                polars_df = pl.read_json(self.file_path, **kwargs)
+            
+            except pl.exceptions.ComputeError as error:
+
+                if "Syntax" in str(error):
+
+                    logger.info("Encountered an issue while reading JSON. Loading JSON using json5")
+
+                    with open(self.file_path, 'r') as json_file:
+                        data = json5.loads(json_file.read())
+
+                    polars_df = pl.DataFrame(data)
+                
+                else:
+                    raise
 
         elif self.file_type in ['xlsx', 'xls']:
             # trying to import fastexcel for reading excel files
