@@ -14,10 +14,7 @@ SUPPORTED_FILE_TYPES = ['txt','csv', 'xlsx', 'xls', 'parquet', 'json']
 
 # Error that gets raised when File is Empty.
 class EmptyFileError(Exception):
-    
-    def __init__(self):
-
-        super().__init__(f"Received an Empty File.")
+    pass
 
 # Error that gets raised when Invalid File Type is received.
 class _InvalidFileTypeError(Exception):
@@ -113,18 +110,20 @@ class DataLoader:
         # reading file path using Path Lib
         path = Path(file_path)
 
+        # if path does not exist for file
         if not path.exists():
             raise FileNotFoundError(f"File {path} does not exist.")
-     
+
+        # if path is a directory instead of file
         if not path.is_file():
             raise IsADirectoryError(f"{path} is not a file.")
 
-        file_size_in_bytes = path.stat().st_size
+        file_size = path.stat().st_size
 
-        if file_size_in_bytes == 0:
-            raise EmptyFileError()
+        if file_size == 0:
+            raise EmptyFileError("Received an empty file.")
 
-        file_size_in_MB = file_size_in_bytes/1024/1024        
+        file_size_in_MB = file_size/1024/1024        
 
         self.file_size = file_size_in_MB
 
@@ -244,6 +243,7 @@ class DataLoader:
                     if 'CSV parsing' in str(error):
 
                         logger.info("Schema inference issue. Loading CSV without schema inference.")
+                        
                         polars_df = pl.read_csv(self.file_path, infer_schema_length=None, **kwargs)
 
                     else:
