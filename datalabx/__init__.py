@@ -1,10 +1,10 @@
 """
 <img src="assets/datalabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
 
-"DataLabX v0.1.0b12 - Improved Missingness Detection, Stability Fixes & Extended Data Loading."
+"DataLabX v0.1.0b13 - Robust Data Loading, JSON5 Support & Diagnosis Performance Improvements."
 
 """
-__version__ = '0.1.0b12'
+__version__ = '0.1.0b13'
 
 import importlib
 
