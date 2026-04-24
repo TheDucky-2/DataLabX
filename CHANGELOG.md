@@ -14,6 +14,7 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ##### PyPI Versions
 
+- [v0.1.0b13](#v010b13---apr-24-2026)
 - [v0.1.0b12](#v010b12---mar-30-2026)
 - [v0.1.0b11](#v010b11---mar-16-2026)
 - [v0.1.0b10](#v010b10---feb-22-2026)
@@ -31,6 +32,58 @@ The first stable public release on PyPI will be **0.1.0**.
 - [v0.1.0a4](#v010a4-–-dec-26-2025)
 
 ---
+
+## v0.1.0b13 - Apr 24, 2026
+
+**Status:** Beta (PyPI)
+
+DataLabX **v0.1.0b13** improves data loading robustness, error handling, and diagnosis performance, with better support for **real-world file inconsistencies** and **malformed data**.
+
+### ⚠️ Important Updates
+
+- Added JSON5 support as a fallback parser for handling **loosely formatted JSON** files.
+- Introduced a custom **EmptyFileError** for clearer handling of empty or invalid file inputs.
+- Improved DataLoader reliability for real-world file ingestion scenarios.
+
+### 🚀 Major Changes
+
+#### 1. Robust JSON Handling
+
+- Added json5 as a dependency to handle **non-strict JSON formats** commonly found in real-world data.
+- Implemented **JSON5 fallback parsing** when standard JSON parsing fails.
+- Improved compatibility with loosely structured API and scraped data.
+
+#### 2. DataLoader Improvements
+
+- Enhanced file input handling across formats.
+- Improved error handling for **invalid or empty files**.
+- Added support for **detecting** and **handling empty file** inputs gracefully.
+
+#### Custom Error Handling
+
+- Introduced **EmptyFileError** for clearer debugging and control.
+- Refactored error structure for better **consistency and readability**.
+
+#### Diagnosis Performance Optimization
+
+- Refactored **Dirty Data Diagnosis** to use cached pattern masks, improving performance.
+- Reduced **redundant computations** during repeated checks on large datasets.
+
+#### Testing Improvements
+
+- Added **test_file_input** to improve reliability of file ingestion workflows.
+
+### 🐛 Bug Fixes
+
+- Fixed issues in DataLoader when handling empty or malformed files.
+- Improved stability of JSON parsing in edge cases.
+
+### 💡 Key Notes
+
+- This release strengthens **real-world data ingestion**, especially for messy JSON and scraped data.
+- Performance improvements in diagnosis make DataLabX more efficient on **repeated operations**.
+- Continues the focus on **robustness, correctness**, and **practical usability**.
+- Upcoming releases will introduce **DuckDB integration** for improved performance, scalable data processing, and advanced querying capabilities.
 
 ## v0.1.0b12 - Mar 30, 2026
 
