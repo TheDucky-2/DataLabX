@@ -3,8 +3,11 @@
 from ..utils.Logger import datalabx_logger
 import pandas as pd
 import polars as pl
+from functools import wraps
+from ..utils._decorators import handle_index
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
+
 
 class DirtyDataDiagnosis:
     """
@@ -56,6 +59,7 @@ class DirtyDataDiagnosis:
 
         logger.info(f'Dirty Data Diagnosis initialized with {self.array_type} backend.')
 
+    @handle_index
     def diagnose_numbers(self, show_available_methods: bool=False)-> dict[str, dict[str, pd.DataFrame]]:
         """Detects patterns and common formatting issues in numbers in each column of the DataFrame.
 
@@ -106,9 +110,6 @@ class DirtyDataDiagnosis:
         >>>     diagnostics['price']['has_currency'].head()
         """
         from ..utils.BackendConverter import BackendConverter
-        
-        # resetting index to ensure index is turned into a new column 'index' in pandas dataframe
-        self.df = self.df.reset_index()   
 
         # passing dataframe including the new column 'index'
         polars_df = BackendConverter(self.df).pandas_to_polars()
@@ -169,16 +170,14 @@ class DirtyDataDiagnosis:
                 # filtering pattern masks out of the polars dataframe 
                 result_df = BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
-                # setting default index to be 'index'
-                result_df.set_index('index', inplace=True)
-
                 numeric_diagnosis[column][pat] = result_df
                 
         if show_available_methods:
             logger.info(f'Available diagnostic methods: {list(numeric_diagnosis[col].keys())}')
 
         return numeric_diagnosis
-
+        
+    @handle_index
     def diagnose_text(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
         """Detects patterns and common formatting issues in text in each column of the DataFrame.
 
@@ -222,8 +221,6 @@ class DirtyDataDiagnosis:
         >>>     diagnostics['user_id']['is_dirty'].head()
         """
         from ..utils.BackendConverter import BackendConverter
-
-        self.df = self.df.reset_index()
         
         polars_df = BackendConverter(self.df).pandas_to_polars()
 
@@ -268,9 +265,6 @@ class DirtyDataDiagnosis:
                 # filtering pattern masks out of the polars dataframe 
                 result_df = BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
 
-                # setting default index to be 'index'
-                result_df.set_index('index', inplace=True)
-
                 text_diagnosis[column][pat] = result_df
 
         if show_available_methods:
@@ -278,6 +272,7 @@ class DirtyDataDiagnosis:
 
         return text_diagnosis
 
+    @handle_index
     def diagnose_datetime(self, show_available_methods=False)-> dict[str, dict[str, pd.DataFrame]]:
         """Detects patterns and formatting issues in date-time in one or multiple columns of the DataFrame.
 
@@ -321,9 +316,7 @@ class DirtyDataDiagnosis:
         >>>     diagnostics['signup_date']['is_dirty'].head()
         """
         from ..utils.BackendConverter import BackendConverter
-        
-        self.df = self.df.reset_index()
-
+    
         pol_df = BackendConverter(self.df).pandas_to_polars()
         pattern_masks={}
         datetime_diagnosis = {}
@@ -363,8 +356,6 @@ class DirtyDataDiagnosis:
                 result_df = pol_df.filter(mask)
                 # ensuring by default, pyarrow is used for datasets over 100000 rows
                 result_df =BackendConverter(result_df).polars_to_pandas(array_type = self.array_type, conversion_threshold = self.conversion_threshold)
-
-                result_df.set_index('index', inplace=True)
 
                 datetime_diagnosis[column][pat] = result_df
 
