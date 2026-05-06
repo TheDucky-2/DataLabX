@@ -4,51 +4,13 @@ import pandas as pd
 from pathlib import Path
 import polars as pl
 import json5
-
+from typing import Literal
+from ..utils.Constants import SUPPORTED_FILE_TYPES
 from ..utils.Logger import datalabx_logger
+from ..utils._decorators import measure
+from ..utils.Errors import _InvalidFileTypeError, _EmptyFileError, _FileTypeMismatchError
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
-
-## List of Supported file types
-
-SUPPORTED_FILE_TYPES = ['txt','csv', 'xlsx', 'xls', 'parquet', 'json']
-
-# Error that gets raised when File is Empty.
-class EmptyFileError(Exception):
-    pass
-
-# Error that gets raised when Invalid File Type is received.
-class _InvalidFileTypeError(Exception):
-
-    def __init__(self, received_type: str):
-        self.received_type = received_type
-        super().__init__(
-            f""" Received Unsupported file type: {self.received_type}. Supported file types are: {", ".join(SUPPORTED_FILE_TYPES)}."""
-        )
-
-# Error that gets raised when user passed optional file type does not match auto detected file type
-class _FileTypeMismatchError(Exception):
-
-    """Internal exception raised during file type mismatches."""
-
-    def __init__(self, expected_type: str, received_type:str, file_path:str):
-
-        if not isinstance(expected_type, str): 
-            raise TypeError(f'expected_type must be a string, got {type(expected_type).__name__}')     
-            
-        if not isinstance(received_type, str):
-                raise TypeError(f'received_type must be a string, got {type(received_type).__name__}')
-        
-        if not isinstance(file_path, str):
-            raise TypeError(f'file_path must be a string, got {type(file_path).__name__} ')
-
-        self.expected_type = expected_type
-        self.received_type = received_type
-        self.file_path = file_path
-
-        super().__init__(
-        f"File type mismatch: expected: {self.expected_type}, received: {self.received_type} from file: {self.file_path}"
-        )
 
 ### ------- DATA LOADER --------- ###
 
@@ -90,7 +52,7 @@ class DataLoader:
         self,
         file_path:str,
         file_type: str|None = None,
-        array_type: str = 'auto',
+        array_type: Literal['numpy', 'pyarrow', 'auto'] = 'auto',
         conversion_threshold: int|None = None):
 
         if not isinstance(file_path, (str, Path)):
@@ -122,7 +84,7 @@ class DataLoader:
         file_size = path.stat().st_size
 
         if file_size == 0:
-            raise EmptyFileError("Received an empty file.")
+            raise _EmptyFileError("Received an empty file.")
 
         file_size_in_MB = file_size/1024/1024        
 
@@ -163,7 +125,8 @@ class DataLoader:
             self.conversion_threshold = conversion_threshold
 
         logger.info(f'Data Loader initialized with {self.file_type} file of {self.file_size:.2f} MB.')
-
+    
+    @measure
     def load_tabular(
             self,
             load_csv_as_string:bool = False,
