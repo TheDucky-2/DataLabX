@@ -1,10 +1,13 @@
 """Class and methods for Numerical Plots (histogram, QQ plot, KDE and Box plot)."""
 
-from ..computations import Distribution
 import pandas as pd
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
+from typing import Tuple, Literal
 from ..utils.Logger import datalabx_logger
-import matplotlib.figure as Figure
-import matplotlib.axes as Axes
+from ..utils._decorators import measure
+
+from ..computations import Distribution
 
 logger = datalabx_logger(name=__name__.split('.')[-1])
 
@@ -18,7 +21,7 @@ def remove_underscores(column):
 
 class NumericalVisualizer():
 
-    def __init__(self, df: pd.DataFrame, columns: list|type(None) = None):
+    def __init__(self, df: pd.DataFrame, columns: list|None = None):
         """Initializing Numerical Visualizer.
         
         Parameters
@@ -40,14 +43,16 @@ class NumericalVisualizer():
             self.columns = [column for column in columns if column in self.df.columns]
 
         logger.info(f'Numerical Visualizer initialized.')
-        
+
+    @measure
     def plot_histogram(self,
                   bins: int=30,
-                  title: str=None,
-                  xlabel: str=None,
-                  ylabel: str=None,
-                  figsize: tuple =(6, 4),
-                  **kwargs)-> tuple[Figure, Axes]:
+                  title: str|None=None,
+                  xlabel: str|None=None,
+                  ylabel: str|None=None,
+                  figsize: Tuple =(6, 4),
+                  **kwargs
+                  )-> Tuple[Figure, Axes]:
         """
         Visualize histogram for one or multiple columns of Numerical DataFrame.
 
@@ -108,14 +113,15 @@ class NumericalVisualizer():
                 ax.set_ylabel(f'Number of values')
 
             return fig, ax
-
+    @measure
     def plot_box(self, 
-                orientation : str = 'vertical',
-                xlabel:str|type(None) = None,
-                ylabel:str|type(None) = None,
-                title:str|type(None) = None,
-                figsize:tuple = (6, 4),
-                **kwargs)-> tuple[Figure, Axes]:
+                orientation : Literal['horizontal', 'vertical'] = 'vertical',
+                title:str|None = None,
+                xlabel:str|None = None,
+                ylabel:str|None = None,
+                figsize:Tuple = (6, 4),
+                **kwargs
+                )-> Tuple[Figure, Axes]:
 
         """
         Visualize box plot for one or multiple columns of Numerical DataFrame.
@@ -200,13 +206,16 @@ class NumericalVisualizer():
                     ax.set_ylabel(ylabel)
 
             return fig,ax
-
-    def plot_kde(self, bandwidth_method: str ='robust',
-                  title: str=None,
-                  xlabel: str=None,
-                  ylabel: str=None,
-                  figsize: tuple =(6, 4),
-                  **kwargs)-> tuple[Figure, Axes]:
+        
+    @measure
+    def plot_kde(self, 
+                bandwidth_method: Literal["silverman", "scott", "robust"] ='robust',
+                title: str|None=None,
+                xlabel: str|None=None,
+                ylabel: str|None=None,
+                figsize: Tuple =(6, 4),
+                **kwargs
+                )-> Tuple[Figure, Axes]:
         """
         Visualize Kernel Density Estimation plot (curves, including bell curve) for one or multiple columns of DataFrame.
 
@@ -292,8 +301,13 @@ class NumericalVisualizer():
             ax.legend()
 
             return fig, ax
-
-    def plot_qq(self, distribution_type: str = 'norm', title: str =None, points_color: str = 'green')-> tuple[Figure, Axes]:
+        
+    @measure
+    def plot_qq(self, 
+                distribution: Literal["normal", "exponential", "gamma", "beta", "uniform", "lognormal"] = 'normal', 
+                title: str|None =None, 
+                points_color: str = 'green'
+                )-> Tuple[Figure, Axes]:
         """
         Visualize Quantile-Quantile plot (QQ plot) for one or multiple columns of Numerical DataFrame.
 
@@ -301,8 +315,15 @@ class NumericalVisualizer():
         -----------
 
         distribution_type: str (default is 'norm')
-            Type of Distribution you would like to see.
+            Type of Distribution you would like to see. Available methods are:
 
+            - "norm"
+            - "expon"
+            - "uniform"
+            - "lognormal"
+            - "gamma"
+            - "beta"
+    
         title : str, optional
             Title of the plot, default is None. 
 
@@ -326,17 +347,25 @@ class NumericalVisualizer():
         
         from scipy import stats
 
-        if distribution_type is None:
-            raise ValueError(f'Unknown distribution: {distribution_type}')
+        if distribution is None:
+            raise ValueError(f'Unknown distribution: {distribution}')
+        
+        dist_mapping = {
+        "normal": "norm",
+        "exponential": "expon",
+        "gamma": "gamma",
+        "beta": "beta",
+        "uniform": "uniform",
+        "lognormal": "lognorm"}
             
-        distribution_name = getattr(stats, distribution_type, None)
+        distribution = getattr(stats, dist_mapping[distribution], None)
 
         for column in self.df[self.columns]:
 
             fig, ax = plt.subplots()
             
             # using probplot to create a QQ plot
-            stats.probplot(self.df[column], dist=distribution_name, plot=ax)
+            stats.probplot(self.df[column], dist=distribution, plot=ax)
 
             if title:
                 ax.set_title(title)
