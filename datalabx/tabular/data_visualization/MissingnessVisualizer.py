@@ -1,12 +1,13 @@
 """Class and methods for visualizing Missing Data."""
 
 import pandas as pd
-import matplotlib.figure as Figure
-import matplotlib.axes as Axes
-import numpy as np
-import missingno as msno
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
+from typing import Tuple, Literal
+import matplotlib.pyplot as plt
 
 from ..utils.Logger import datalabx_logger
+from ..utils._decorators import measure
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
@@ -43,19 +44,20 @@ class MissingnessVisualizer():
             self.extra_placeholders = extra_placeholders
 
         logger.info('Missingness Visualizer initialized.')
-
-    def plot_missing(self,
-                viz_type: str = 'bar',
-                title: str = None,
-                xlabel: str = None,
-                ylabel: str = None,
-                figsize:tuple = (6,4),
+    @measure
+    def plot_missing(
+                self,
+                viz_type: Literal['bar', 'matrix', 'heatmap', 'dendrogram'] = 'bar',
+                title: str|None = None,
+                xlabel: str|None = None,
+                ylabel: str|None = None,
+                figsize: Tuple = (12,10),
                 title_fontsize: int = 24,
                 title_padding: int = 20,
                 xlabel_fontsize: int = 15,
                 xlabel_padding: int = 15,
                 ylabel_fontsize: int = 15,
-                ylabel_padding: int = 15)-> tuple[Figure, Axes]:
+                ylabel_padding: int = 15)-> Tuple[Figure, Axes]:
         """
         Visualize missing values in one or multiple columns of the DataFrame.
 
@@ -117,6 +119,8 @@ class MissingnessVisualizer():
         import missingno as msno
         import numpy as np
 
+        fig, ax = plt.subplots(figsize= figsize)
+
         visualization_df = self.df.copy()
         
         # getting pandas truly missing values
@@ -134,16 +138,16 @@ class MissingnessVisualizer():
         # missingo functions return a matplotlib axes object, so we can modify it like normal matplotlib plots.
 
         if viz_type == 'heatmap':
-            ax =  msno.heatmap(visualization_df)
+            ax =  msno.heatmap(visualization_df, ax=ax)
         
         elif viz_type == 'bar':
-            ax = msno.bar(visualization_df)
+            ax = msno.bar(visualization_df, ax=ax)
     
         elif viz_type == 'matrix':
-            ax = msno.matrix(visualization_df)
+            ax = msno.matrix(visualization_df, ax=ax)
         
         elif viz_type == 'dendrogram':
-            ax = msno.dendrogram(visualization_df)
+            ax = msno.dendrogram(visualization_df, ax=ax)
 
         else:
             raise ValueError(f"Available viz types are 'heatmap', 'bar', 'matrix' and 'dendrogram', got {viz_type}")
@@ -161,8 +165,6 @@ class MissingnessVisualizer():
         
         if ylabel:
             ax.set_ylabel(ylabel, fontsize = ylabel_fontsize, labelpad = ylabel_padding)
-        
-        fig = ax.figure
         
         logger.info(f'Plotting missing data using {viz_type} plot...')
 
