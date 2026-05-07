@@ -2,11 +2,12 @@
 
 from ..data_diagnosis import CategoricalDiagnosis
 from ..utils.Logger import datalabx_logger
+from ..utils._decorators import measure
 
 import pandas as pd
-
-import matplotlib.figure as Figure
-import matplotlib.axes as Axes
+from typing import Tuple, Literal
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
 
@@ -32,13 +33,14 @@ class CategoricalVisualizer():
         else: 
             self.columns = [column for column in columns if column in self.df.columns]
 
+    @measure
     def plot_frequency(self,
-                            method:str ='count',
+                            method: Literal['count', 'percent']='count',
                             viz_type: str = 'bar',
                             title: str | None =None,
                             xlabel: str | None =None,
                             ylabel: str | None =None,
-                            figsize: tuple| None =(6, 4))-> tuple[Figure, Axes]:
+                            figsize: Tuple=(6, 4))-> Tuple[Figure, Axes]:
         """
         Visualize frequency for each column of Categorical DataFrame.
 
@@ -116,4 +118,4 @@ class CategoricalVisualizer():
             else:
                 ax.set_ylabel(f'{method} of {column}')
                 
-            return fig, ax
+        return fig, ax
