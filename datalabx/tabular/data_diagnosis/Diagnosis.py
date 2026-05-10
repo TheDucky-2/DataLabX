@@ -1,13 +1,9 @@
 """Provides a diagnosis of overall dataframe."""
 
-from ..computations import Statistics
-from ..computations import Distribution
 from ..utils.Logger import datalabx_logger
 
-from pathlib import Path
 import pandas as pd
-import numpy as np
-from typing import Any
+from typing import Any, Literal
 
 
 logger = datalabx_logger(name = __name__.split('.')[-1])
@@ -43,7 +39,11 @@ class Diagnosis:
 
         logger.info(f'Data Diagnosis initialized with columns: {self.columns}')
 
-    def data_preview(self, preview_type: str = 'head', number_of_rows:int=10)-> pd.DataFrame:
+    def data_preview(
+            self, 
+            preview_type: Literal["head", "tail"] = 'head', 
+            number_of_rows:int=10)-> pd.DataFrame:
+        
         """Shows a preview of N rows of your DataFrame.
 
         Parameters
@@ -103,17 +103,14 @@ class Diagnosis:
         Returns
         --------
         dict
-
             A dictionary of summary types
         
         Usage Recommendation
         ---------------------
-
             Use this function when you want to see shape, columns, dtypes and index of your DataFrame
 
         Example
         --------
-
         >>>     Diagnosis(df).data_summary()
         """
         summary = {
@@ -124,7 +121,7 @@ class Diagnosis:
         }
         return summary
 
-    def memory_usage(self, usage_by:str='total')-> float:
+    def memory_usage(self, usage_by:Literal["total", "separate"]='total')-> float:
         """
         Shows memory being used by your DataFrame.
 
@@ -138,7 +135,14 @@ class Diagnosis:
             - 'total': Shows memory usage by whole DataFrame
             - 'separate' : Shows memory usage per column
 
-        Return 
+        Returns
+        -------
+        float
+
+        Example
+        --------
+        >>>     Diagnosis(df).memory_usage()
+
         """
         if not isinstance(usage_by, str):
             raise TypeError(f'usage_by must be a string, got {type(usage_by).__name__}')
@@ -240,17 +244,14 @@ class Diagnosis:
         Returns
         --------
         dict
-
             A python dictionary of column names and cardinality values
 
         Usage Recommendation
         ---------------------
-
             1. Use this function when you want to see how many unique values exist before using encoding your Categorical data.
 
         Example
-        --------
-
+        ---------
         >>>    Diagnosis(df).show_cardinality()
         """
         # using a dictionary to store values for each column
@@ -275,7 +276,6 @@ class Diagnosis:
         Returns
         -------
         pd.DataFrame
-
             A pandas DataFrame
 
         Example
@@ -290,7 +290,7 @@ class Diagnosis:
         if in_columns is None:
             in_columns = self.columns
         else:
-            in_columns = in_columns
+            in_columns = [col for col in in_columns]
 
         return self.df[self.df[self.columns].duplicated(subset=in_columns)]
 
@@ -306,7 +306,6 @@ class Diagnosis:
         Returns
         -------
         int
-
             Number of duplicate values
 
         Example
@@ -325,12 +324,10 @@ class Diagnosis:
         Returns
         -------
         pd.DataFrame
-
             A pandas DataFrame of Numerical columns.
         
         Usage Recommendation
         ---------------------
-
             1. Use this function when you want to work specifically on Numerical data, not overall DataFrame (including Categorical, Datetime).
             2. Use this function if you wish to follow datalabx guided workflow for diagnosis, cleaning and preprocessing of Numerical data.
 
@@ -342,18 +339,15 @@ class Diagnosis:
         return self.df.select_dtypes(include='number')
 
     def get_categorical_columns(self)-> pd.DataFrame:
-        """Separates Categorical (text or category) columns from rest of the
-        DataFrame.
+        """Separates Categorical (text or category) columns from rest of the DataFrame.
 
         Returns
         -------
         pd.DataFrame
-
             A pandas DataFrame of Categorical columns.
         
         Usage Recommendation
         ---------------------
-
             1. Use this function when you want to work specifically on Categorical data, not overall DataFrame (including Numerical, Datetime).
             2. Use this function if you wish to follow datalabx guided workflow for diagnosis, cleaning and preprocessing of Categorical data.
 
@@ -365,13 +359,11 @@ class Diagnosis:
         return self.df.select_dtypes(include=['object', 'string', 'category'])
 
     def get_datetime_columns(self)-> pd.DataFrame:
-        """Separates Datetime (dates or timestamps) columns from rest of the
-        DataFrame.
+        """Separates Datetime (dates or timestamps) columns from rest of the DataFrame.
 
         Returns
         -------
         pd.DataFrame
-
             A pandas DataFrame of Datetime columns.
         
         Usage Recommendation
