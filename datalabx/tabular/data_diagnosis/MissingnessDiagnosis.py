@@ -38,7 +38,7 @@ class MissingnessDiagnosis:
         if not isinstance(extra_placeholders, (list, type(None))):
             raise TypeError(f'extra_placeholders must be a list of strings, got {type(extra_placeholders).__name__}')
 
-        self.df = df
+        self.df = df.astype(str)
 
         if columns is None:
             self.columns = df.columns.to_list()
