@@ -14,6 +14,7 @@ The first stable public release on PyPI will be **0.1.0**.
 
 ##### PyPI Versions
 
+- [v0.1.0b14](#v010b14---may-12-2026)
 - [v0.1.0b13](#v010b13---apr-24-2026)
 - [v0.1.0b12](#v010b12---mar-30-2026)
 - [v0.1.0b11](#v010b11---mar-16-2026)
@@ -32,6 +33,69 @@ The first stable public release on PyPI will be **0.1.0**.
 - [v0.1.0a4](#v010a4-–-dec-26-2025)
 
 ---
+
+## v0.1.0b14 - May 12, 2026
+
+**Status:** Beta (PyPI)
+
+DataLabX v0.1.0b14 focuses on **stability**, **internal refactoring**, **type-safety**, **visualization reliability** and **diagnostic consistency** to strengthen the library before upcoming larger integrations and architectural enhancements.
+
+### ⚠️ Important Updates
+
+- Visualization methods are now backed by dedicated tests to ensure all visualization modules return a **tuple** of:
+
+```python
+(matplotlib.figure.Figure, matplotlib.axes.Axes)
+```
+- Custom exceptions and constants have been reorganized into dedicated internal modules for cleaner architecture and maintainability.
+- Default Missingness placeholder updated with expanded default placeholder coverage for messy real-world datasets.
+
+### 🚀 Major Changes
+
+#### 1. Diagnostic Stability Improvements
+
+- Fixed bug causing **ArrayTypeError** in ``MissingnessDiagnosis`` methods with ``pyarrow`` array type.
+- Improved handling of missingness workflows across different array backends.
+
+#### 2. Visualization Reliability
+
+- Added visualization return-type tests to ensure all visualization methods consistently return ``(fig, ax)`` tuples.
+- Fixed plotting-related bugs causing runtime and rendering issues.
+
+#### 3. Internal Architecture Refactor
+
+- Moved custom errors and constants into dedicated internal modules.
+- Refactored exception handling structure for cleaner organization and easier extensibility.
+- Added ``handle_index`` decorator to ``DirtyDataDiagnosis``methods for safer index handling, removing duplication of index handling logic.
+
+#### 4. Performance & Utility Enhancements
+
+- Added ``measure`` decorator for internal performance measurement and profiling.
+- Improved future benchmarking and optimization workflows.
+
+#### 5. Code Quality Improvements
+
+- Expanded and refined type hints across modules.
+- Removed unused imports, variables and redundant internal logic.
+- Improved runtime stability through multiple bug fixes and cleanup refactors.
+
+#### 6. Missingness Improvements
+
+- Updated default missingness placeholders to reflect real-world dirty datasets and inconsistent missing-value representations.
+
+### 🐛 Bug Fixes
+
+- Fixed runtime errors affecting diagnosis and visualization workflows.
+- Fixed plotting issues causing incorrect visualization behavior.
+- Fixed bug causing **ArrayTypeError** in ``MissingnessDiagnosis``.
+- Improved internal stability through cleanup of unused variables and imports.
+
+### 💡 Key Notes
+
+- This release focuses on **stabilization, correctness, maintainability** and **internal consistency** ahead of larger upcoming integrations.
+- DataLabX continues evolving around real-world messy data handling, informed by datasets collected through **scraping, APIs** and inconsistent external sources to reflect real world mess in datasets.
+- Upcoming releases are planned to introduce **DuckDB integration**, enabling scalable **querying, faster processing workflows** and deeper **backend optimization** for large datasets.
+
 
 ## v0.1.0b13 - Apr 24, 2026
 
