@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 [project] 
 
 name = "datalabx"             
-version = "0.1.0b13"
-description = "DataLabX v0.1.0b13 - Robust Data Loading, JSON5 Support & Diagnosis Performance Improvements."
+version = "0.1.0b14"
+description = "Stability, Type-Safety & Visualization Reliability Improvements."
 
 authors = [
     {name = "Kshitij Sharma"}
@@ -44,9 +44,8 @@ classifiers = [
 
 # extra dependencies 
 [project.optional-dependencies]
-excel = ["fastexcel"]
-test = ["pytest", "openpyxl", "fastexcel"]
-json = ["json5"]
+excel = ["fastexcel","openpyxl"]
+test = ["pytest"]
 
 [tool.setuptools]
 include-package-data = true

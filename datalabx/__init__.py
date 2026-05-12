@@ -1,10 +1,10 @@
 """
 <img src="assets/datalabx_logo.png" alt="datalabx logo" height: "80" style="display:block; margin: 20px auto;">
 
-"DataLabX v0.1.0b13 - Robust Data Loading, JSON5 Support & Diagnosis Performance Improvements."
+"DataLabX v0.1.0b14 – Stability, Type-Safety & Visualization Reliability Improvements."
 
 """
-__version__ = '0.1.0b13'
+__version__ = '0.1.0b14'
 
 import importlib
 
