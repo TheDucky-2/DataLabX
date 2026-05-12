@@ -12,7 +12,7 @@ _DEFAULT_MISSINGNESS_PLACEHOLDERS = ['N/A', '?', '-','—', # dashes used as pla
     "none", "None", "NONE",
     "nil", "NIL",
     "nan", "NaN", "NAN",
-    "na", "NA", "n/a", "N/A", "n.a.", "N.A.",
+    "na", "NA", "n/a", "N/A", "n.a.", "N.A.",'<NA>',
     "n.a", "N.a", "not available", "Not Available", "NOT AVAILABLE",
     "not applicable", "Not Applicable", "NOT APPLICABLE",
     "not known", "Not Known", "NOT KNOWN",
