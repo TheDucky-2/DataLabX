@@ -19,7 +19,7 @@ class CategoricalPreprocessor(DataPreprocessor):
         A list of columns you wish to preprocess, by default None.
     """
 
-    def __init__(self, df:pd.DataFrame, columns: list|type(None) = None):
+    def __init__(self, df:pd.DataFrame, columns: list|None = None):
 
         super().__init__(df, columns)
 
